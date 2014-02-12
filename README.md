@@ -8,6 +8,7 @@ Serveur web, php et mysql.
 
 ## Installation
 * Importer les bases SQL via le fichier sql/import.sql
+* Ajouter un administrateur en spécifiant un nom et un mot de passe (hashé avec sha1)
 * Modifier le fichier connexion_bdd.php.example et le renommer en connexion_bdd.php
 
 ## Notes
