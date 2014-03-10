@@ -233,7 +233,16 @@ input.editor-checkbox {
 
 
 #bloc_connexion {
+  margin-top: 200px;
   text-align: center;
+}
+
+#form_connexion label {
+  font-weight: bold;
+  display: inline-block;
+  width: 100px;
+  text-align: right;
+  margin-right: 10px;
 }
 
 #presentation_administrateur {
