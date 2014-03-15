@@ -28,10 +28,14 @@ li {
   margin: 0;
 }
 
-.grid {
+.grid:not(#grid_log) {
   background: white;
   outline: 0;
   border: 1px solid gray;
+  margin-bottom: 20px;
+}
+
+#pagination {
   margin-bottom: 20px;
 }
 

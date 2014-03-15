@@ -16,6 +16,7 @@
     
     // Selection des données
     if(isset($_POST['select'])){
+        
         // User pouvant se connecter au VPN
         if($_POST['select'] == "user"){
             $req = $bdd->prepare('SELECT * FROM user');
@@ -42,37 +43,54 @@
         }
         // Log du VPN
         else if($_POST['select'] == "log"){
-            $req = $bdd->prepare('SELECT * FROM log');
+            // Création du LIMIT de la requête SQL en fonction de la page
+            if(isset($_POST['pageIndex'], $_POST['pageSize'])) {
+                $page_actuelle = ($_POST['pageIndex']-1) * $_POST['pageSize'];
+                $page_max = $_POST['pageSize'];
+                $page = " LIMIT " . $page_actuelle . ", " . $page_max;
+            }
+            else {
+                $page = "";
+            }
+            
+            // Sélection des logs
+            $string_requete = 'SELECT * FROM log ORDER BY log_id DESC' . $page;
+            $req = $bdd->prepare($string_requete);
             $req->execute();
             
-            if($data = $req->fetch()) {               
-                do{
-                    // C'est mieux exprimé en Mo ou Ko
-                    $received = ($data['log_received'] > 100000) ? $data['log_received']/100000 . " Mo" : $data['log_received']/100 . " Ko";
-                    $sent = ($data['log_send'] > 100000) ? $data['log_send']/100000 . " Mo" : $data['log_send']/100 . " Ko";
-                    $start_time_array = explode(' ', $data['log_start_time']);
-                    $start_time = datefromsql($start_time_array[0]) . ' ' . $start_time_array[1];
-                    $end_time_array = explode(' ', $data['log_end_time']);
-                    $end_time = datefromsql($end_time_array[0]) . ' ' . $end_time_array[1];
-                    
-                    $list[] = array("log_id" => $data['log_id'],
-                                    "user_id" => $data['user_id'],
-                                    "log_trusted_ip" => $data['log_trusted_ip'],
-                                    "log_trusted_port" => $data['log_trusted_port'],
-                                    "log_remote_ip" => $data['log_remote_ip'],
-                                    "log_remote_port" => $data['log_remote_port'],
-                                    "log_start_time" => $start_time,
-                                    "log_end_time" => $end_time,
-                                    "log_received" => $received,
-                                    "log_send" => $sent);
-                } while($data = $req->fetch());                      
+            $list = array();
+                        
+            while($data = $req->fetch()) {
+                // C'est mieux exprimé en Mo ou Ko
+                $received = ($data['log_received'] > 100000) ? $data['log_received']/100000 . " Mo" : $data['log_received']/100 . " Ko";
+                $sent = ($data['log_send'] > 100000) ? $data['log_send']/100000 . " Mo" : $data['log_send']/100 . " Ko";
+                $start_time_array = explode(' ', $data['log_start_time']);
+                $start_time = datefromsql($start_time_array[0]) . ' ' . $start_time_array[1];
+                $end_time_array = explode(' ', $data['log_end_time']);
+                $end_time = datefromsql($end_time_array[0]) . ' ' . $end_time_array[1];
                 
-                echo json_encode($list);           
+                // On ajoute à notre tableau la nouvelle ligne de log
+                array_push($list, array("log_id" => $data['log_id'],
+                                "user_id" => $data['user_id'],
+                                "log_trusted_ip" => $data['log_trusted_ip'],
+                                "log_trusted_port" => $data['log_trusted_port'],
+                                "log_remote_ip" => $data['log_remote_ip'],
+                                "log_remote_port" => $data['log_remote_port'],
+                                "log_start_time" => $start_time,
+                                "log_end_time" => $end_time,
+                                "log_received" => $received,
+                                "log_send" => $sent));
             }
-            else{
-                $list = array();
-                echo json_encode($list);   
-            }
+            
+            // Récupération du nombre lignes de log
+            $req_nb = $bdd->prepare('SELECT COUNT(*) AS nb FROM log');
+            $req_nb->execute();
+            $data_nb = $req_nb->fetch()['nb'];
+            
+            // On affiche la réponse JSON
+            $result = array('Total' => $data_nb, 'Rows' => json_encode($list)); 
+            
+            echo json_encode($result);
         }
         // Affichage des personnes pouvant se connecter à l'interface d'administration
         else if($_POST['select'] == "admin"){

@@ -29,9 +29,11 @@
     <head>
         <meta charset="utf-8" />
         
-        <link rel="stylesheet" href="css/slick.grid.css" type="text/css"/>
-        <link rel="stylesheet" href="css/slick-default-theme.css" type="text/css"/>
-        <link rel="stylesheet" href="css/jquery-ui-1.8.16.custom.css" type="text/css"/>
+        <link rel="stylesheet" href="css/slick.grid.css" type="text/css" />
+        <link rel="stylesheet" href="css/slick-default-theme.css" type="text/css" />
+        <link rel="stylesheet" href="css/jquery-ui-1.8.16.custom.css" type="text/css" />
+        <link rel="stylesheet" href="css/dropkick.css" type="text/css" />
+        <link rel="stylesheet" href="css/enhancementpager.css" type="text/css" />
         <link rel="stylesheet" href="css/index.css" type="text/css"/>
     </head>
     <body>
@@ -74,7 +76,8 @@
                     <div class="grid-header">
                       <label>Logs</label>
                     </div>
-                     <div class="grid" id="grid_log"></div>
+                    <div class="grid" id="grid_log"></div>
+                    <div id="pagination" class="slick-enhancement-pager"></div>
                 </div>
                 
                 <div>
@@ -94,6 +97,11 @@
                 <script src="js/slick.formatters.js"></script>
                 <script src="js/slick.editors.js"></script>
                 <script src="js/slick.grid.js"></script>
+                
+                <script type="text/javascript" src="js/jquery.json-2.3.min.js"></script>
+                <script type="text/javascript" src="js/jquery.dropkick-1.0.0.js" charset="utf-8"></script>
+                <script src="js/slick.enhancementpager.js"></script>
+                
                 <script src="js/index.js"></script>
                 
         <?php

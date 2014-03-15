@@ -164,69 +164,6 @@ $(function () {
         }
     });
 
-    // Selection des logs
-    $.ajax({
-        type: "POST",
-        url: "ajax.php",
-        dataType: 'json',
-        data: "select=log",
-        success: function (json) {
-            var
-                i,
-
-                // Header des colonnes
-                columns = [
-                    {id: "log_id", name: "Log ID", field: "log_id", width: 120, cssClass: "cell-title", editor: Slick.Editors.Text},
-                    {id: "user_id", name: "User ID", field: "user_id", width: 120, cssClass: "cell-title", editor: Slick.Editors.Text},
-                    {id: "log_trusted_ip", name: "Trusted IP", field: "log_trusted_ip", width: 120, cssClass: "cell-title", editor: Slick.Editors.Text},
-                    {id: "log_trusted_port", name: "Trusted Port", field: "log_trusted_port", width: 120, cssClass: "cell-title", editor: Slick.Editors.Text},
-                    {id: "log_remote_ip", name: "Remote IP", field: "log_remote_ip", width: 120, cssClass: "cell-title", editor: Slick.Editors.Text},
-                    {id: "log_remote_port", name: "Remote Port", field: "log_remote_port", width: 120, cssClass: "cell-title", editor: Slick.Editors.Text},
-                    {id: "log_start_time", name: "Start Time", field: "log_start_time", width: 120, cssClass: "cell-title", editor: Slick.Editors.Text},
-                    {id: "log_end_time", name: "End Time", field: "log_end_time", width: 120, cssClass: "cell-title", editor: Slick.Editors.Text},
-                    {id: "log_received", name: "Receveid", field: "log_received", width: 120, cssClass: "cell-title", editor: Slick.Editors.Text},
-                    {id: "log_send", name: "Sent", field: "log_send", width: 120, cssClass: "cell-title", editor: Slick.Editors.Text}
-                ],
-
-                // Options de la grille
-                options = {
-                    editable: false,
-                    enableAddRow: false,
-                    enableCellNavigation: true,
-                    asyncEditorLoading: false,
-                    autoEdit: false,
-                    autoHeight: true
-                },
-
-                // Données de la grille des logs
-                data = [],
-                grid = null;
-
-            for (i = 0; i < json.length; i += 1) {
-                data[i] = {
-                    log_id: json[i].log_id,
-                    user_id: json[i].user_id,
-                    log_trusted_ip: json[i].log_trusted_ip,
-                    log_trusted_port: json[i].log_trusted_port,
-                    log_remote_ip: json[i].log_remote_ip,
-                    log_remote_port: json[i].log_remote_port,
-                    log_start_time: json[i].log_start_time,
-                    log_end_time: json[i].log_end_time,
-                    log_received: json[i].log_received,
-                    log_send: json[i].log_send
-                };
-            }
-
-            // Création de la grille
-            grid = new Slick.Grid($("#grid_log"), data, columns, options);
-
-            grid.autosizeColumns();
-        },
-        error: function () {
-            alert('Erreur dans la récupération des données...');
-        }
-    });
-
 
     // Selection des admins
     $.ajax({
@@ -371,4 +308,51 @@ $(function () {
             alert('Erreur dans la récupération des données...');
         }
     });
+    
+    
+    
+    // Sélection des logs
+    var
+    i,
+
+    // Header des colonnes
+    columns = [
+        {id: "log_id", name: "Log ID", field: "log_id", width: 120, cssClass: "cell-title", editor: Slick.Editors.Text},
+        {id: "user_id", name: "User ID", field: "user_id", width: 120, cssClass: "cell-title", editor: Slick.Editors.Text},
+        {id: "log_trusted_ip", name: "Trusted IP", field: "log_trusted_ip", width: 120, cssClass: "cell-title", editor: Slick.Editors.Text},
+        {id: "log_trusted_port", name: "Trusted Port", field: "log_trusted_port", width: 120, cssClass: "cell-title", editor: Slick.Editors.Text},
+        {id: "log_remote_ip", name: "Remote IP", field: "log_remote_ip", width: 120, cssClass: "cell-title", editor: Slick.Editors.Text},
+        {id: "log_remote_port", name: "Remote Port", field: "log_remote_port", width: 120, cssClass: "cell-title", editor: Slick.Editors.Text},
+        {id: "log_start_time", name: "Start Time", field: "log_start_time", width: 120, cssClass: "cell-title", editor: Slick.Editors.Text},
+        {id: "log_end_time", name: "End Time", field: "log_end_time", width: 120, cssClass: "cell-title", editor: Slick.Editors.Text},
+        {id: "log_received", name: "Receveid", field: "log_received", width: 120, cssClass: "cell-title", editor: Slick.Editors.Text},
+        {id: "log_send", name: "Sent", field: "log_send", width: 120, cssClass: "cell-title", editor: Slick.Editors.Text}
+    ],
+
+    // Options de la grille
+    options = {
+        editable: false,
+        enableAddRow: false,
+        enableCellNavigation: true,
+        asyncEditorLoading: false,
+        autoEdit: false,
+        autoHeight: true
+    },
+    
+    data = [],
+    
+    // Création de la grille
+    grid = new Slick.Grid($("#grid_log"), data, columns, options),
+
+    // Pagination
+    pager = new Slick.Controls.EnhancementPager({
+        container: $("#pagination"),
+        remoteUrl: "ajax.php",
+        params: {select: "log"},
+        datagrid: grid,
+        pagerType: ""
+    });
+
+    grid.autosizeColumns();
+    
 });

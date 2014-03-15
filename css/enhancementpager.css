@@ -1,0 +1,124 @@
+.slick-enhancement-pager {
+  width: 100%;
+  height: 26px;
+  border: 1px solid gray;
+  border-top: 0;
+  background: url('../images/header-columns-bg.gif') repeat-x center bottom;
+  vertical-align: middle;
+  position: relative;
+}
+
+.button-base-class {
+  display: inline-block;
+  border: #CCC solid 1px;
+  margin: 4px;
+  width:16px;
+  height:16px;
+  cursor: pointer;
+  vertical-align: middle;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+}
+
+.resultset_first{
+  background: url('../images/resultset_first.png') no-repeat;
+}
+
+.resultset_first:hover{
+  background: #CEF url('../images/resultset_first.png') no-repeat;
+}
+
+.resultset_prev{
+  background: url('../images/resultset_previous.png') no-repeat;
+}
+
+.resultset_prev:hover{
+  background: #CEF url('../images/resultset_previous.png') no-repeat;
+}
+
+.resultset_next{
+  background: url('../images/resultset_next.png') no-repeat;
+}
+
+.resultset_next:hover{
+  background: #CEF url('../images/resultset_next.png') no-repeat;
+}
+
+.resultset_last{
+  background: url('../images/resultset_last.png') no-repeat;
+}
+
+.resultset_last:hover{
+  background: #CEF url('../images/resultset_last.png') no-repeat;
+}
+
+.spacer{
+  width: 1px;
+  margin: 4px;
+  display: inline-block;
+  background: url('../images/spacer.png') no-repeat;
+}
+
+.refresh{
+  background: url('../images/arrow_refresh.png') no-repeat;
+}
+
+.refresh:hover{
+  background: #CEF url('../images/arrow_refresh.png') no-repeat;
+}
+
+.dataloading{
+  display: inline-block;
+  margin: 4px;
+  background: url('../images/ajax-loader.gif') no-repeat;
+  width:16px;
+  height:16px;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.pageplus{
+  background: url('../images/pageplus.png') no-repeat;
+}
+
+.pageplus:hover{
+  background: #CEF url('../images/pageplus.png') no-repeat;
+}
+
+.pageminus{
+  background: url('../images/pageminus.png') no-repeat;
+}
+
+.pageminus:hover{
+  background: #CEF url('../images/pageminus.png') no-repeat;
+}
+
+.currentrecords{
+  position:absolute;right:0px;
+  background: url('../images/lightbulb.png') no-repeat;
+}
+
+.currentrecords:hover{
+  position:absolute;right:0px;
+  background: #CEF url('../images/lightbulb.png') no-repeat;
+}
+
+.pagerslider{
+  display:inline-block;
+  width:80px;
+  margin:4px 9px 4px 4px;
+  vertical-align: middle;
+}
+
+.recordsperpage{
+  display:inline-block;
+  vertical-align: middle;
+  width:80px;
+}
+
+.recordstate{
+  position:absolute;
+  top:6px;
+  right:26px;
+}
