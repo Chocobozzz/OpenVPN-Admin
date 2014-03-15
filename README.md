@@ -12,4 +12,4 @@ Serveur web, php et mysql.
 * Modifier le fichier connexion_bdd.php.example et le renommer en connexion_bdd.php
 
 ## Notes
-Utilisation du projet [SlickGrid](https://github.com/mleibman/SlickGrid), merci à eux :).
+Utilisation du projet [SlickGrid](https://github.com/mleibman/SlickGrid) ainsi que de [SlickGridEnhancementPager](https://github.com/kingleema/SlickGridEnhancementPager) pour la pagination, merci à eux :).
