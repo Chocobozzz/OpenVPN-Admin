@@ -15,6 +15,7 @@
         
         if($data = $req->fetch()){
             $_SESSION['admin_id'] = $data['admin_id'];
+            unset($_POST['id'], $_POST['pass']);
             $connexion = true;
         }
         else{
@@ -98,8 +99,5 @@
         <?php
             }
         ?>
-        
-        
-        
     </body>
 </html>
