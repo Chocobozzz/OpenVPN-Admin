@@ -4,7 +4,7 @@
     if(!isset($_SESSION['admin_id']))
         exit -1;
 
-    require('connexion_bdd.php');
+    require(basename(__FILE__) . 'connexion_bdd.php');
     
     function datetosql($date) {
         return implode('-', array_reverse(explode('/', $date)));

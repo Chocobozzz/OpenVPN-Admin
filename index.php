@@ -8,18 +8,14 @@
     
     // Tentative de connexion ?
     if(isset($_POST['id'], $_POST['pass'])){
-        require('connexion_bdd.php');
+        require('include/connexion_bdd.php');
         
         $req = $bdd->prepare('SELECT * FROM admin WHERE admin_id = ? AND admin_pass = ?');
         $req->execute(array($_POST['id'], sha1($_POST['pass'])));
         
         if($data = $req->fetch()){
             $_SESSION['admin_id'] = $data['admin_id'];
-            unset($_POST['id'], $_POST['pass']);
-            $connexion = true;
-        }
-        else{
-            $connexion = false;
+            header("Location: .");
         }
     }
 ?>

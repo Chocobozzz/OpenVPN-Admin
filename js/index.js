@@ -7,7 +7,7 @@ $(function () {
     // Selection des users
     $.ajax({
         type: "POST",
-        url: "ajax.php",
+        url: "include/ajax.php",
         dataType: 'json',
         data: "select=user",
         success: function (json) {
@@ -60,7 +60,7 @@ $(function () {
 
                 $.ajax({
                     type: "POST",
-                    url: "ajax.php",
+                    url: "include/ajax.php",
                     dataType: "json",
                     data: {del_user_id: id},
                     error: function () {
@@ -115,7 +115,7 @@ $(function () {
                 // Suppression dans la bdd
                 $.ajax({
                     type: "POST",
-                    url: "ajax.php",
+                    url: "include/ajax.php",
                     dataType: "json",
                     data: item,
                     error: function () {
