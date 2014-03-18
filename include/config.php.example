@@ -1,11 +1,7 @@
 <?php
-	$PARAM_hote='localhost'; 
-	$PARAM_port='3306';
-	$PARAM_nom_bd='vpn'; 
-	$PARAM_utilisateur='user'; 
-	$PARAM_mot_passe="password";
-	
-	
-	$pdo_options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
-	$bdd = new PDO('mysql:host='.$PARAM_hote.';port='.$PARAM_port.';dbname='.$PARAM_nom_bd, $PARAM_utilisateur, $PARAM_mot_passe, $pdo_options);
+	$hote='localhost'; 
+	$port='3306';
+	$bd='vpn'; 
+	$utilisateur='user'; 
+	$mdp='password';
 ?>
