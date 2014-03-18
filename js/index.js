@@ -140,7 +140,7 @@ $(function () {
 
                 $.ajax({
                     type: "POST",
-                    url: "ajax.php",
+                    url: "include/ajax.php",
                     dataType: "json",
                     data: item,
                     error: function () {
@@ -168,7 +168,7 @@ $(function () {
     // Selection des admins
     $.ajax({
         type: "POST",
-        url: "ajax.php",
+        url: "include/ajax.php",
         dataType: 'json',
         data: "select=admin",
         success: function (json) {
@@ -212,7 +212,7 @@ $(function () {
                 var me = $(this), id = me.attr('id'), data = grid.getData();
                 $.ajax({
                     type: "POST",
-                    url: "ajax.php",
+                    url: "include/ajax.php",
                     dataType: "json",
                     data: {del_admin_id: id},
                     error: function () {
@@ -260,7 +260,7 @@ $(function () {
                 // Modification de la bdd
                 $.ajax({
                     type: "POST",
-                    url: "ajax.php",
+                    url: "include/ajax.php",
                     dataType: "json",
                     data: item,
                     error: function () {
@@ -285,7 +285,7 @@ $(function () {
                 // Maj de la bdd
                 $.ajax({
                     type: "POST",
-                    url: "ajax.php",
+                    url: "include/ajax.php",
                     dataType: "json",
                     data: item,
                     error: function () {
@@ -347,7 +347,7 @@ $(function () {
     // Pagination
     pager = new Slick.Controls.EnhancementPager({
         container: $("#pagination"),
-        remoteUrl: "ajax.php",
+        remoteUrl: "include/ajax.php",
         params: {select: "log"},
         datagrid: grid,
         pagerType: ""

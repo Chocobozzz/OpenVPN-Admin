@@ -8,7 +8,7 @@
     
     // Tentative de connexion ?
     if(isset($_POST['id'], $_POST['pass'])){
-        require('include/connexion_bdd.php');
+        require(dirname(__FILE__) . '/include/connexion_bdd.php');
         
         $req = $bdd->prepare('SELECT * FROM admin WHERE admin_id = ? AND admin_pass = ?');
         $req->execute(array($_POST['id'], sha1($_POST['pass'])));
@@ -16,6 +16,9 @@
         if($data = $req->fetch()){
             $_SESSION['admin_id'] = $data['admin_id'];
             header("Location: .");
+        }
+        else {
+            $connexion_erreur = true;
         }
     }
 ?>
@@ -36,6 +39,8 @@
         <?php
             // Si pas connecté on affiche le formulaire
             if(!isset($_SESSION['admin_id'])){
+                if($connexion_erreur)
+                    echo "<strong style='color: red'>Erreur connexion</strong>";
         ?>
                 <div id="bloc_connexion">
                     <form id="form_connexion" method="POST">
