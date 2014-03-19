@@ -118,6 +118,14 @@ $(function () {
                     url: "include/ajax.php",
                     dataType: "json",
                     data: item,
+                    success: function () {
+                        // Transformation en sha1 du mdp
+                        if(args.cell == 1) {
+                            grid.invalidateRow(args.row);
+                            data[args.row][grid.getColumns()[args.cell].field] = hex_sha1(data[args.row][grid.getColumns()[args.cell].field]);
+                            grid.render();  
+                        }
+                    },
                     error: function () {
                         alert("Erreur dans la modification des données...");
                     }

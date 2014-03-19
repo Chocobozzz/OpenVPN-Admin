@@ -28,12 +28,14 @@
     <head>
         <meta charset="utf-8" />
         
-        <link rel="stylesheet" href="css/slick.grid.css" type="text/css" />
+        <!--<link rel="stylesheet" href="css/slick.grid.css" type="text/css" />
         <link rel="stylesheet" href="css/slick-default-theme.css" type="text/css" />
         <link rel="stylesheet" href="css/jquery-ui-1.8.16.custom.css" type="text/css" />
         <link rel="stylesheet" href="css/dropkick.css" type="text/css" />
         <link rel="stylesheet" href="css/enhancementpager.css" type="text/css" />
-        <link rel="stylesheet" href="css/index.css" type="text/css"/>
+        <link rel="stylesheet" href="css/index.css" type="text/css"/>-->
+        
+        <link rel="stylesheet" href="css/min.css" type="text/css"/>
     </head>
     <body>
         <?php
@@ -89,7 +91,7 @@
                 </div>
                 
                
-                <script src="js/jquery-1.7.min.js"></script>
+                <!--<script src="js/jquery-1.7.min.js"></script>
                 <script src="js/jquery-ui-1.8.16.custom.min.js"></script>
                 <script src="js/jquery.event.drag-2.2.js"></script>
                 <script src="js/slick.core.js"></script>
@@ -103,7 +105,11 @@
                 <script type="text/javascript" src="js/jquery.dropkick-1.0.0.js" charset="utf-8"></script>
                 <script src="js/slick.enhancementpager.js"></script>
                 
-                <script src="js/index.js"></script>
+                
+                <script src="js/sha1-min.js"></script>
+                <script src="js/index.js"></script>-->
+                
+                <script src="js/min.js"></script>
                 
         <?php
             }
