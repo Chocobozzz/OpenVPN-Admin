@@ -35,10 +35,11 @@
         <link rel="stylesheet" href="css/enhancementpager.css" type="text/css" />
         <link rel="stylesheet" href="css/index.css" type="text/css"/>-->
         
-        <link rel="stylesheet" href="css/min.css" type="text/css"/>
+        <link rel="stylesheet" href="css/min.css" type="text/css" />
     </head>
     <body>
         <?php
+        
             // Si pas connecté on affiche le formulaire
             if(!isset($_SESSION['admin_id'])){
                 if($connexion_erreur)
