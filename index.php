@@ -103,6 +103,8 @@
                 <script type="text/javascript" src="js/jquery.dropkick-1.0.0.js" charset="utf-8"></script>
                 <script src="js/slick.enhancementpager.js"></script>
                 
+                
+                <script src="js/sha1-min.js"></script>
                 <script src="js/index.js"></script>
                 
         <?php

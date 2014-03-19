@@ -12,4 +12,5 @@ Serveur web, php et mysql.
 * Modifier le fichier connexion_bdd.php.example et le renommer en connexion_bdd.php
 
 ## Notes
-Utilisation du projet [SlickGrid](https://github.com/mleibman/SlickGrid) ainsi que de [SlickGridEnhancementPager](https://github.com/kingleema/SlickGridEnhancementPager) pour la pagination, merci à eux :).
+Utilisation du projet [SlickGrid](https://github.com/mleibman/SlickGrid) ainsi que de [SlickGridEnhancementPager](https://github.com/kingleema/SlickGridEnhancementPager) pour la pagination.
+Utilisation des scripts de [pajhome](http://pajhome.org.uk/crypt/md5/index.html) pour l'algorithme sha1 en JavaScript.
