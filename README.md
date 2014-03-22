@@ -1,7 +1,7 @@
 # OpenVPN Admin
 
 ## Résumé
-Administrer son OpenVPN via une interface web (visualisation des logs, modifications des utilisateurs pouvant se connecter...) selon un VPN configuré pour fonctionner avec SQL (un article de blog va venir).
+Administrer son OpenVPN via une interface web (visualisation des logs, modifications des utilisateurs pouvant se connecter...) selon un VPN configuré pour fonctionner avec SQL ([cf article de blog](http://blog.sandrocazzaniga.fr/?p=808)).
 
 ![Prévisualisation](/images/screen_adminvpn.png "Prévisualisation de l'interface web")
 
