@@ -1,134 +1,47 @@
-* {
-  font-family: arial;
-  font-size: 8pt;
-}
-
 body {
-  background: beige;
-  padding: 0;
-  margin: 8px;
+  margin: auto;
+  padding: 10px;
+  
+  /* Overide jquery ui style with bootstrap */
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+  font-size: 14px !important;
+  line-height: 1.42857 !important;
+  color: #333 !important;
 }
 
-h2 {
-  font-size: 10pt;
-  border-bottom: 1px dotted gray;
+a.glyphicon {
+  color: #333 !important;
 }
 
-ul {
-  margin-left: 0;
-  padding: 0;
-  cursor: default;
+.delete {
+    cursor: pointer;
 }
 
-li {
-  background: url("../images/arrow_right_spearmint.png") no-repeat center left;
-  padding: 0 0 0 14px;
-
-  list-style: none;
-  margin: 0;
+#header_admin {
+  margin : 10px;
 }
 
-.grid:not(#grid_log) {
-  background: white;
-  outline: 0;
-  border: 1px solid gray;
-  margin-bottom: 20px;
+.block-grid {
+  margin: 20px;
 }
 
-#pagination {
-  margin-bottom: 20px;
+.grid {
+  border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
-.grid-header {
-  border: 1px solid gray;
-  border-bottom: 0;
-  border-top: 0;
-  background: url('../images/header-bg.gif') repeat-x center top;
-  color: black;
-  height: 24px;
-  line-height: 24px;
-}
-
-.grid-header label {
-  display: inline-block;
+/*.slick-header-column {
   font-weight: bold;
-  margin: auto auto auto 6px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.2) !important;
+}*/
+
+/* Fix with slickgrid and bootstrap association */
+.slick-header *, *:before, *.after {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
 }
 
-.grid-header .ui-icon {
-  margin: 4px 4px auto 6px;
-  background-color: transparent;
-  border-color: transparent;
-}
 
-.grid-header .ui-icon.ui-state-hover {
-  background-color: white;
-}
-
-.grid-header #txtSearch {
-  margin: 0 4px 0 4px;
-  padding: 2px 2px;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
-  border: 1px solid silver;
-}
-
-.options-panel {
-  -moz-border-radius: 6px;
-  -webkit-border-radius: 6px;
-  border: 1px solid silver;
-  background: #f0f0f0;
-  padding: 4px;
-  margin-bottom: 20px;
-  width: 320px;
-  position: absolute;
-  top: 0px;
-  left: 650px;
-}
-
-/* Individual cell styles */
-.slick-cell.task-name {
-  font-weight: bold;
-  text-align: right;
-}
-
-.slick-cell.task-percent {
-  text-align: right;
-}
-
-.slick-cell.cell-move-handle {
-  font-weight: bold;
-  text-align: right;
-  border-right: solid gray;
-
-  background: #efefef;
-  cursor: move;
-}
-
-.cell-move-handle:hover {
-  background: #b6b9bd;
-}
-
-.slick-row.selected .cell-move-handle {
-  background: #D5DC8D;
-}
-
-.slick-row .cell-actions {
-  text-align: left;
-}
-
-.slick-row.complete {
-  background-color: #DFD;
-  color: #555;
-}
-
-.percent-complete-bar {
-  display: inline-block;
-  height: 6px;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
-}
-
+/* Editor */
 /* Slick.Editors.Text, Slick.Editors.Date */
 input.editor-text {
   width: 100%;
@@ -228,49 +141,4 @@ input.editor-checkbox {
   height: 100%;
   padding: 0;
   border: 0;
-}
-
-
-.delete {
-    cursor: pointer;
-}
-
-
-#bloc_connexion {
-  margin-top: 200px;
-  text-align: center;
-}
-
-#form_connexion label {
-  font-weight: bold;
-  display: inline-block;
-  width: 100px;
-  text-align: right;
-  margin-right: 10px;
-}
-
-#presentation_administrateur {
-  margin : 10px;
-}
-
-
-.cell-title {
-  font-weight: bold;
-}
-
-.cell-effort-driven {
-  text-align: center;
-}
-
-.cell-selection {
-  border-right-color: silver;
-  border-right-style: solid;
-  background: #f5f5f5;
-  color: gray;
-  text-align: right;
-  font-size: 10px;
-}
-
-.slick-row.selected .cell-selection {
-  background-color: transparent; /* show default selected row background */
 }

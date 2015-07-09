@@ -1,27 +1,47 @@
 # OpenVPN Admin
 
-## Résumé
-Administrer son OpenVPN via une interface web (visualisation des logs, modifications des utilisateurs pouvant se connecter...) selon un VPN configuré pour fonctionner avec SQL ([cf article de blog](http://blog.sandrocazzaniga.fr/?p=808)).
+## Summary
+Administrate its OpenVPN with a web interface (logs visualisations, users managing...) and a SQL database.
 
-![Prévisualisation](/images/screen_adminvpn.png "Prévisualisation de l'interface web")
+![Previsualisation](http://lutim.cpy.re/wRzijuCg)
 
-Les configurations ainsi que les scripts d'OpenVPN adaptés à cette interface sont présents dans le dossier openvpn-conf.
+## Prerequisite
 
+  * GNU/Linux with Bash and root access
+  * Fresh install of OpenVPN
+  * Web server (NGinx, Apache...)
+  * MySQL
+  * PHP >= 5.5 with modules:
+    * zip
+    * pdo_mysql
+  
+## Tests
 
-## Prérequis
-Serveur Web (NGinx, Apache...), PHP, SQL (MySQL, Postgre...).
+Only tested on Debian Jessie. Feel free to open issues.
 
 ## Installation
-* Importer les bases SQL via le fichier sql/import.sql
-* Supprimer le dossier sql
-* Ajouter un administrateur en spécifiant un nom et un mot de passe (hashé avec sha1)
 
-        INSERT INTO admin (admin_id, admin_pass) VALUES ("superadmin", SHA1('monmdp'));
+  * Setup OpenVPN and the web application:
 
-* Copier le fichier include/config.php.example vers include/config.php
-* Modifier le fichier config.php en rentrant les identifiants de votre BDD
-* Vous pouvez utiliser le dossier openvpn-conf, mais en production le site ne doit pas contenir ce dossier (supprimez le ou déplacez le)
+      cd ~/my_coding_workspace
+      git clone https://github.com/Chocobozzz/OpenVPN-Admin openvpn-admin
+      cd openvpn-admin
+      ./install.sh www_base_dir web_user web_group
 
-## Notes
-Utilisation du projet [SlickGrid](https://github.com/mleibman/SlickGrid) ainsi que de [SlickGridEnhancementPager](https://github.com/kingleema/SlickGridEnhancementPager) pour la pagination.
-Utilisation des scripts de [pajhome](http://pajhome.org.uk/crypt/md5/index.html) pour l'algorithme sha1 en JavaScript.
+  * Setup the web server (Apache, NGinx...) to serve the web application.
+  * Create the admin of the web application by visiting http://your-installation/index.php?installation
+
+## Usage
+
+  * Start OpenVPN on the server (for example `systemctl start openvpn@server`)
+  * Connect to the web application as an admin
+  * Create an user
+  * User get the configurations files via the web application
+  * User run OpenVPN (for example `systemctl start openvpn@client`)
+
+## Use of
+
+  * [Bootstrap](https://github.com/twbs/bootstrap)
+  * [SlickGrid](https://github.com/mleibman/SlickGrid)
+  * [SlickGridEnhancementPager](https://github.com/kingleema/SlickGridEnhancementPager) ([forked](https://github.com/Chocobozzz/SlickGridEnhancementPager/))
+  * [js-sha1](https://github.com/emn178/js-sha1)

@@ -1,0 +1,21 @@
+{
+  "name": "openvpn-admin",
+  "version": "0.0.1",
+  "description": "Setup and administration of openvpn with a web interface",
+  "dependencies": {
+    "bootstrap": "^3.3.5",
+    "slickgrid": "git://github.com/mleibman/SlickGrid.git#master",
+    "js-sha1": "^0.3.0",
+    "slickgrid-enhancement-pager": "git://github.com/Chocobozzz/SlickGridEnhancementPager#master"
+  },
+  "keywords": [
+    "openvpn",
+    "admin",
+    "setup"
+  ],
+  "authors": [
+    "Florian Bigard <florian.bigard@gmail.com>"
+  ],
+  "license": "GPLv3",
+  "private": true
+}

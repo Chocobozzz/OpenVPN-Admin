@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `log` (
   `log_send` float NOT NULL DEFAULT '0',
   PRIMARY KEY (`log_id`),
   KEY `user_id` (`user_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=21 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `user` (
   `user_id` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
