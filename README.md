@@ -39,6 +39,16 @@ Only tested on Debian Jessie. Feel free to open issues.
   * User get the configurations files via the web application
   * User run OpenVPN (for example `systemctl start openvpn@client`)
 
+## Update
+
+    git pull origin master
+    ./update.sh www_base_dir
+    
+## Desinstall
+It will remove all installed components (OpenVPN keys and configurations, the web application, iptables rules...).
+
+    ./clean.sh www_base_dir
+
 ## Use of
 
   * [Bootstrap](https://github.com/twbs/bootstrap)
