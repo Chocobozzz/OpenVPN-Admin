@@ -168,6 +168,7 @@ printf "\n################## Setup web application ##################\n"
 
 # Copy bash scripts (which will insert row in MySQL)
 cp -r "$base_path/installation/scripts" "/etc/openvpn/"
+chmod +x "/etc/openvpn/scripts/*"
 
 # Create the directory of the web application
 mkdir "$openvpn_admin"
