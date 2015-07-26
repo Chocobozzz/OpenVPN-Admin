@@ -1,7 +1,7 @@
 <!-- Users grid -->
 <div class="block-grid row" id="user-grid">
   <div class="grid-header">
-    <label>Users</label>
+    <label>OpenVPN Users</label>
   </div>
   <div class="grid" id="grid_user"></div>
 </div>
@@ -9,7 +9,7 @@
 <!-- Logs grid -->
 <div class="block-grid row" id="log-grid">
   <div class="grid-header">
-    <label>Logs</label>
+    <label>OpenVPN Logs</label>
   </div>
   <div class="grid" id="grid_log"></div>
   <div id="pager" class="slick-enhancement-pager"></div>
@@ -18,7 +18,7 @@
 <!-- Admins grid -->
 <div class="block-grid row" id="admin-grid">
   <div class="grid-header">
-    <label>Admin</label>
+    <label>Web Admins</label>
   </div>
   <div class="grid" id="grid_admin"></div>
 </div>
