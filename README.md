@@ -14,6 +14,7 @@ Administrate its OpenVPN with a web interface (logs visualisations, users managi
   * PHP >= 5.5 with modules:
     * zip
     * pdo_mysql
+  * bower
   
 ## Tests
 
