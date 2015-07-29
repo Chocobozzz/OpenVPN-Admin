@@ -40,7 +40,7 @@ Only tested on Debian Jessie. Feel free to open issues.
   * Start OpenVPN on the server (for example `systemctl start openvpn@server`)
   * Connect to the web application as an admin
   * Create an user
-  * User get the configurations files via the web application
+  * User get the configurations files via the web application (and put them in */etc/openvpn*)
   * User run OpenVPN (for example `systemctl start openvpn@client`)
 
 ## Update
