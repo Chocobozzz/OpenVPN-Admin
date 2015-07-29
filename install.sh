@@ -168,7 +168,7 @@ printf "\n################## Setup web application ##################\n"
 
 # Copy bash scripts (which will insert row in MySQL)
 cp -r "$base_path/installation/scripts" "/etc/openvpn/"
-chmod +x "/etc/openvpn/scripts/*"
+chmod +x "/etc/openvpn/scripts/"*
 
 # Create the directory of the web application
 mkdir "$openvpn_admin"
@@ -186,8 +186,8 @@ sed -i "s/remote xxx\.xxx\.xxx\.xxx 443/remote $ip_server 443/" "./client-conf/g
 sed -i "s/remote xxx\.xxx\.xxx\.xxx 443/remote $ip_server 443/" "./client-conf/windows/client.conf"
 
 # Copy ta.key inside the client-conf directory
-cp "/etc/openvpn/ta.key" "./client-conf/gnu-linux/"
-cp "/etc/openvpn/ta.key" "./client-conf/windows/"
+cp "/etc/openvpn/"{ca.crt,ta.key} "./client-conf/gnu-linux/"
+cp "/etc/openvpn/"{ca.crt,ta.key} "./client-conf/windows/"
 
 # Install third parties
 bower --allow-root install
