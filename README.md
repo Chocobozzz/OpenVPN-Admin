@@ -15,6 +15,9 @@ Administrate its OpenVPN with a web interface (logs visualisations, users managi
     * zip
     * pdo_mysql
   * bower
+  * unzip
+  * wget
+  * sed
   
 ## Tests
 
