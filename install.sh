@@ -149,6 +149,8 @@ printf "\n################## Setup OpenVPN ##################\n"
 # Copy certificates and the server configuration in the openvpn directory
 cp /etc/openvpn/easy-rsa/keys/{ca.crt,ta.key,server.crt,server.key,dh${KEY_SIZE}.pem} "/etc/openvpn/"
 cp "$base_path/installation/server.conf" "/etc/openvpn/"
+mkdir "/etc/openvpn/ccd"
+sed -i "s/dh dh1024\.pem/dh dh${KEY_SIZE}.pem/" "/etc/openvpn/server.conf"
 
 
 printf "\n################## Setup firewall ##################\n"
