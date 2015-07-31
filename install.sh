@@ -184,8 +184,8 @@ cp -r "$base_path/installation/scripts" "/etc/openvpn/"
 chmod +x "/etc/openvpn/scripts/"*
 
 # Configure MySQL in openvpn scripts
-sed -i "s/\$user='';/\$user='$mysql_user';/" "/etc/openvpn/scripts/config.sh"
-sed -i "s/\$pass='';/\$pass='$mysql_pass';/" "/etc/openvpn/scripts/config.sh"
+sed -i "s/\$USER=''/\$USER='$mysql_user'/" "/etc/openvpn/scripts/config.sh"
+sed -i "s/\$PASS=''/\$PASS='$mysql_pass'/" "/etc/openvpn/scripts/config.sh"
 
 # Create the directory of the web application
 mkdir "$openvpn_admin"
