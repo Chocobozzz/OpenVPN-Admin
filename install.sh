@@ -103,6 +103,14 @@ read key_org
 echo -n "Email: "
 read key_email
 
+echo -n "Common name: "
+read key_cn
+
+echo -n "Name: "
+read key_name
+
+echo -n "Organizational unit: "
+read key_ou
 
 printf "\n################## Creating the certificates ##################\n"
 
@@ -124,6 +132,9 @@ export KEY_PROVINCE=$key_province
 export KEY_CITY=$key_city
 export KEY_ORG=$key_org
 export KEY_EMAIL=$key_email
+export KEY_CN=$key_cn
+export KEY_NAME=$key_name
+export KEY_OU=$key_ou
 
 ./clean-all
 ./build-dh
