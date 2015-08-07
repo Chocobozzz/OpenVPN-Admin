@@ -55,7 +55,7 @@ echo "DROP DATABASE \`openvpn-admin\`" | mysql -u root --password="$mysql_root_p
 
 # Files delete (openvpn confs/keys + web application)
 rm -r /etc/openvpn/easy-rsa/
-rm -r /etc/openvpn/{scripts,server.conf,ca.crt,ta.key,server.crt,server.key,dh*.pem}
+rm -r /etc/openvpn/{ccd,scripts,server.conf,ca.crt,ta.key,server.crt,server.key,dh*.pem}
 rm -r "$www"
 
 # Remove rooting rules
