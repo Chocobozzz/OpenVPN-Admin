@@ -2,7 +2,20 @@
 . /etc/openvpn/scripts/config.sh
 
 # Authentication
-user_id=$(mysql -h$HOST -P$PORT -u$USER -p$PASS $DB -sN -e "SELECT user_id FROM user WHERE user_id = '$username' AND user_pass = SHA1('$password') AND user_enable=1 AND (TO_DAYS(now()) >= TO_DAYS(user_start_date) OR user_start_date='0000-00-00') AND (TO_DAYS(now()) <= TO_DAYS(user_end_date) OR user_end_date='0000-00-00')")
+user_pass=$(mysql -h$HOST -P$PORT -u$USER -p$PASS $DB -sN -e "SELECT user_pass FROM user WHERE user_id = '$username' AND user_enable=1 AND (TO_DAYS(now()) >= TO_DAYS(user_start_date) OR user_start_date='0000-00-00') AND (TO_DAYS(now()) <= TO_DAYS(user_end_date) OR user_end_date='0000-00-00')")
 
 # Check the user
-[ "$user_id" != '' ] && [ "$user_id" = "$username" ] && echo "user : $username" && echo 'authentication ok.' && exit 0 || echo 'authentication failed.'; exit 1
+if [ "$user_pass" == '' ]; then
+  echo "$username: bad account."
+  exit 1
+fi
+
+result=$(php -r "if(password_verify('$password', '$user_pass') == true) { echo 'ok'; } else { echo 'ko'; }")
+
+if [ "$result" == "ok" ]; then
+  echo "$username: authentication ok."
+  exit 0
+else
+  echo "$username: authentication failed."
+  exit 1
+fi
