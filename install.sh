@@ -19,6 +19,15 @@ if [ "$#" -ne 3 ]; then
   exit
 fi
 
+# Ensure there are the prerequisites
+for i in openvpn mysql php bower node unzip wget sed; do
+  which $i > /dev/null
+  if [ "$?" -ne 0 ]; then
+    echo "Miss $i"
+    exit
+  fi
+done
+
 www=$1
 user=$2
 group=$3
