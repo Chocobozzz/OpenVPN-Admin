@@ -41,6 +41,7 @@ Only tested on Debian Jessie. Feel free to open issues.
   * Connect to the web application as an admin
   * Create an user
   * User get the configurations files via the web application (and put them in */etc/openvpn*)
+  * Users on GNU/Linux systems, run `chmod +x /etc/openvpn/update-resolv.sh` as root
   * User run OpenVPN (for example `systemctl start openvpn@client`)
 
 ## Update
