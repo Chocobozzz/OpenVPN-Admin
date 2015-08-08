@@ -97,28 +97,28 @@ read ca_expire
 echo -n "Certificate expiration (in days): "
 read key_expire
 
-echo -n "Country: "
+echo -n "Country Name (2 letter code): "
 read key_country
 
-echo -n "Province: "
+echo -n "State or Province Name (full name): "
 read key_province
 
-echo -n "City: "
+echo -n "Locality Name (eg, city): "
 read key_city
 
-echo -n "Organization: "
+echo -n "Organization Name (eg, company): "
 read key_org
 
-echo -n "Email: "
+echo -n "Email Address: "
 read key_email
 
-echo -n "Common name: "
+echo -n "Common Name (eg, your name or your server's hostname): "
 read key_cn
 
-echo -n "Name: "
+echo -n "Name (eg, your name or your server's hostname): "
 read key_name
 
-echo -n "Organizational unit: "
+echo -n "Organizational Unit Name (eg, section): "
 read key_ou
 
 printf "\n################## Creating the certificates ##################\n"
