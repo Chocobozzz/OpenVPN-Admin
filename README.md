@@ -52,7 +52,7 @@ Only tested on Debian Jessie. Feel free to open issues.
 ## Desinstall
 It will remove all installed components (OpenVPN keys and configurations, the web application, iptables rules...).
 
-    # ./clean.sh www_base_dir
+    # ./desinstall.sh www_base_dir
 
 ## Use of
 
