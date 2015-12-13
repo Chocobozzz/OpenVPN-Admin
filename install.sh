@@ -209,7 +209,7 @@ sed -i "s/\$pass = '';/\$pass = '$mysql_pass';/" "./include/config.php"
 
 # Replace in the client configurations with the ip of the server
 sed -i "s/remote xxx\.xxx\.xxx\.xxx 443/remote $ip_server 443/" "./client-conf/gnu-linux/client.conf"
-sed -i "s/remote xxx\.xxx\.xxx\.xxx 443/remote $ip_server 443/" "./client-conf/windows/client.conf"
+sed -i "s/remote xxx\.xxx\.xxx\.xxx 443/remote $ip_server 443/" "./client-conf/windows/client.ovpn"
 
 # Copy ta.key inside the client-conf directory
 cp "/etc/openvpn/"{ca.crt,ta.key} "./client-conf/gnu-linux/"
