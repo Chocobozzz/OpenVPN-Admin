@@ -1,5 +1,12 @@
 #!/bin/bash
 . /etc/openvpn/scripts/config.sh
+. /etc/openvpn/scripts/functions.sh
+
+common_name=$(echap "$common_name")
+bytes_received=$(echap "$bytes_received")
+bytes_sent=$(echap "$bytes_sent")
+trusted_ip=$(echap "$trusted_ip")
+trusted_port=$(echap "$trusted_port")
 
 # We specify the user is offline
 mysql -h$HOST -P$PORT -u$USER -p$PASS $DB -e "UPDATE user SET user_online=0 WHERE user_id='$common_name'"
