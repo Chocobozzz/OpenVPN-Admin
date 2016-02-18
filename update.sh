@@ -40,7 +40,7 @@ cd "$www"
 bower --allow-root install
 chown -R "$user:$group" "$www"
 
-rm "/etc/openvpn/scripts/"{connect.sh,disconnect.sh,login.sh,functions.sh}
+rm -f "/etc/openvpn/scripts/"{connect.sh,disconnect.sh,login.sh,functions.sh}
 cp "$base_path/installation/scripts/"{connect.sh,disconnect.sh,login.sh,functions.sh} "/etc/openvpn/scripts"
 chmod +x "/etc/openvpn/scripts/"{connect.sh,disconnect.sh,login.sh,functions.sh}
 
