@@ -18,7 +18,7 @@ Administrate its OpenVPN with a web interface (logs visualisations, users managi
   * unzip
   * wget
   * sed
-  
+
 ## Tests
 
 Only tested on Debian Jessie. Feel free to open issues.
@@ -33,7 +33,7 @@ Only tested on Debian Jessie. Feel free to open issues.
         # ./install.sh www_base_dir web_user web_group
 
   * Setup the web server (Apache, NGinx...) to serve the web application.
-  * Create the admin of the web application by visiting http://your-installation/index.php?installation
+  * Create the admin of the web application by visiting `http://your-installation/index.php?installation`
 
 ## Usage
 
@@ -48,7 +48,7 @@ Only tested on Debian Jessie. Feel free to open issues.
 
     $ git pull origin master
     # ./update.sh www_base_dir
-    
+
 ## Desinstall
 It will remove all installed components (OpenVPN keys and configurations, the web application, iptables rules...).
 
