@@ -6,7 +6,7 @@ print_help () {
 }
 
 # Ensure to be root
-if [ "$EUID" -ne 0 ]; then 
+if [ "$EUID" -ne 0 ]; then
   echo "Please run as root"
   exit
 fi
@@ -30,12 +30,12 @@ user=$(ls -l "$www/include/config.php" | awk '{ print $3 }')
 group=$(ls -l "$www/include/config.php" | awk '{ print $4 }')
 
 
-rm -r "${www:?}/"{index.php,bower.json,.bowerrc,js,include/html,include/connect.php,include/functions.php,include/grids.php,css}
+rm -r "${www:?}/"{index.php,bower.json,.bowerrc,js,include/html,include/connect.php,include/functions.php,include/grids.php,css,vendor}
 
 cp -r "$base_path/"{index.php,bower.json,.bowerrc,js,css} "$www"
 cp -r "$base_path/include/"{html,connect.php,functions.php,grids.php} "$www/include"
 
-cd "$www"
+cd "$www" || exit
 
 bower --allow-root install
 chown -R "$user:$group" "$www"

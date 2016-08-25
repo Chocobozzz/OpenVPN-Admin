@@ -93,14 +93,12 @@
 
     <title>OpenVPN-Admin</title>
 
-    <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="css/index.css" type="text/css"/>
+    <link rel="stylesheet" href="/vendor/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="/vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css" type="text/css" />
+    <link rel="stylesheet" href="/vendor/bootstrap-table/dist/bootstrap-table.min.css" type="text/css" />
+    <link rel="stylesheet" href="/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" type="text/css" />
+    <link rel="stylesheet" href="/css/index.css" type="text/css" />
 
-    <link rel="stylesheet" href="vendor/slickgrid/slick.grid.css" type="text/css" />
-    <link rel="stylesheet" href="vendor/slickgrid/slick-default-theme.css" type="text/css" />
-    <link rel="stylesheet" href="vendor/slickgrid/css/smoothness/jquery-ui-1.8.16.custom.css" type="text/css" />
-    <link rel="stylesheet" href="vendor/slickgrid-enhancement-pager/libs/dropkick.css" type="text/css" />
-    <link rel="stylesheet" href="vendor/slickgrid-enhancement-pager/libs/enhancementpager.css" type="text/css" />
 
   </head>
   <body class='container-fluid'>

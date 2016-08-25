@@ -1,144 +1,15 @@
 body {
-  margin: auto;
-  padding: 10px;
-  
-  /* Overide jquery ui style with bootstrap */
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
-  font-size: 14px !important;
-  line-height: 1.42857 !important;
-  color: #333 !important;
+  padding-top: 10px;
 }
 
-a.glyphicon {
-  color: #333 !important;
-}
-
-.delete {
-    cursor: pointer;
-}
-
-#header_admin {
-  margin : 10px;
+.action {
+  cursor: pointer;
 }
 
 .block-grid {
   margin: 20px;
 }
 
-.grid {
-  border: 1px solid rgba(0, 0, 0, 0.2);
-}
-
-/*.slick-header-column {
-  font-weight: bold;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.2) !important;
-}*/
-
-/* Fix with slickgrid and bootstrap association */
-.slick-header *, *:before, *.after {
-  -moz-box-sizing: content-box;
-  box-sizing: content-box;
-}
-
-
-/* Editor */
-/* Slick.Editors.Text, Slick.Editors.Date */
-input.editor-text {
-  width: 100%;
-  height: 100%;
-  border: 0;
-  margin: 0;
-  background: transparent;
-  outline: 0;
-  padding: 0;
-
-}
-
-.ui-datepicker-trigger {
-  margin-top: 2px;
-  padding: 0;
-  vertical-align: top;
-}
-
-/* Slick.Editors.PercentComplete */
-input.editor-percentcomplete {
-  width: 100%;
-  height: 100%;
-  border: 0;
-  margin: 0;
-  background: transparent;
-  outline: 0;
-  padding: 0;
-
-  float: left;
-}
-
-.editor-percentcomplete-picker {
-  position: relative;
-  display: inline-block;
-  width: 16px;
-  height: 100%;
-  background: url("../images/pencil.gif") no-repeat center center;
-  overflow: visible;
-  z-index: 1000;
-  float: right;
-}
-
-.editor-percentcomplete-helper {
-  border: 0 solid gray;
-  position: absolute;
-  top: -2px;
-  left: -9px;
-  background: url("../images/editor-helper-bg.gif") no-repeat top left;
-  padding-left: 9px;
-
-  width: 120px;
-  height: 140px;
-  display: none;
-  overflow: visible;
-}
-
-.editor-percentcomplete-wrapper {
-  background: beige;
-  padding: 20px 8px;
-
-  width: 100%;
-  height: 98px;
-  border: 1px solid gray;
-  border-left: 0;
-}
-
-.editor-percentcomplete-buttons {
-  float: right;
-}
-
-.editor-percentcomplete-buttons button {
-  width: 80px;
-}
-
-.editor-percentcomplete-slider {
-  float: left;
-}
-
-.editor-percentcomplete-picker:hover .editor-percentcomplete-helper {
-  display: block;
-}
-
-.editor-percentcomplete-helper:hover {
-  display: block;
-}
-
-/* Slick.Editors.YesNoSelect */
-select.editor-yesno {
-  width: 100%;
-  margin: 0;
-  vertical-align: middle;
-}
-
-/* Slick.Editors.Checkbox */
-input.editor-checkbox {
-  margin: 0;
-  height: 100%;
-  padding: 0;
-  border: 0;
+.btn .glyphicon {
+  top: 2px;
 }
