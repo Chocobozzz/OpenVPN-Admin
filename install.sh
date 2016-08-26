@@ -8,7 +8,7 @@ print_help () {
 }
 
 # Ensure to be root
-if [ "$EUID" -ne 0 ]; then 
+if [ "$EUID" -ne 0 ]; then
   echo "Please run as root"
   exit
 fi
@@ -44,19 +44,29 @@ base_path=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 printf "\n################## Server informations ##################\n"
 
-echo -n "Server ip: "
-read ip_server
+read -p "Server ip: " ip_server
 
+read -p "Port [default: 443]: " server_port
+
+if [[ "$server_port" == "443" || "$server_port" == "" ]]; then
+  server_port="443"
+else
+  server_port=$server_port
+fi
 
 # Get root pass (to create the database and the user)
 mysql_root_pass=""
 status_code=1
 
 while [ $status_code -ne 0 ]; do
-  echo -n "Server MySQL root password: "
-  read mysql_root_pass
-  echo "SHOW DATABASES" | mysql -u root --password="$mysql_root_pass" &> /dev/null
-  status_code=$?
+  read -p "Server MySQL root password: " -s mysql_root_pass; echo
+  if [ "$mysql_root_pass" != "" ]; then
+      echo "SHOW DATABASES" | mysql -u root --password="$mysql_root_pass" &> /dev/null
+      status_code=$?
+  else
+    echo "MySQL root password is empty!"
+    exit
+  fi
 done
 
 sql_result=$(echo "SHOW DATABASES" | mysql -u root --password="$mysql_root_pass" | grep -e "^openvpn-admin$")
@@ -66,9 +76,9 @@ if [ "$sql_result" != "" ]; then
   exit
 fi
 
+
 # Check if the user doesn't already exist
-echo -n "Server MySQL openvpn-admin user (will be created): "
-read mysql_user
+read -p "Server MySQL openvpn-admin user (will be created): " mysql_user
 
 echo "SHOW GRANTS FOR $mysql_user@localhost" | mysql -u root --password="$mysql_root_pass" &> /dev/null
 if [ $? -eq 0 ]; then
@@ -76,8 +86,7 @@ if [ $? -eq 0 ]; then
   exit
 fi
 
-echo -n "Server MySQL openvpn-admin user password: "
-read mysql_pass
+read -p "Server MySQL openvpn-admin user password: " -s mysql_pass; echo
 
 
 # TODO MySQL port & host ?
@@ -86,40 +95,29 @@ read mysql_pass
 printf "\n################## Certificates informations ##################\n"
 key_size="0"
 
-while [ "$key_size" != "1024" -a "$key_size" != "2048" -a "$key_size" != "4096" ]; do 
-  echo -n "Key size (1024, 2048 or 4096): "
-  read key_size
+while [ "$key_size" != "1024" -a "$key_size" != "2048" -a "$key_size" != "4096" ]; do
+  read -p "Key size (1024, 2048 or 4096): " key_size
 done
 
-echo -n "Root certificate expiration (in days): "
-read ca_expire
+read -p "Root certificate expiration (in days): " ca_expire
 
-echo -n "Certificate expiration (in days): "
-read key_expire
+read -p "Certificate expiration (in days): " key_expire
 
-echo -n "Country Name (2 letter code): "
-read key_country
+read -p "Country Name (2 letter code): " key_country
 
-echo -n "State or Province Name (full name): "
-read key_province
+read -p "State or Province Name (full name): " key_province
 
-echo -n "Locality Name (eg, city): "
-read key_city
+read -p "Locality Name (eg, city): " key_city
 
-echo -n "Organization Name (eg, company): "
-read key_org
+read -p "Organization Name (eg, company): " key_org
 
-echo -n "Email Address: "
-read key_email
+read -p "Email Address: " key_email
 
-echo -n "Common Name (eg, your name or your server's hostname): "
-read key_cn
+read -p "Common Name (eg, your name or your server's hostname): " key_cn
 
-echo -n "Name (eg, your name or your server's hostname): "
-read key_name
+read -p "Name (eg, your name or your server's hostname): " key_name
 
-echo -n "Organizational Unit Name (eg, section): "
-read key_ou
+read -p "Organizational Unit Name (eg, section): " key_ou
 
 printf "\n################## Creating the certificates ##################\n"
 
@@ -160,6 +158,7 @@ cp /etc/openvpn/easy-rsa/keys/{ca.crt,ta.key,server.crt,server.key,dh${KEY_SIZE}
 cp "$base_path/installation/server.conf" "/etc/openvpn/"
 mkdir "/etc/openvpn/ccd"
 sed -i "s/dh dh1024\.pem/dh dh${KEY_SIZE}.pem/" "/etc/openvpn/server.conf"
+sed -i "s/port 443/port $server_port/" "/etc/openvpn/server.conf"
 
 
 printf "\n################## Setup firewall ##################\n"
@@ -208,8 +207,8 @@ sed -i "s/\$user = '';/\$user = '$mysql_user';/" "./include/config.php"
 sed -i "s/\$pass = '';/\$pass = '$mysql_pass';/" "./include/config.php"
 
 # Replace in the client configurations with the ip of the server
-sed -i "s/remote xxx\.xxx\.xxx\.xxx 443/remote $ip_server 443/" "./client-conf/gnu-linux/client.conf"
-sed -i "s/remote xxx\.xxx\.xxx\.xxx 443/remote $ip_server 443/" "./client-conf/windows/client.ovpn"
+sed -i "s/remote xxx\.xxx\.xxx\.xxx 443/remote $ip_server $server_port/" "./client-conf/gnu-linux/client.conf"
+sed -i "s/remote xxx\.xxx\.xxx\.xxx 443/remote $ip_server $server_port/" "./client-conf/windows/client.ovpn"
 
 # Copy ta.key inside the client-conf directory
 cp "/etc/openvpn/"{ca.crt,ta.key} "./client-conf/gnu-linux/"
