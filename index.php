@@ -107,7 +107,8 @@
     // --------------- INSTALLATION ---------------
     if(isset($_GET['installation'])) {
       if(isInstalled($bdd) == true) {
-        printError('OpenVPN-admin is already installed.');
+        printError('OpenVPN-admin is already installed. Redirection.');
+        header( "refresh:3;url=index.php?admin.php" );
         exit -1;
       }
 
@@ -142,7 +143,8 @@
 
         unlink($sql_file);
         rmdir(dirname(__FILE__) . '/sql');
-        printSuccess('Well done, OpenVPN-Admin is installed.');
+        printSuccess('Well done, OpenVPN-Admin is installed. Redirection.');
+        header( "refresh:3;url=index.php?admin.php" );
       }
       // Print the installation form
       else {
