@@ -108,7 +108,7 @@
     if(isset($_GET['installation'])) {
       if(isInstalled($bdd) == true) {
         printError('OpenVPN-admin is already installed. Redirection.');
-        header( "refresh:3;url=index.php?admin.php" );
+        header( "refresh:3;url=index.php?admin" );
         exit -1;
       }
 
@@ -119,7 +119,8 @@
         $admin_repeat_pass = $_POST['repeat_admin_pass'];
 
         if($admin_pass != $admin_repeat_pass) {
-          printError('The passwords do not correspond.');
+          printError('The passwords do not correspond. Redirection.');
+          header( "refresh:3;url=index.php?installation" );
           exit -1;
         }
 
@@ -144,7 +145,7 @@
         unlink($sql_file);
         rmdir(dirname(__FILE__) . '/sql');
         printSuccess('Well done, OpenVPN-Admin is installed. Redirection.');
-        header( "refresh:3;url=index.php?admin.php" );
+        header( "refresh:3;url=index.php?admin" );
       }
       // Print the installation form
       else {
@@ -178,9 +179,16 @@
     else{
   ?>
       <nav class="navbar navbar-default">
-        <p class="navbar-text">Signed as <?php echo $_SESSION['admin_id']; ?> /
-          <a class="navbar-link" href="index.php?logout" title="Logout ?">logout ?</a>
-        </p>
+        <div class="row col-md-12">
+          <div class="col-md-6">
+            <p class="navbar-text signed">Signed as <?php echo $_SESSION['admin_id']; ?>
+            </div>
+            <div class="col-md-6">
+              <a class="navbar-text navbar-right" href="index.php?logout" title="Logout"><button class="btn btn-danger">Logout</button></a>
+              <a class="navbar-text navbar-right" href="index.php" title="Configuration"><button class="btn btn-default">Configuration</button></a>
+            </p>
+          </div>
+        </div>
       </nav>
 
   <?php
