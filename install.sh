@@ -148,10 +148,9 @@ export EASYRSA_REQ_COUNTRY=$key_country
 export EASYRSA_REQ_PROVINCE=$key_province
 export EASYRSA_REQ_CITY=$key_city
 export EASYRSA_REQ_ORG=$key_org
+export EASYRSA_REQ_OU=$key_ou
 export EASYRSA_REQ_EMAIL=$key_email
 export EASYRSA_REQ_CN=$key_cn
-export EASYRSA_REQ_NAME=$key_name
-export EASYRSA_REQ_OU=$key_ou
 
 # Init PKI dirs and build CA certs
 ./easyrsa init-pki
