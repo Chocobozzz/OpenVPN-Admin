@@ -133,7 +133,7 @@ EASYRSA_RELEASES=( $(
 EASYRSA_LATEST=${EASYRSA_RELEASES[0]}
 
 # Get the rsa keys
-wget https://github.com/OpenVPN/easy-rsa/releases/download/${EASYRSA_LATEST}/EasyRSA-${EASYRSA_LATEST}.tgz
+wget -q --show-progress https://github.com/OpenVPN/easy-rsa/releases/download/${EASYRSA_LATEST}/EasyRSA-${EASYRSA_LATEST}.tgz
 tar -xaf EasyRSA-${EASYRSA_LATEST}.tgz
 mv EasyRSA-${EASYRSA_LATEST} /etc/openvpn/easy-rsa
 rm -r EasyRSA-${EASYRSA_LATEST}.tgz
@@ -153,11 +153,11 @@ export EASYRSA_KEY_OU=$key_ou
 
 # Init PKI dirs and build CA certs
 ./easyrsa init-pki
-./easyrsa build-ca
+./easyrsa build-ca nopass
 # Generate Diffie-Hellman parameters
 ./easyrsa gen-dh
 # Genrate server keypair
-./easyrsa build-server-full server
+./easyrsa build-server-full server nopass
 
 # Generate shared-secret for TLS Authentication
 openvpn --genkey --secret pki/ta.key
