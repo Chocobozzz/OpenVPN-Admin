@@ -33,7 +33,6 @@ user=$2
 group=$3
 openvpn_admin="$www/openvpn-admin"
 
-
 # Check the validity of the arguments
 if [ ! -d "$www" ] ||  ! grep -q "$user" "/etc/passwd" || ! grep -q "$group" "/etc/group" ; then
   print_help
@@ -94,7 +93,6 @@ read -p "Server MySQL openvpn-admin user password: " -s mysql_pass; echo
 
 
 printf "\n################## Certificates informations ##################\n"
-key_size="0"
 
 while [ "$key_size" != "1024" -a "$key_size" != "2048" -a "$key_size" != "4096" ]; do
   read -p "Key size (1024, 2048 or 4096): " key_size
@@ -142,15 +140,33 @@ cd /etc/openvpn/easy-rsa
 if [[ ! -z $key_size ]]; then
   export EASYRSA_KEY_SIZE=$key_size
 fi
-export EASYRSA_CA_EXPIRE=$ca_expire
-export EASYRSA_CERT_EXPIRE=$key_expire
-export EASYRSA_REQ_COUNTRY=$key_country
-export EASYRSA_REQ_PROVINCE=$key_province
-export EASYRSA_REQ_CITY=$key_city
-export EASYRSA_REQ_ORG=$key_org
-export EASYRSA_REQ_OU=$key_ou
-export EASYRSA_REQ_EMAIL=$key_email
-export EASYRSA_REQ_CN=$key_cn
+if [[ ! -z $ca_expire ]]; then
+  export EASYRSA_CA_EXPIRE=$ca_expire
+fi
+if [[ ! -z $cert_expire ]]; then
+  export EASYRSA_CERT_EXPIRE=$cert_expire
+fi
+if [[ ! -z $cert_country ]]; then
+  export EASYRSA_REQ_COUNTRY=$cert_country
+fi
+if [[ ! -z $cert_province ]]; then
+  export EASYRSA_REQ_PROVINCE=$cert_province
+fi
+if [[ ! -z $cert_city ]]; then
+  export EASYRSA_REQ_CITY=$cert_city
+fi
+if [[ ! -z $cert_org ]]; then
+  export EASYRSA_REQ_ORG=$cert_org
+fi
+if [[ ! -z $cert_ou ]]; then
+  export EASYRSA_REQ_OU=$cert_ou
+fi
+if [[ ! -z $cert_email ]]; then
+  export EASYRSA_REQ_EMAIL=$cert_email
+fi
+if [[ ! -z $key_cn ]]; then
+  export EASYRSA_REQ_CN=$key_cn
+fi
 
 # Init PKI dirs and build CA certs
 ./easyrsa init-pki
