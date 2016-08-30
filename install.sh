@@ -8,7 +8,7 @@ print_help () {
 }
 
 # Ensure to be root
-if [ "$EUID" -ne 0 ]; then 
+if [ "$EUID" -ne 0 ]; then
   echo "Please run as root"
   exit
 fi
@@ -41,6 +41,7 @@ if [ ! -d "$www" ] ||  ! grep -q "$user" "/etc/passwd" || ! grep -q "$group" "/e
 fi
 
 base_path=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
 
 printf "\n################## Server informations ##################\n"
 
@@ -86,7 +87,7 @@ read mysql_pass
 printf "\n################## Certificates informations ##################\n"
 key_size="0"
 
-while [ "$key_size" != "1024" -a "$key_size" != "2048" -a "$key_size" != "4096" ]; do 
+while [ "$key_size" != "1024" -a "$key_size" != "2048" -a "$key_size" != "4096" ]; do
   echo -n "Key size (1024, 2048 or 4096): "
   read key_size
 done
@@ -121,45 +122,56 @@ read key_name
 echo -n "Organizational Unit Name (eg, section): "
 read key_ou
 
+
 printf "\n################## Creating the certificates ##################\n"
 
+EASYRSA_RELEASES=( $(
+  curl -s https://api.github.com/repos/OpenVPN/easy-rsa/releases | \
+  grep 'tag_name' | \
+  grep -E '3(\.[0-9]+)+' | \
+  awk '{ print $2 }' | \
+  sed 's/[,|"|v]//g'
+) )
+EASYRSA_LATEST=${EASYRSA_RELEASES[0]}
+
 # Get the rsa keys
-mkdir /etc/openvpn/easy-rsa/
-wget https://github.com/OpenVPN/easy-rsa/archive/2.2.2.zip
-unzip 2.2.2.zip
-mv easy-rsa-2.2.2/easy-rsa/2.0/* /etc/openvpn/easy-rsa/
-rm -r 2.2.2.zip easy-rsa-2.2.2
+wget https://github.com/OpenVPN/easy-rsa/releases/download/${EASYRSA_LATEST}/EasyRSA-${EASYRSA_LATEST}.tgz
+tar -xaf EasyRSA-${EASYRSA_LATEST}.tgz
+mv EasyRSA-${EASYRSA_LATEST} /etc/openvpn/easy-rsa
+rm -r EasyRSA-${EASYRSA_LATEST}.tgz
 cd /etc/openvpn/easy-rsa
 
-source vars
+export EASYRSA_KEY_SIZE=$key_size
+export EASYRSA_CA_EXPIRE=$ca_expire
+export EASYRSA_KEY_EXPIRE=$key_expire
+export EASYRSA_KEY_COUNTRY=$key_country
+export EASYRSA_KEY_PROVINCE=$key_province
+export EASYRSA_KEY_CITY=$key_city
+export EASYRSA_KEY_ORG=$key_org
+export EASYRSA_KEY_EMAIL=$key_email
+export EASYRSA_KEY_CN=$key_cn
+export EASYRSA_KEY_NAME=$key_name
+export EASYRSA_KEY_OU=$key_ou
 
-export KEY_SIZE=$key_size
-export CA_EXPIRE=$ca_expire
-export KEY_EXPIRE=$key_expire
-export KEY_COUNTRY=$key_country
-export KEY_PROVINCE=$key_province
-export KEY_CITY=$key_city
-export KEY_ORG=$key_org
-export KEY_EMAIL=$key_email
-export KEY_CN=$key_cn
-export KEY_NAME=$key_name
-export KEY_OU=$key_ou
+# Init PKI dirs and build CA certs
+./easyrsa init-pki
+./easyrsa build-ca
+# Generate Diffie-Hellman parameters
+./easyrsa gen-dh
+# Genrate server keypair
+./easyrsa build-server-full server
 
-./clean-all
-./build-dh
-./pkitool --initca
-./pkitool --server server
-openvpn --genkey --secret keys/ta.key
-
+# Generate shared-secret for TLS Authentication
+openvpn --genkey --secret pki/ta.key
 
 
 printf "\n################## Setup OpenVPN ##################\n"
 
 # Copy certificates and the server configuration in the openvpn directory
-cp /etc/openvpn/easy-rsa/keys/{ca.crt,ta.key,server.crt,server.key,dh${KEY_SIZE}.pem} "/etc/openvpn/"
+cp /etc/openvpn/easy-rsa/pki/{ca.crt,ta.key,issued/server.crt,private/server.key,dh.pem} "/etc/openvpn/"
 cp "$base_path/installation/server.conf" "/etc/openvpn/"
 mkdir "/etc/openvpn/ccd"
-sed -i "s/dh dh1024\.pem/dh dh${KEY_SIZE}.pem/" "/etc/openvpn/server.conf"
+sed -i "s/dh dh1024\.pem/dh dh.pem/" "/etc/openvpn/server.conf"
 
 
 printf "\n################## Setup firewall ##################\n"
@@ -177,6 +189,7 @@ iptables -A FORWARD -i tun0 -o eth0 -j ACCEPT
 iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
 iptables -t nat -A POSTROUTING -s 10.8.0.2/24 -o eth0 -j MASQUERADE
+
 
 printf "\n################## Setup MySQL database ##################\n"
 
