@@ -3,10 +3,11 @@
   "version": "0.0.1",
   "description": "Setup and administration of openvpn with a web interface",
   "dependencies": {
-    "bootstrap": "^3.3.5",
-    "slickgrid": "git://github.com/mleibman/SlickGrid.git#master",
-    "js-sha1": "^0.3.0",
-    "slickgrid-enhancement-pager": "git://github.com/Chocobozzz/SlickGridEnhancementPager#master"
+    "bootstrap": "^3.3.7",
+    "bootstrap-table": "^1.11.0",
+    "jquery": "^2.2.4",
+    "x-editable": "^1.5.1",
+    "bootstrap-datepicker": "^1.6.4"
   },
   "keywords": [
     "openvpn",
