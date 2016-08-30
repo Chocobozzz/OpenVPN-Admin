@@ -141,17 +141,19 @@ mv EasyRSA-${EASYRSA_LATEST} /etc/openvpn/easy-rsa
 rm -r EasyRSA-${EASYRSA_LATEST}.tgz
 cd /etc/openvpn/easy-rsa
 
-export EASYRSA_KEY_SIZE=$key_size
+if [[ ! -z $key_size ]]; then
+  export EASYRSA_KEY_SIZE=$key_size
+fi
 export EASYRSA_CA_EXPIRE=$ca_expire
-export EASYRSA_KEY_EXPIRE=$key_expire
-export EASYRSA_KEY_COUNTRY=$key_country
-export EASYRSA_KEY_PROVINCE=$key_province
-export EASYRSA_KEY_CITY=$key_city
-export EASYRSA_KEY_ORG=$key_org
-export EASYRSA_KEY_EMAIL=$key_email
-export EASYRSA_KEY_CN=$key_cn
-export EASYRSA_KEY_NAME=$key_name
-export EASYRSA_KEY_OU=$key_ou
+export EASYRSA_CERT_EXPIRE=$key_expire
+export EASYRSA_REQ_COUNTRY=$key_country
+export EASYRSA_REQ_PROVINCE=$key_province
+export EASYRSA_REQ_CITY=$key_city
+export EASYRSA_REQ_ORG=$key_org
+export EASYRSA_REQ_EMAIL=$key_email
+export EASYRSA_REQ_CN=$key_cn
+export EASYRSA_REQ_NAME=$key_name
+export EASYRSA_REQ_OU=$key_ou
 
 # Init PKI dirs and build CA certs
 ./easyrsa init-pki
