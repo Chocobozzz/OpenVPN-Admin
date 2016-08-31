@@ -44,11 +44,11 @@ base_path=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 printf "\n################## Server informations ##################\n"
 
-read -p "Server ip: " ip_server
+read -p "Server Hostname/IP: " ip_server
 
-read -p "Port [default: 443]: " server_port
+read -p "Port [443]: " server_port
 
-if [[ "$server_port" == "443" || "$server_port" == "" ]]; then
+if [[ ! -z $server_port ]]; then
   server_port="443"
 else
   server_port=$server_port
@@ -60,13 +60,8 @@ status_code=1
 
 while [ $status_code -ne 0 ]; do
   read -p "Server MySQL root password: " -s mysql_root_pass; echo
-  if [ "$mysql_root_pass" != "" ]; then
-      echo "SHOW DATABASES" | mysql -u root --password="$mysql_root_pass" &> /dev/null
-      status_code=$?
-  else
-    echo "MySQL root password is empty!"
-    exit
-  fi
+  echo "SHOW DATABASES" | mysql -u root --password="$mysql_root_pass" &> /dev/null
+  status_code=$?
 done
 
 sql_result=$(echo "SHOW DATABASES" | mysql -u root --password="$mysql_root_pass" | grep -e "^openvpn-admin$")
@@ -88,35 +83,30 @@ fi
 
 read -p "Server MySQL openvpn-admin user password: " -s mysql_pass; echo
 
-
 # TODO MySQL port & host ?
 
 
 printf "\n################## Certificates informations ##################\n"
 
-while [ "$key_size" != "1024" -a "$key_size" != "2048" -a "$key_size" != "4096" ]; do
-  read -p "Key size (1024, 2048 or 4096): " key_size
-done
+read -p "Key size (1024, 2048 or 4096) [2048]: " key_size
 
-read -p "Root certificate expiration (in days): " ca_expire
+read -p "Root certificate expiration (in days) [3650]: " ca_expire
 
-read -p "Certificate expiration (in days): " key_expire
+read -p "Certificate expiration (in days) [3650]: " cert_expire
 
-read -p "Country Name (2 letter code): " key_country
+read -p "Country Name (2 letter code) [US]: " cert_country
 
-read -p "State or Province Name (full name): " key_province
+read -p "State or Province Name (full name) [California]: " cert_province
 
-read -p "Locality Name (eg, city): " key_city
+read -p "Locality Name (eg, city) [San Francisco]: " cert_city
 
-read -p "Organization Name (eg, company): " key_org
+read -p "Organization Name (eg, company) [Copyleft Certificate Co]: " cert_org
 
-read -p "Email Address: " key_email
+read -p "Organizational Unit Name (eg, section) [My Organizational Unit]: " cert_ou
 
-read -p "Common Name (eg, your name or your server's hostname): " key_cn
+read -p "Email Address [me@example.net]: " cert_email
 
-read -p "Name (eg, your name or your server's hostname): " key_name
-
-read -p "Organizational Unit Name (eg, section): " key_ou
+read -p "Common Name (eg, your name or your server's hostname) [ChangeMe]: " key_cn
 
 
 printf "\n################## Creating the certificates ##################\n"
@@ -186,7 +176,7 @@ printf "\n################## Setup OpenVPN ##################\n"
 cp /etc/openvpn/easy-rsa/pki/{ca.crt,ta.key,issued/server.crt,private/server.key,dh.pem} "/etc/openvpn/"
 cp "$base_path/installation/server.conf" "/etc/openvpn/"
 mkdir "/etc/openvpn/ccd"
-sed -i "s/dh dh1024\.pem/dh dh${KEY_SIZE}.pem/" "/etc/openvpn/server.conf"
+sed -i "s/dh dh1024\.pem/dh dh.pem/" "/etc/openvpn/server.conf"
 sed -i "s/port 443/port $server_port/" "/etc/openvpn/server.conf"
 
 
