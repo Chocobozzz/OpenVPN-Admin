@@ -30,7 +30,8 @@
       $rootPath = realpath("./client-conf/$conf_dir");
 
       // Initialize archive object
-      $archive_name = "openvpn-$conf_dir.zip";
+      $archive_base_name = "openvpn-$conf_dir";
+      $archive_name = "$archive_base_name.zip";
       $archive_path = "./client-conf/$archive_name";
       $zip = new ZipArchive();
       $zip->open($archive_path, ZipArchive::CREATE | ZipArchive::OVERWRITE);
@@ -48,7 +49,7 @@
           $relativePath = substr($filePath, strlen($rootPath) + 1);
 
           // Add current file to archive
-          $zip->addFile($filePath, $relativePath);
+          $zip->addFile($filePath, "$archive_base_name/$relativePath");
         }
       }
 
