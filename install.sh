@@ -48,10 +48,8 @@ read -p "Server Hostname/IP: " ip_server
 
 read -p "Port [443]: " server_port
 
-if [[ ! -z $server_port ]]; then
+if [[ -z $server_port ]]; then
   server_port="443"
-else
-  server_port=$server_port
 fi
 
 # Get root pass (to create the database and the user)
