@@ -33,7 +33,6 @@ user=$2
 group=$3
 openvpn_admin="$www/openvpn-admin"
 
-
 # Check the validity of the arguments
 if [ ! -d "$www" ] ||  ! grep -q "$user" "/etc/passwd" || ! grep -q "$group" "/etc/group" ; then
   print_help
@@ -42,16 +41,15 @@ fi
 
 base_path=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
+
 printf "\n################## Server informations ##################\n"
 
-read -p "Server ip: " ip_server
+read -p "Server Hostname/IP: " ip_server
 
-read -p "Port [default: 443]: " server_port
+read -p "Port [443]: " server_port
 
-if [[ "$server_port" == "443" || "$server_port" == "" ]]; then
+if [[ -z $server_port ]]; then
   server_port="443"
-else
-  server_port=$server_port
 fi
 
 # Get root pass (to create the database and the user)
@@ -60,13 +58,8 @@ status_code=1
 
 while [ $status_code -ne 0 ]; do
   read -p "Server MySQL root password: " -s mysql_root_pass; echo
-  if [ "$mysql_root_pass" != "" ]; then
-      echo "SHOW DATABASES" | mysql -u root --password="$mysql_root_pass" &> /dev/null
-      status_code=$?
-  else
-    echo "MySQL root password is empty!"
-    exit
-  fi
+  echo "SHOW DATABASES" | mysql -u root --password="$mysql_root_pass" &> /dev/null
+  status_code=$?
 done
 
 sql_result=$(echo "SHOW DATABASES" | mysql -u root --password="$mysql_root_pass" | grep -e "^openvpn-admin$")
@@ -88,76 +81,100 @@ fi
 
 read -p "Server MySQL openvpn-admin user password: " -s mysql_pass; echo
 
-
 # TODO MySQL port & host ?
 
 
 printf "\n################## Certificates informations ##################\n"
-key_size="0"
 
-while [ "$key_size" != "1024" -a "$key_size" != "2048" -a "$key_size" != "4096" ]; do
-  read -p "Key size (1024, 2048 or 4096): " key_size
-done
+read -p "Key size (1024, 2048 or 4096) [2048]: " key_size
 
-read -p "Root certificate expiration (in days): " ca_expire
+read -p "Root certificate expiration (in days) [3650]: " ca_expire
 
-read -p "Certificate expiration (in days): " key_expire
+read -p "Certificate expiration (in days) [3650]: " cert_expire
 
-read -p "Country Name (2 letter code): " key_country
+read -p "Country Name (2 letter code) [US]: " cert_country
 
-read -p "State or Province Name (full name): " key_province
+read -p "State or Province Name (full name) [California]: " cert_province
 
-read -p "Locality Name (eg, city): " key_city
+read -p "Locality Name (eg, city) [San Francisco]: " cert_city
 
-read -p "Organization Name (eg, company): " key_org
+read -p "Organization Name (eg, company) [Copyleft Certificate Co]: " cert_org
 
-read -p "Email Address: " key_email
+read -p "Organizational Unit Name (eg, section) [My Organizational Unit]: " cert_ou
 
-read -p "Common Name (eg, your name or your server's hostname): " key_cn
+read -p "Email Address [me@example.net]: " cert_email
 
-read -p "Name (eg, your name or your server's hostname): " key_name
+read -p "Common Name (eg, your name or your server's hostname) [ChangeMe]: " key_cn
 
-read -p "Organizational Unit Name (eg, section): " key_ou
 
 printf "\n################## Creating the certificates ##################\n"
 
+EASYRSA_RELEASES=( $(
+  curl -s https://api.github.com/repos/OpenVPN/easy-rsa/releases | \
+  grep 'tag_name' | \
+  grep -E '3(\.[0-9]+)+' | \
+  awk '{ print $2 }' | \
+  sed 's/[,|"|v]//g'
+) )
+EASYRSA_LATEST=${EASYRSA_RELEASES[0]}
+
 # Get the rsa keys
-mkdir /etc/openvpn/easy-rsa/
-wget https://github.com/OpenVPN/easy-rsa/archive/2.2.2.zip
-unzip 2.2.2.zip
-mv easy-rsa-2.2.2/easy-rsa/2.0/* /etc/openvpn/easy-rsa/
-rm -r 2.2.2.zip easy-rsa-2.2.2
+wget -q --show-progress https://github.com/OpenVPN/easy-rsa/releases/download/${EASYRSA_LATEST}/EasyRSA-${EASYRSA_LATEST}.tgz
+tar -xaf EasyRSA-${EASYRSA_LATEST}.tgz
+mv EasyRSA-${EASYRSA_LATEST} /etc/openvpn/easy-rsa
+rm -r EasyRSA-${EASYRSA_LATEST}.tgz
 cd /etc/openvpn/easy-rsa
 
-source vars
+if [[ ! -z $key_size ]]; then
+  export EASYRSA_KEY_SIZE=$key_size
+fi
+if [[ ! -z $ca_expire ]]; then
+  export EASYRSA_CA_EXPIRE=$ca_expire
+fi
+if [[ ! -z $cert_expire ]]; then
+  export EASYRSA_CERT_EXPIRE=$cert_expire
+fi
+if [[ ! -z $cert_country ]]; then
+  export EASYRSA_REQ_COUNTRY=$cert_country
+fi
+if [[ ! -z $cert_province ]]; then
+  export EASYRSA_REQ_PROVINCE=$cert_province
+fi
+if [[ ! -z $cert_city ]]; then
+  export EASYRSA_REQ_CITY=$cert_city
+fi
+if [[ ! -z $cert_org ]]; then
+  export EASYRSA_REQ_ORG=$cert_org
+fi
+if [[ ! -z $cert_ou ]]; then
+  export EASYRSA_REQ_OU=$cert_ou
+fi
+if [[ ! -z $cert_email ]]; then
+  export EASYRSA_REQ_EMAIL=$cert_email
+fi
+if [[ ! -z $key_cn ]]; then
+  export EASYRSA_REQ_CN=$key_cn
+fi
 
-export KEY_SIZE=$key_size
-export CA_EXPIRE=$ca_expire
-export KEY_EXPIRE=$key_expire
-export KEY_COUNTRY=$key_country
-export KEY_PROVINCE=$key_province
-export KEY_CITY=$key_city
-export KEY_ORG=$key_org
-export KEY_EMAIL=$key_email
-export KEY_CN=$key_cn
-export KEY_NAME=$key_name
-export KEY_OU=$key_ou
+# Init PKI dirs and build CA certs
+./easyrsa init-pki
+./easyrsa build-ca nopass
+# Generate Diffie-Hellman parameters
+./easyrsa gen-dh
+# Genrate server keypair
+./easyrsa build-server-full server nopass
 
-./clean-all
-./build-dh
-./pkitool --initca
-./pkitool --server server
-openvpn --genkey --secret keys/ta.key
-
+# Generate shared-secret for TLS Authentication
+openvpn --genkey --secret pki/ta.key
 
 
 printf "\n################## Setup OpenVPN ##################\n"
 
 # Copy certificates and the server configuration in the openvpn directory
-cp /etc/openvpn/easy-rsa/keys/{ca.crt,ta.key,server.crt,server.key,dh${KEY_SIZE}.pem} "/etc/openvpn/"
+cp /etc/openvpn/easy-rsa/pki/{ca.crt,ta.key,issued/server.crt,private/server.key,dh.pem} "/etc/openvpn/"
 cp "$base_path/installation/server.conf" "/etc/openvpn/"
 mkdir "/etc/openvpn/ccd"
-sed -i "s/dh dh1024\.pem/dh dh${KEY_SIZE}.pem/" "/etc/openvpn/server.conf"
+sed -i "s/dh dh1024\.pem/dh dh.pem/" "/etc/openvpn/server.conf"
 sed -i "s/port 443/port $server_port/" "/etc/openvpn/server.conf"
 
 
@@ -176,6 +193,7 @@ iptables -A FORWARD -i tun0 -o eth0 -j ACCEPT
 iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
 iptables -t nat -A POSTROUTING -s 10.8.0.2/24 -o eth0 -j MASQUERADE
+
 
 printf "\n################## Setup MySQL database ##################\n"
 
