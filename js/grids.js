@@ -234,3 +234,12 @@ $(function () {
     ]
   });
 });
+
+// -------------------- HACKS --------------------
+
+// Autofocus for bootstrap modals
+// Thx http://stackoverflow.com/questions/14940423/autofocus-input-in-twitter-bootstrap-modal/33323836#33323836
+
+$(document).on('shown.bs.modal', '.modal', function() {
+  $(this).find('[autofocus]').focus();
+});

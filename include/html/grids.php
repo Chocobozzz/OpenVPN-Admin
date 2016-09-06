@@ -15,7 +15,7 @@
         <div class="modal-body">
           <div class="form-group">
             <label for="modal-user-add-username">Username</label>
-            <input type="text" name="username" id="modal-user-add-username" class="form-control" />
+            <input type="text" name="username" id="modal-user-add-username" class="form-control" autofocus/>
           </div>
           <div class="form-group">
             <label for="modal-user-add-password">Password</label>
@@ -56,7 +56,7 @@
         <div class="modal-body">
           <div class="form-group">
             <label for="modal-admin-add-username">Username</label>
-            <input type="text" name="username" id="modal-admin-add-username" class="form-control" />
+            <input type="text" name="username" id="modal-admin-add-username" class="form-control" autofocus/>
           </div>
           <div class="form-group">
             <label for="modal-admin-add-password">Password</label>
