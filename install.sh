@@ -237,8 +237,11 @@ bower --allow-root install
 chown -R "$user:$group" "$openvpn_admin"
 
 
-printf "\n################## Finish ##################\n"
+printf "\033[1m\n#################################### Finish ####################################\n"
 
-echo "Congratulation, you have successfuly setup openvpn-admin. Please, finish the installation by configuring your web server (Apache, NGinx...) and install the web application by visiting http://your-installation/index.php?installation"
-echo "Then, you will be able to run OpenVPN with systemctl start openvpn@server"
+echo -e "# Congratulations, you have successfully setup openvpn-admin! #\r"
+echo -e "Please, finish the installation by configuring your web server (Apache, NGinx...)"
+echo -e "and install the web application by visiting http://your-installation/index.php?installation\r"
+echo -e "Then, you will be able to run OpenVPN with systemctl start openvpn@server\r"
 echo "Please, report any issues here https://github.com/Chocobozzz/OpenVPN-Admin"
+printf "\n################################################################################ \033[0m\n"
