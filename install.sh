@@ -57,7 +57,7 @@ mysql_root_pass=""
 status_code=1
 
 while [ $status_code -ne 0 ]; do
-  read -p "Server MySQL root password: " -s mysql_root_pass; echo
+  read -p "MySQL root password: " -s mysql_root_pass; echo
   echo "SHOW DATABASES" | mysql -u root --password="$mysql_root_pass" &> /dev/null
   status_code=$?
 done
@@ -65,13 +65,13 @@ done
 sql_result=$(echo "SHOW DATABASES" | mysql -u root --password="$mysql_root_pass" | grep -e "^openvpn-admin$")
 # Check if the database doesn't already exist
 if [ "$sql_result" != "" ]; then
-  echo "The database openvpn-admin already exists."
+  echo "The openvpn-admin database already exists."
   exit
 fi
 
 
 # Check if the user doesn't already exist
-read -p "Server MySQL openvpn-admin user (will be created): " mysql_user
+read -p "MySQL user name for OpenVPN-Admin (will be created): " mysql_user
 
 echo "SHOW GRANTS FOR $mysql_user@localhost" | mysql -u root --password="$mysql_root_pass" &> /dev/null
 if [ $? -eq 0 ]; then
@@ -79,7 +79,7 @@ if [ $? -eq 0 ]; then
   exit
 fi
 
-read -p "Server MySQL openvpn-admin user password: " -s mysql_pass; echo
+read -p "MySQL user password for OpenVPN-Admin: " -s mysql_pass; echo
 
 # TODO MySQL port & host ?
 
@@ -239,7 +239,7 @@ chown -R "$user:$group" "$openvpn_admin"
 
 printf "\033[1m\n#################################### Finish ####################################\n"
 
-echo -e "# Congratulations, you have successfully setup openvpn-admin! #\r"
+echo -e "# Congratulations, you have successfully setup OpenVPN-Admin! #\r"
 echo -e "Please, finish the installation by configuring your web server (Apache, NGinx...)"
 echo -e "and install the web application by visiting http://your-installation/index.php?installation\r"
 echo -e "Then, you will be able to run OpenVPN with systemctl start openvpn@server\r"
