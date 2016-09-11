@@ -1,6 +1,6 @@
 # OpenVPN-Admin Version History
 
-## next version
+## 0.3.0
 - Add title to webpage
 - Improve design and user experience
 - Add redirections (after install...)
