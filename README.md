@@ -59,6 +59,7 @@ It will remove all installed components (OpenVPN keys and configurations, the we
 ## Use of
 
   * [Bootstrap](https://github.com/twbs/bootstrap)
-  * [SlickGrid](https://github.com/mleibman/SlickGrid)
-  * [SlickGridEnhancementPager](https://github.com/kingleema/SlickGridEnhancementPager) ([forked](https://github.com/Chocobozzz/SlickGridEnhancementPager/))
-  * [js-sha1](https://github.com/emn178/js-sha1)
+  * [Bootstrap Table](http://bootstrap-table.wenzhixin.net.cn/)
+  * [Bootstrap Datepicker](https://github.com/eternicode/bootstrap-datepicker)
+  * [JQuery](https://jquery.com/)
+  * [X-editable](https://github.com/vitalets/x-editable)
