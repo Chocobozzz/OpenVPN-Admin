@@ -174,7 +174,6 @@ printf "\n################## Setup OpenVPN ##################\n"
 cp /etc/openvpn/easy-rsa/pki/{ca.crt,ta.key,issued/server.crt,private/server.key,dh.pem} "/etc/openvpn/"
 cp "$base_path/installation/server.conf" "/etc/openvpn/"
 mkdir "/etc/openvpn/ccd"
-sed -i "s/dh dh1024\.pem/dh dh.pem/" "/etc/openvpn/server.conf"
 sed -i "s/port 443/port $server_port/" "/etc/openvpn/server.conf"
 
 
