@@ -29,8 +29,7 @@ mysql_root_pass=""
 status_code=1
 
 while [ $status_code -ne 0 ]; do
-  echo -n "Server MySQL root password: "
-  read mysql_root_pass
+  read -p "MySQL root password: " -s mysql_root_pass; echo
   echo "SHOW DATABASES" | mysql -u root --password="$mysql_root_pass" &> /dev/null
   status_code=$?
 done
