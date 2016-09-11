@@ -6,7 +6,7 @@ print_help () {
 }
 
 # Ensure to be root
-if [ "$EUID" -ne 0 ]; then 
+if [ "$EUID" -ne 0 ]; then
   echo "Please run as root"
   exit
 fi
@@ -42,7 +42,7 @@ if [ "$mysql_user" = "" ]; then
   exit
 fi
 
-echo "Are you sure to completely delete OpenVPN configurations, the web application (with the MySQL user/database) and the iptables rules? (yes/*)"
+echo -e "\033[1mAre you sure to completely delete OpenVPN configurations, the web application (with the MySQL user/database) and the iptables rules? (yes/*)\033[0m"
 read agree
 
 if [ "$agree" != "yes" ]; then
@@ -71,4 +71,4 @@ iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
 iptables -t nat -D POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
 iptables -t nat -D POSTROUTING -s 10.8.0.2/24 -o eth0 -j MASQUERADE
 
-echo "The application has been completely removed"
+echo "The application has been completely removed!"
