@@ -4,7 +4,7 @@
 Administrate its OpenVPN with a web interface (logs visualisations, users managing...) and a SQL database.
 
 ![Previsualisation configuration](https://lutim.cpy.re/fUq2rxqz)
-![Previsualisation administration](https://lutim.cpy.re/hDeUoGMy)
+![Previsualisation administration](https://lutim.cpy.re/wwYMkHcM)
 
 
 ## Prerequisite
