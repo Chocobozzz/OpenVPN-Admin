@@ -186,7 +186,7 @@
             </div>
             <div class="col-md-6">
               <a class="navbar-text navbar-right" href="index.php?logout" title="Logout"><button class="btn btn-danger">Logout</button></a>
-              <a class="navbar-text navbar-right" href="index.php" title="Configuration"><button class="btn btn-default">Configuration</button></a>
+              <a class="navbar-text navbar-right" href="index.php" title="Configuration"><button class="btn btn-default">Configurations</button></a>
             </p>
           </div>
         </div>
