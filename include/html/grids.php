@@ -72,12 +72,12 @@
   </div>
 </div>
 
-<script src="/vendor/jquery/dist/jquery.min.js"></script>
-<script src="/vendor/bootstrap/js/modal.js"></script>
-<script src="/vendor/bootstrap/js/tooltip.js"></script>
-<script src="/vendor/bootstrap/js/popover.js"></script>
-<script src="/vendor/bootstrap-table/dist/bootstrap-table.min.js"></script>
-<script src="/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
-<script src="/vendor/bootstrap-table/dist/extensions/editable/bootstrap-table-editable.min.js"></script>
-<script src="/vendor/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
-<script src="/js/grids.js"></script>
+<script src="vendor/jquery/dist/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/modal.js"></script>
+<script src="vendor/bootstrap/js/tooltip.js"></script>
+<script src="vendor/bootstrap/js/popover.js"></script>
+<script src="vendor/bootstrap-table/dist/bootstrap-table.min.js"></script>
+<script src="vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+<script src="vendor/bootstrap-table/dist/extensions/editable/bootstrap-table-editable.min.js"></script>
+<script src="vendor/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+<script src="js/grids.js"></script>

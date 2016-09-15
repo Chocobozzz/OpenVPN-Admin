@@ -94,11 +94,11 @@
 
     <title>OpenVPN-Admin</title>
 
-    <link rel="stylesheet" href="/vendor/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="/vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css" type="text/css" />
-    <link rel="stylesheet" href="/vendor/bootstrap-table/dist/bootstrap-table.min.css" type="text/css" />
-    <link rel="stylesheet" href="/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" type="text/css" />
-    <link rel="stylesheet" href="/css/index.css" type="text/css" />
+    <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css" type="text/css" />
+    <link rel="stylesheet" href="vendor/bootstrap-table/dist/bootstrap-table.min.css" type="text/css" />
+    <link rel="stylesheet" href="vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" type="text/css" />
+    <link rel="stylesheet" href="css/index.css" type="text/css" />
 
 
   </head>
