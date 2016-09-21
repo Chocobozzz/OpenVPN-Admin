@@ -1,5 +1,8 @@
 # OpenVPN-Admin Version History
 
+## 0.3.1
+- Fix path issues
+
 ## 0.3.0
 - Add title to webpage
 - Improve design and user experience
