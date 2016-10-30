@@ -29,6 +29,16 @@ Administrate its OpenVPN with a web interface (logs visualisations, users managi
 # ln -s /usr/bin/nodejs /usr/bin/node
 ````
 
+### CentOS 7
+
+````
+# yum install epel-release
+# yum install openvpn httpd php-mysql mariadb-server php nodejs unzip git wget sed npm
+# npm install -g bower
+# systemctl enable mariadb
+# systemctl start mariadb
+````
+
 ### Other distribution... (PR welcome)
 
 ## Tests
