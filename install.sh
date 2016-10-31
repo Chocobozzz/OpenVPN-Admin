@@ -176,6 +176,8 @@ cp "$base_path/installation/server.conf" "/etc/openvpn/"
 mkdir "/etc/openvpn/ccd"
 sed -i "s/port 443/port $server_port/" "/etc/openvpn/server.conf"
 
+nobody_group=$(id -ng nobody)
+sed -i "s/group nogroup/group $nobody_group/" "/etc/openvpn/server.conf"
 
 printf "\n################## Setup firewall ##################\n"
 
