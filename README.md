@@ -20,11 +20,12 @@ Administrate its OpenVPN with a web interface (logs visualisations, users managi
   * unzip
   * wget
   * sed
+  * curl
 
 ### Debian Jessie
 
 ````
-# apt-get install openvpn apache2 php5-mysql mysql-server php5 nodejs unzip git wget sed npm
+# apt-get install openvpn apache2 php5-mysql mysql-server php5 nodejs unzip git wget sed npm curl
 # npm install -g bower
 # ln -s /usr/bin/nodejs /usr/bin/node
 ````
