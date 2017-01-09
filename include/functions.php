@@ -42,4 +42,21 @@
     return password_verify($pass, $hash);
   }
 
+//login with LDAP
+
+function loginLDAP($serverFQDN, $username, $password)
+{
+  //connect to LDAP server or AD server. Both work
+  $ldap = ldap_connect($serverFQDN);
+  //check if user exists  if works return true if not return false
+  if ($bind = ldap_bind($ldap, $username, $password))
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
 ?>
