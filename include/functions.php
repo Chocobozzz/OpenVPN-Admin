@@ -35,12 +35,20 @@ function loginLDAP($serverFQDN, $username, $password)
   //check if user exists  if works return true if not return false
   if ($bind = ldap_bind($ldap, $username, $password))
   {
+    //return true when login is OK.
     return true;
   }
   else
   {
+    //return false when login is NOK
     return false;
   }
+}
+
+//get all LDAP users and place them inside a database.
+function getLDAPUsers()
+{
+
 }
 
 ?>

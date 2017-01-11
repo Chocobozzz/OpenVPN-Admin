@@ -31,3 +31,9 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`user_id`),
   KEY `user_pass` (`user_pass`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `uLDAP` (
+  `user_id` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `user_online` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
