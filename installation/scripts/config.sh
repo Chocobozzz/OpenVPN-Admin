@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #use LDAP set to 1
-USELDAP=1
+USELDAP=0
 
 #LDAP credentials
 SERVER='ldap.forumsys.com'
