@@ -1,5 +1,21 @@
 <?php
 
+  function getMigrationSchemas() {
+    return [ 0, 5 ];
+  }
+
+  function updateSchema($bdd, $newKey) {
+    if ($newKey === 0) {
+      $req_string = 'INSERT INTO `application` (sql_schema) VALUES (?)';
+    }
+    else {
+      $req_string = 'UPDATE `application` SET `sql_schema` = ?';
+    }
+
+    $req = $bdd->prepare($req_string);
+    $req->execute(array($newKey));
+  }
+
   function printError($str) {
     echo '<div class="alert alert-danger" role="alert">' . $str . '</div>';
   }

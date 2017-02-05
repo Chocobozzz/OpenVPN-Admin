@@ -31,6 +31,7 @@ done
 www=$1
 user=$2
 group=$3
+
 openvpn_admin="$www/openvpn-admin"
 
 # Check the validity of the arguments
@@ -236,7 +237,6 @@ cp "/etc/openvpn/"{ca.crt,ta.key} "./client-conf/windows/"
 # Install third parties
 bower --allow-root install
 chown -R "$user:$group" "$openvpn_admin"
-
 
 printf "\033[1m\n#################################### Finish ####################################\n"
 

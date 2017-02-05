@@ -1,3 +1,5 @@
+CREATE TABLE IF NOT EXISTS `application` ( `id` INT(11) AUTO_INCREMENT, `sql_schema` INT(11) NOT NULL, PRIMARY KEY (id) );
+
 CREATE TABLE IF NOT EXISTS `admin` (
   `admin_id` varchar(255) NOT NULL,
   `admin_pass` varchar(255) NOT NULL,

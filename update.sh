@@ -30,7 +30,7 @@ user=$(ls -l "$www/include/config.php" | awk '{ print $3 }')
 group=$(ls -l "$www/include/config.php" | awk '{ print $4 }')
 
 
-rm -r "${www:?}/"{index.php,bower.json,.bowerrc,js,include/html,include/connect.php,include/functions.php,include/grids.php,css,vendor}
+rm -rf "${www:?}/"{index.php,bower.json,.bowerrc,js,include/html,include/connect.php,include/functions.php,include/grids.php,css,vendor}
 
 cp -r "$base_path/"{index.php,bower.json,.bowerrc,js,css} "$www"
 cp -r "$base_path/include/"{html,connect.php,functions.php,grids.php} "$www/include"
@@ -43,5 +43,11 @@ chown -R "$user:$group" "$www"
 rm -f "/etc/openvpn/scripts/"{connect.sh,disconnect.sh,login.sh,functions.sh}
 cp "$base_path/installation/scripts/"{connect.sh,disconnect.sh,login.sh,functions.sh} "/etc/openvpn/scripts"
 chmod +x "/etc/openvpn/scripts/"{connect.sh,disconnect.sh,login.sh,functions.sh}
+
+echo "Processing database migration..."
+
+php "$base_path/migration.php" "$www"
+
+echo "Database migrations done."
 
 echo "OpenVPN-admin upgraded."

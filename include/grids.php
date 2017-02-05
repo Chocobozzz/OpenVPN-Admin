@@ -119,8 +119,8 @@
     $phone = "";
     $online = 0;
     $enable = 1;
-    $start = "0000-00-00";
-    $end = "0000-00-00";
+    $start = NULL;
+    $end = NULL;
 
     $req = $bdd->prepare('INSERT INTO user (user_id, user_pass, user_mail, user_phone, user_online, user_enable, user_start_date, user_end_date)
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
@@ -153,6 +153,9 @@
 
     if ($field === 'user_pass') {
       $value = hashPass($value);
+    }
+    else if (($field === 'user_start_date' || $field === 'user_end_date') && $value === '') {
+      $value = NULL;
     }
 
     // /!\ SQL injection: field was checked with in_array function
