@@ -1,7 +1,7 @@
 <?php
 
   function getMigrationSchemas() {
-    return [ 0, 5 ];
+    return [ 0, 5, 10 ];
   }
 
   function updateSchema($bdd, $newKey) {
