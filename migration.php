@@ -7,9 +7,9 @@
 
   $www = $argv[1];
 
-  require("$www/include/config.php");
-  require("$www/include/connect.php");
-  require("$www/include/functions.php");
+  require_once("$www/include/config.php");
+  require_once("$www/include/connect.php");
+  require_once("$www/include/functions.php");
 
   $migrations = getMigrationSchemas();
 

@@ -19,8 +19,7 @@ $(function () {
 
   // ------------------------- USERS definitions -------------------------
   var $userTable = $('#table-users');
-  var $modalUserAdd = $('#modal-user-add');
-  var $userAddSave = $modalUserAdd.find('#modal-user-add-save');
+  var $userLDAPTable = $('#table-users-ldap');
 
   function addUser(username, password) {
     $.ajax({
@@ -53,25 +52,29 @@ $(function () {
     });
   }
 
-  var userEditable = {
-    url: gridsUrl,
-    params: function (params) {
-      params.set_user = true;
+  if ($userTable.length !== 0) {
+    var $modalUserAdd = $('#modal-user-add');
+    var $userAddSave = $modalUserAdd.find('#modal-user-add-save');
 
-      return params;
-    },
-    success: function () {
-      refreshTable($userTable);
+    var userEditable = {
+      url: gridsUrl,
+      params: function (params) {
+        params.set_user = true;
+
+        return params;
+      },
+      success: function () {
+        refreshTable($userTable);
+      }
+    }
+
+    // ES 2015 so be prudent
+    if (typeof Object.assign == 'function') {
+      var userDateEditable = Object.assign({ type: 'date', placement: 'bottom' }, userEditable);
+    } else {
+      console.warn('Your browser does not support Object.assign. You will not be able to modify the date inputs.');
     }
   }
-
-  // ES 2015 so be prudent
-  if (typeof Object.assign == 'function') {
-    var userDateEditable = Object.assign({ type: 'date', placement: 'bottom' }, userEditable);
-  } else {
-    console.warn('Your browser does not support Object.assign. You will not be able to modify the date inputs.');
-  }
-
 
   // ------------------------- ADMIN definitions -------------------------
   var $adminTable = $('#table-admins');
@@ -121,53 +124,72 @@ $(function () {
     }
   }
 
-  // ------------------------- ADMIN definitions -------------------------
+  // ------------------------- LOGS definitions -------------------------
   var $logTable = $('#table-logs');
 
 
   // -------------------- USERS --------------------
 
   // Bootstrap table definition
-  $userTable.bootstrapTable({
-    url: gridsUrl,
-    sortable: false,
-    queryParams: function (params) {
-      params.select = 'user';
-      return params;
-    },
-    // Primary key
-    idField: 'user_id',
-    columns: [
-      { title: "ID", field: "user_id", editable: userEditable },
-      { title: "Pass", field: "user_pass", editable: userEditable },
-      { title: "Mail", field: "user_mail", editable: userEditable },
-      { title: "Phone", field: "user_phone", editable: userEditable },
-      { title: "Online", field: "user_online" },
-      { title: "Enabled", field: "user_enable" },
-      { title: "Start Date", field: "user_start_date", editable: userDateEditable },
-      { title: "End Date", field: "user_end_date", editable: userDateEditable },
-      {
-        title: 'Delete',
-        field: "user_del",
-        formatter: deleteFormatter,
-        events: {
-          'click .glyphicon': function (e, value, row) {
-            if (confirm('Are you sure you want to delete this user?')) {
-              deleteUser(row.user_id);
+
+  if ($userTable.length !== 0) {
+    $userTable.bootstrapTable({
+      url: gridsUrl,
+      sortable: false,
+      queryParams: function (params) {
+        params.select = 'user';
+        return params;
+      },
+      // Primary key
+      idField: 'user_id',
+      columns: [
+        { title: "ID", field: "user_id", editable: userEditable },
+        { title: "Pass", field: "user_pass", editable: userEditable },
+        { title: "Mail", field: "user_mail", editable: userEditable },
+        { title: "Phone", field: "user_phone", editable: userEditable },
+        { title: "Online", field: "user_online" },
+        { title: "Enabled", field: "user_enable" },
+        { title: "Start Date", field: "user_start_date", editable: userDateEditable },
+        { title: "End Date", field: "user_end_date", editable: userDateEditable },
+        {
+          title: 'Delete',
+          field: "user_del",
+          formatter: deleteFormatter,
+          events: {
+            'click .glyphicon': function (e, value, row) {
+              if (confirm('Are you sure you want to delete this user?')) {
+                deleteUser(row.user_id);
+              }
             }
           }
         }
-      }
-    ]
-  });
+      ]
+    });
 
-  // When we want to add a user
-  $userAddSave.on('click', function () {
-    var $usernameInput = $modalUserAdd.find('input[name=username]');
-    var $passwordInput = $modalUserAdd.find('input[name=password]');
-    addUser($usernameInput.val(), $passwordInput.val());
-    $modalUserAdd.modal('hide');
-  });
+    // When we want to add a user
+    $userAddSave.on('click', function () {
+      var $usernameInput = $modalUserAdd.find('input[name=username]');
+      var $passwordInput = $modalUserAdd.find('input[name=password]');
+      addUser($usernameInput.val(), $passwordInput.val());
+      $modalUserAdd.modal('hide');
+    });
+  }
+  else {
+    $userLDAPTable.bootstrapTable({
+      url: gridsUrl,
+      sortable: false,
+      queryParams: function (params) {
+        params.select = 'user_ldap';
+        return params;
+      },
+      // Primary key
+      idField: 'user_ldap_id',
+      columns: [
+        { title: "ID", field: "user_ldap_id"},
+        { title: "Online", field: "user_ldap_online" },
+      ]
+    });
+  }
 
 
   // -------------------- ADMINS --------------------

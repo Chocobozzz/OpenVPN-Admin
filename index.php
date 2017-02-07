@@ -1,8 +1,9 @@
 <?php
   session_start();
 
-  require(dirname(__FILE__) . '/include/functions.php');
-  require(dirname(__FILE__) . '/include/connect.php');
+  require_once(dirname(__FILE__) . '/include/config.php');
+  require_once(dirname(__FILE__) . '/include/connect.php');
+  require_once(dirname(__FILE__) . '/include/functions.php');
 
   // Disconnecting ?
   if(isset($_GET['logout'])){
@@ -157,8 +158,8 @@
       }
       // Print the installation form
       else {
-        require(dirname(__FILE__) . '/include/html/menu.php');
-        require(dirname(__FILE__) . '/include/html/form/installation.php');
+        require_once(dirname(__FILE__) . '/include/html/menu.php');
+        require_once(dirname(__FILE__) . '/include/html/form/installation.php');
       }
 
       exit(-1);
@@ -169,8 +170,8 @@
       if(isset($error) && $error == true)
         printError('Login error');
 
-      require(dirname(__FILE__) . '/include/html/menu.php');
-      require(dirname(__FILE__) . '/include/html/form/configuration.php');
+      require_once(dirname(__FILE__) . '/include/html/menu.php');
+      require_once(dirname(__FILE__) . '/include/html/form/configuration.php');
     }
 
 
@@ -179,8 +180,8 @@
       if(isset($error) && $error == true)
         printError('Login error');
 
-      require(dirname(__FILE__) . '/include/html/menu.php');
-      require(dirname(__FILE__) . '/include/html/form/login.php');
+      require_once(dirname(__FILE__) . '/include/html/menu.php');
+      require_once(dirname(__FILE__) . '/include/html/form/login.php');
     }
 
     // --------------- GRIDS ---------------
@@ -200,7 +201,7 @@
       </nav>
 
   <?php
-      require(dirname(__FILE__) . '/include/html/grids.php');
+      require_once(dirname(__FILE__) . '/include/html/grids.php');
     }
   ?>
   </body>

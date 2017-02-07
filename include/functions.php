@@ -42,29 +42,31 @@
     return password_verify($pass, $hash);
   }
 
-//login with LDAP
-
-function loginLDAP($serverFQDN, $username, $password)
-{
-  //connect to LDAP server or AD server. Both work
-  $ldap = ldap_connect($serverFQDN);
-  //check if user exists  if works return true if not return false
-  if ($bind = ldap_bind($ldap, $username, $password))
-  {
-    //return true when login is OK.
-    return true;
+  function isUsingLDAP($useLDAP) {
+    return isset($useLDAP) && $useLDAP === true;
   }
-  else
+
+  function loginLDAP($serverFQDN, $username, $password)
   {
-    //return false when login is NOK
-    return false;
+    //connect to LDAP server or AD server. Both work
+    $ldap = ldap_connect($serverFQDN);
+    //check if user exists  if works return true if not return false
+    if ($bind = ldap_bind($ldap, $username, $password))
+    {
+      //return true when login is OK.
+      return true;
+    }
+    else
+    {
+      //return false when login is NOK
+      return false;
+    }
   }
-}
 
-//get all LDAP users and place them inside a database.
-function getLDAPUsers()
-{
+  //get all LDAP users and place them inside a database.
+  function getLDAPUsers()
+  {
 
-}
+  }
 
 ?>

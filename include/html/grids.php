@@ -1,35 +1,56 @@
-<!-- Users grid -->
-<div class="block-grid row" id="user-grid">
-  <h4>
-    OpenVPN Users <button data-toggle="modal" data-target="#modal-user-add" type="button" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-plus"></span></button>
-  </h4>
-  <table id="table-users" class="table"></table>
+<?php
+  // Use MySQL
+  // We allow the administrator to create user
+  // The user table is different too
+  if (isUsingLDAP($useLDAP) === false) {
+?>
 
-  <div id="modal-user-add" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Add user</h4>
-        </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <label for="modal-user-add-username">Username</label>
-            <input type="text" name="username" id="modal-user-add-username" class="form-control" autofocus/>
+    <!-- Users grid -->
+    <div class="block-grid row" id="user-grid">
+      <h4>
+        OpenVPN Users <button data-toggle="modal" data-target="#modal-user-add" type="button" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-plus"></span></button>
+      </h4>
+      <table id="table-users" class="table"></table>
+
+      <div id="modal-user-add" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Add user</h4>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="modal-user-add-username">Username</label>
+                <input type="text" name="username" id="modal-user-add-username" class="form-control" autofocus/>
+              </div>
+              <div class="form-group">
+                <label for="modal-user-add-password">Password</label>
+                <input type="password" name="password" id="modal-user-add-password" class="form-control" />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" id="modal-user-add-save">Save</button>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="modal-user-add-password">Password</label>
-            <input type="password" name="password" id="modal-user-add-password" class="form-control" />
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="modal-user-add-save">Save</button>
         </div>
       </div>
     </div>
+<?php
+  }
+  else {
+?>
+ <!-- Users LDAP grid -->
+  <div class="block-grid row" id="user-ldap-grid">
+    <h4>
+      OpenVPN Users (LDAP)
+    </h4>
+    <table id="table-users-ldap" class="table"></table>
   </div>
-</div>
+<?php
+  }
+?>
 
 <!-- Logs grid -->
 <div class="block-grid row" id="log-grid">

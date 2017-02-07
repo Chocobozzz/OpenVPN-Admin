@@ -4,8 +4,8 @@
   if(!isset($_SESSION['admin_id']))
     exit -1;
 
-  require(dirname(__FILE__) . '/connect.php');
-  require(dirname(__FILE__) . '/functions.php');
+  require_once(dirname(__FILE__) . '/connect.php');
+  require_once(dirname(__FILE__) . '/functions.php');
 
 
   // ---------------- SELECT ----------------
@@ -35,6 +35,12 @@
         $list = array();
         echo json_encode($list);
       }
+    }
+
+    else if ($_GET['select'] == "user_ldap") {
+      // Fake data for now
+
+      echo json_encode([ [ "user_ldap_id" => "blabla", "user_ldap_online" => 1 ] ]);
     }
 
     // Select the logs
