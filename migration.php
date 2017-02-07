@@ -18,14 +18,14 @@
     $req->execute();
     $data = $req->fetch();
 
-    $sql_schema = 0;
+    $sql_schema = -1;
     if ($data['sql_schema']) {
       $sql_schema = $data['sql_schema'];
     }
   }
   // Table does not exist
   catch (Exception $e) {
-    $sql_schema = 0;
+    $sql_schema = -1;
   }
 
   // For each migrations
