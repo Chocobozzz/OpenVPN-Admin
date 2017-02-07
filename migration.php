@@ -48,7 +48,7 @@
       // Update schema to the new value
       updateSchema($bdd, $migration_value);
 
-      echo "Moved to schema $migration_value";
+      echo "Moved to schema $migration_value\n";
     }
   }
 
