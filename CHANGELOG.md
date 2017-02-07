@@ -1,5 +1,8 @@
 # OpenVPN-Admin Version History
 
+## 0.3.2
+- Fix with MySQL NO_ZERO_DATE mode
+
 ## 0.3.1
 - Fix path issues
 
