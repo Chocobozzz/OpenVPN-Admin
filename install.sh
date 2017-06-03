@@ -59,11 +59,11 @@ status_code=1
 
 while [ $status_code -ne 0 ]; do
   read -p "MySQL root password: " -s mysql_root_pass; echo
-  echo "SHOW DATABASES" | mysql -u root --password="$mysql_root_pass" &> /dev/null
+  echo "SHOW DATABASES" | mysql -uroot -p"$mysql_root_pass" &> /dev/null
   status_code=$?
 done
 
-sql_result=$(echo "SHOW DATABASES" | mysql -u root --password="$mysql_root_pass" | grep -e "^openvpn-admin$")
+sql_result=$(echo "SHOW DATABASES" | mysql -uroot -p"$mysql_root_pass" | grep -e "^openvpn-admin$")
 # Check if the database doesn't already exist
 if [ "$sql_result" != "" ]; then
   echo "The openvpn-admin database already exists."
@@ -74,7 +74,7 @@ fi
 # Check if the user doesn't already exist
 read -p "MySQL user name for OpenVPN-Admin (will be created): " mysql_user
 
-echo "SHOW GRANTS FOR $mysql_user@localhost" | mysql -u root --password="$mysql_root_pass" &> /dev/null
+echo "SHOW GRANTS FOR $mysql_user@localhost" | mysql -uroot -p"$mysql_root_pass" &> /dev/null
 if [ $? -eq 0 ]; then
   echo "The MySQL user already exists."
   exit
