@@ -219,6 +219,9 @@ sed -i "s/PASS=''/PASS='$mysql_pass'/" "/etc/openvpn/scripts/config.sh"
 mkdir "$openvpn_admin"
 cp -r "$base_path/"{index.php,sql,bower.json,.bowerrc,js,include,css,installation/client-conf} "$openvpn_admin"
 
+sed -i "s/DocumentRoot \/var\/www\/html/DocumentRoot $openvpn_admin" /etc/apache2/sites-available/000-default.conf
+service apache2 reload
+
 # New workspace
 cd "$openvpn_admin"
 
