@@ -56,7 +56,7 @@ Only tested on Debian Jessie. Feel free to open issues.
         # ./install.sh www_base_dir web_user web_group
 		
 		Sample input
-		# sudo ./install.sh /var/www/html/ nobody nogroup
+		# ./install.sh /var/www/html/ nobody nogroup
 
   * Setup the web server (Apache, NGinx...) to serve the web application.
   * Guide in Apache2 configuration on Ubuntu 16.04
@@ -78,7 +78,7 @@ https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mys
     # ./update.sh www_base_dir
 	
 	Sample input
-	sudo ./update.sh /var/www/html/
+	./update.sh /var/www/html/
 
 ## Desinstall
 It will remove all installed components (OpenVPN keys and configurations, the web application, iptables rules...).
@@ -86,7 +86,7 @@ It will remove all installed components (OpenVPN keys and configurations, the we
     # ./desinstall.sh www_base_dir
 	
 	Sample input
-	sudo ./desinstall.sh /var/www/html/
+	./desinstall.sh /var/www/html/
 
 ## Use of
 
