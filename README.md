@@ -59,6 +59,8 @@ Only tested on Debian Jessie. Feel free to open issues.
 		# sudo ./install.sh /var/www/html/ nobody nogroup
 
   * Setup the web server (Apache, NGinx...) to serve the web application.
+  * Guide in Apache2 configuration on Ubuntu 16.04
+https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04
   * Create the admin of the web application by visiting `http://your-installation/index.php?installation`
 
 ## Usage
