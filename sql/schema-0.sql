@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `log` (
   `log_remote_ip` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `log_remote_port` varchar(16) COLLATE utf8_unicode_ci DEFAULT NULL,
   `log_start_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `log_end_time` timestamp NOT NULL DEFAULT '2018-12-31 12:12:12',
+  `log_end_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `log_received` float NOT NULL DEFAULT '0',
   `log_send` float NOT NULL DEFAULT '0',
   PRIMARY KEY (`log_id`),
