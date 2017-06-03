@@ -125,7 +125,7 @@
     $end = NULL;
 
     $req = $bdd->prepare('INSERT INTO user (user_id, user_pass, user_mail, user_phone, user_subs, user_online, user_enable, user_start_date, user_end_date)
-                        VALUES (?, ?, ?, ?, ?, ?, ? ?, ?)');
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
     $req->execute(array($id, $pass, $mail, $phone, $subs, $online, $enable, $start, $end));
 
     $res = array("user_id" => $id,
