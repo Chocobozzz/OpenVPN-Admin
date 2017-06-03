@@ -25,7 +25,7 @@ Administrate its OpenVPN with a web interface (logs visualisations, users managi
 ### Debian Jessie
 
 ````
-# apt-get install openvpn apache2 libapache2-mod-php mysql-server php-mysql nodejs unzip git wget sed npm curl -y
+# apt-get install openvpn apache2 php7.0-mysql mysql-server php7.0 nodejs unzip git wget sed npm curl zip libapache2-mod-php
 # npm install -g bower
 # ln -s /usr/bin/nodejs /usr/bin/node
 ````
