@@ -24,10 +24,10 @@
       if($_POST['configuration_os'] == "gnu_linux") {
         $conf_dir = 'gnu-linux';
       }
-      elseif ($_POST['configuration_os'] == "windows") {
+      else if ($_POST['configuration_os'] == "windows") {
         $conf_dir = 'windows';
       }
-      elseif $_POST['configuration_os'] == "android") {
+      else if ($_POST['configuration_os'] == "android") {
         $conf_dir = 'android';
       }
       else {
