@@ -199,9 +199,9 @@ iptables -t nat -A POSTROUTING -s 10.8.0.2/24 -o eth0 -j MASQUERADE
 
 printf "\n################## Setup MySQL database ##################\n"
 
-echo "CREATE DATABASE \`openvpn-admin\`" | mysql -uroot -p"$mysql_root_pass"
+echo "CREATE DATABASE \`openvpn_admin\`" | mysql -uroot -p"$mysql_root_pass"
 echo "CREATE USER $mysql_user@localhost IDENTIFIED BY '$mysql_pass'" | mysql -uroot -p"$mysql_root_pass"
-echo "GRANT ALL PRIVILEGES ON \`openvpn-admin\`.*  TO $mysql_user@localhost" | mysql -uroot -p"$mysql_root_pass"
+echo "GRANT ALL PRIVILEGES ON \`openvpn_admin\`.*  TO $mysql_user@localhost" | mysql -uroot -p"$mysql_root_pass"
 echo "FLUSH PRIVILEGES" | mysql -uroot -p"$mysql_root_pass"
 
 
@@ -218,9 +218,6 @@ sed -i "s/PASS=''/PASS='$mysql_pass'/" "/etc/openvpn/scripts/config.sh"
 # Create the directory of the web application
 mkdir "$openvpn_admin"
 cp -r "$base_path/"{index.php,sql,bower.json,.bowerrc,js,include,css,installation/client-conf} "$openvpn_admin"
-
-# sed -i "s/DocumentRoot \/var\/www\/html/DocumentRoot $openvpn_admin" /etc/apache2/sites-available/000-default.conf
-# service apache2 reload
 
 # New workspace
 cd "$openvpn_admin"

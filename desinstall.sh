@@ -50,7 +50,7 @@ fi
 
 # MySQL delete
 echo "DROP USER $mysql_user@localhost" | mysql -u root --password="$mysql_root_pass"
-echo "DROP DATABASE \`openvpn-admin\`" | mysql -u root --password="$mysql_root_pass"
+echo "DROP DATABASE \`openvpn_admin\`" | mysql -u root --password="$mysql_root_pass"
 
 # Files delete (openvpn confs/keys + web application)
 rm -r /etc/openvpn/easy-rsa/
