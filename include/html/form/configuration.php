@@ -24,8 +24,7 @@
             <option value="gnu_linux">GNU/Linux</option>
             <option value="windows">Windows</option>
             <option value="android">Android</option>
-            <option value="ios">iOS</option>
-			
+            <option value="ios">iOS</option>	
           </select>
         </div>
 
