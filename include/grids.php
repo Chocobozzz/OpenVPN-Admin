@@ -118,7 +118,7 @@
     $pass = hashPass($_POST['user_pass']);
     $mail = "";
     $phone = "";
-	$subs = "Free";
+	  $subs = "Free";
     $online = 0;
     $enable = 1;
     $start = NULL;
@@ -126,11 +126,11 @@
 
     $req = $bdd->prepare('INSERT INTO user (user_id, user_pass, user_mail, user_phone, user_subs, user_online, user_enable, user_start_date, user_end_date)
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
-    $req->execute(array($id, $pass, $mail, $phone, $subs, $online, $enable, $start, $end));
 
-    $res = array("user_id" => $id,
+    $res = array(
+      "user_id" => $id,
       "user_pass" => $pass,
-      "user_mail" => $mail ,
+      "user_mail" => $mail,
       "user_phone" => $phone,
       "user_subs" => $subs,
       "user_online" => $online,
@@ -138,6 +138,8 @@
       "user_start_date" => $start,
       "user_end_date" => $end
     );
+
+    $req->execute(array($id, $pass, $mail, $phone, $subs, $online, $enable, $start, $end));
 
     echo json_encode($res);
   }
