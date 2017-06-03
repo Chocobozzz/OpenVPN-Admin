@@ -24,8 +24,14 @@
       if($_POST['configuration_os'] == "gnu_linux") {
         $conf_dir = 'gnu-linux';
       }
-      else {
+      elseif {
         $conf_dir = 'windows';
+      }
+      elseif {
+        $conf_dir = 'android';
+      }
+      else {
+        $conf_dir = 'ios';
       }
       $rootPath = realpath("./client-conf/$conf_dir");
 

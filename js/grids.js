@@ -142,6 +142,7 @@ $(function () {
       { title: "Pass", field: "user_pass", editable: userEditable },
       { title: "Mail", field: "user_mail", editable: userEditable },
       { title: "Phone", field: "user_phone", editable: userEditable },
+      { title: "Subscription", field: "user_subs", editable: userEditable },
       { title: "Online", field: "user_online" },
       { title: "Enabled", field: "user_enable" },
       { title: "Start Date", field: "user_start_date", editable: userDateEditable },

@@ -25,7 +25,7 @@ Administrate its OpenVPN with a web interface (logs visualisations, users managi
 ### Debian Jessie
 
 ````
-# apt-get install openvpn apache2 php5-mysql mysql-server php5 nodejs unzip git wget sed npm curl
+# apt-get install openvpn apache2 libapache2-mod-php mysql-server php-mysql nodejs unzip git wget sed npm curl -y
 # npm install -g bower
 # ln -s /usr/bin/nodejs /usr/bin/node
 ````
@@ -54,6 +54,9 @@ Only tested on Debian Jessie. Feel free to open issues.
         $ git clone https://github.com/Chocobozzz/OpenVPN-Admin openvpn-admin
         $ cd openvpn-admin
         # ./install.sh www_base_dir web_user web_group
+		
+		Sample input
+		# sudo ./install.sh /var/www/html/ nobody nogroup
 
   * Setup the web server (Apache, NGinx...) to serve the web application.
   * Create the admin of the web application by visiting `http://your-installation/index.php?installation`
@@ -71,11 +74,17 @@ Only tested on Debian Jessie. Feel free to open issues.
 
     $ git pull origin master
     # ./update.sh www_base_dir
+	
+	Sample input
+	sudo ./update.sh /var/www/html/
 
 ## Desinstall
 It will remove all installed components (OpenVPN keys and configurations, the web application, iptables rules...).
 
     # ./desinstall.sh www_base_dir
+	
+	Sample input
+	sudo ./desinstall.sh /var/www/html/
 
 ## Use of
 

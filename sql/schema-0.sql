@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `user_pass` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '1234',
   `user_mail` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
   `user_phone` varchar(16) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `user_subs` varchar(16) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Free',
   `user_online` tinyint(1) NOT NULL DEFAULT '0',
   `user_enable` tinyint(1) NOT NULL DEFAULT '1',
   `user_start_date` date NOT NULL,
