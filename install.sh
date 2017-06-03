@@ -33,7 +33,6 @@ user=$2
 group=$3
 
 openvpn_admin="$www/openvpn-admin"
-#openvpn_admin="$www"
 
 # Check the validity of the arguments
 if [ ! -d "$www" ] ||  ! grep -q "$user" "/etc/passwd" || ! grep -q "$group" "/etc/group" ; then
