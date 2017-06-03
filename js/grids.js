@@ -144,7 +144,7 @@ $(function () {
       { title: "Phone", field: "user_phone", editable: userEditable },
       { title: "Subscription", field: "user_subs", editable: userEditable },
       { title: "Online", field: "user_online" },
-      { title: "Enabled", field: "user_enable" },
+      { title: "Enabled", field: "user_enable", editable: userEditable },
       { title: "Start Date", field: "user_start_date", editable: userDateEditable },
       { title: "End Date", field: "user_end_date", editable: userDateEditable },
       {
