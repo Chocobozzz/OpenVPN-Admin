@@ -59,11 +59,11 @@ status_code=1
 
 while [ $status_code -ne 0 ]; do
   read -p "MySQL root password: " -s mysql_root_pass; echo
-  echo "SHOW DATABASES" | mysql -u root --password="$mysql_root_pass" &> /dev/null
+  echo "SHOW DATABASES" | mysql -uroot -p"$mysql_root_pass" &> /dev/null
   status_code=$?
 done
 
-sql_result=$(echo "SHOW DATABASES" | mysql -u root --password="$mysql_root_pass" | grep -e "^openvpn-admin$")
+sql_result=$(echo "SHOW DATABASES" | mysql -uroot -p"$mysql_root_pass" | grep -e "^openvpn-admin$")
 # Check if the database doesn't already exist
 if [ "$sql_result" != "" ]; then
   echo "The openvpn-admin database already exists."
@@ -74,7 +74,7 @@ fi
 # Check if the user doesn't already exist
 read -p "MySQL user name for OpenVPN-Admin (will be created): " mysql_user
 
-echo "SHOW GRANTS FOR $mysql_user@localhost" | mysql -u root --password="$mysql_root_pass" &> /dev/null
+echo "SHOW GRANTS FOR $mysql_user@localhost" | mysql -uroot -p"$mysql_root_pass" &> /dev/null
 if [ $? -eq 0 ]; then
   echo "The MySQL user already exists."
   exit
@@ -199,10 +199,10 @@ iptables -t nat -A POSTROUTING -s 10.8.0.2/24 -o eth0 -j MASQUERADE
 
 printf "\n################## Setup MySQL database ##################\n"
 
-echo "CREATE DATABASE \`openvpn-admin\`" | mysql -u root --password="$mysql_root_pass"
-echo "CREATE USER $mysql_user@localhost IDENTIFIED BY '$mysql_pass'" | mysql -u root --password="$mysql_root_pass"
-echo "GRANT ALL PRIVILEGES ON \`openvpn-admin\`.*  TO $mysql_user@localhost" | mysql -u root --password="$mysql_root_pass"
-echo "FLUSH PRIVILEGES" | mysql -u root --password="$mysql_root_pass"
+echo "CREATE DATABASE \`openvpn_admin\`" | mysql -uroot -p"$mysql_root_pass"
+echo "CREATE USER $mysql_user@localhost IDENTIFIED BY '$mysql_pass'" | mysql -uroot -p"$mysql_root_pass"
+echo "GRANT ALL PRIVILEGES ON \`openvpn_admin\`.*  TO $mysql_user@localhost" | mysql -uroot -p"$mysql_root_pass"
+echo "FLUSH PRIVILEGES" | mysql -uroot -p"$mysql_root_pass"
 
 
 printf "\n################## Setup web application ##################\n"

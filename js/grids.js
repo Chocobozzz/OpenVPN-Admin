@@ -136,16 +136,21 @@ $(function () {
       return params;
     },
     // Primary key
-    idField: 'user_id',
+    idField: 'memberID',
     columns: [
-      { title: "ID", field: "user_id", editable: userEditable },
-      { title: "Pass", field: "user_pass", editable: userEditable },
-      { title: "Mail", field: "user_mail", editable: userEditable },
-      { title: "Phone", field: "user_phone", editable: userEditable },
-      { title: "Online", field: "user_online" },
-      { title: "Enabled", field: "user_enable" },
-      { title: "Start Date", field: "user_start_date", editable: userDateEditable },
-      { title: "End Date", field: "user_end_date", editable: userDateEditable },
+      { title: "ID", field: "memberID", editable: userEditable },
+      { title: "Name", field: "username", editable: userEditable },
+      { title: "Pass", field: "password", editable: userEditable },
+      { title: "Mail", field: "email", editable: userEditable },
+      { title: "Phone", field: "phone", editable: userEditable },
+      { title: "Subscription", field: "subscription", editable: userEditable },
+      { title: "Online", field: "online" },
+      { title: "Enabled", field: "enable", editable: userEditable },
+      { title: "Start Date", field: "startdate", editable: userDateEditable },
+      { title: "End Date", field: "enddate", editable: userDateEditable },
+      { title: "Active", field: "activate", editable: userDateEditable },
+      { title: "ResetToken", field: "resetToken", editable: userDateEditable },
+      { title: "ResetComplete", field: "resetComplete", editable: userDateEditable },
       {
         title: 'Delete',
         field: "user_del",
@@ -153,7 +158,7 @@ $(function () {
         events: {
           'click .glyphicon': function (e, value, row) {
             if (confirm('Are you sure you want to delete this user?')) {
-              deleteUser(row.user_id);
+              deleteUser(row.memberID);
             }
           }
         }

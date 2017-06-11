@@ -14,18 +14,24 @@
   // Get the configuration files ?
   if(isset($_POST['configuration_get'], $_POST['configuration_username'], $_POST['configuration_pass'], $_POST['configuration_os'])
      && !empty($_POST['configuration_pass'])) {
-    $req = $bdd->prepare('SELECT * FROM user WHERE user_id = ?');
+    $req = $bdd->prepare('SELECT * FROM user WHERE memberID = ?');
     $req->execute(array($_POST['configuration_username']));
     $data = $req->fetch();
 
     // Error ?
-    if($data && passEqual($_POST['configuration_pass'], $data['user_pass'])) {
+    if($data && passEqual($_POST['configuration_pass'], $data['password'])) {
       // Thanks http://stackoverflow.com/questions/4914750/how-to-zip-a-whole-folder-using-php
       if($_POST['configuration_os'] == "gnu_linux") {
         $conf_dir = 'gnu-linux';
       }
-      else {
+      else if ($_POST['configuration_os'] == "windows") {
         $conf_dir = 'windows';
+      }
+      else if ($_POST['configuration_os'] == "android") {
+        $conf_dir = 'android';
+      }
+      else {
+        $conf_dir = 'ios';
       }
       $rootPath = realpath("./client-conf/$conf_dir");
 

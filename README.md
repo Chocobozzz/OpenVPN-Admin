@@ -25,9 +25,9 @@ Administrate its OpenVPN with a web interface (logs visualisations, users managi
 ### Debian Jessie
 
 ````
-# apt-get install openvpn apache2 php5-mysql mysql-server php5 nodejs unzip git wget sed npm curl
-# npm install -g bower
-# ln -s /usr/bin/nodejs /usr/bin/node
+apt-get install openvpn apache2 php7.0-mysql mysql-server php7.0 nodejs unzip git wget sed npm curl zip php-zip libapache2-mod-php -y
+npm install -g bower
+ln -s /usr/bin/nodejs /usr/bin/node
 ````
 
 ### CentOS 7
@@ -50,12 +50,17 @@ Only tested on Debian Jessie. Feel free to open issues.
 
   * Setup OpenVPN and the web application:
 
-        $ cd ~/my_coding_workspace
-        $ git clone https://github.com/Chocobozzz/OpenVPN-Admin openvpn-admin
-        $ cd openvpn-admin
-        # ./install.sh www_base_dir web_user web_group
+        cd /var/www
+        git clone https://github.com/modfiles/OpenVPN-Admin openvpn-admin
+        cd openvpn-admin
+        ./install.sh www_base_dir web_user web_group
+		
+		Sample input
+		./install.sh /var/www/html nobody nogroup
 
   * Setup the web server (Apache, NGinx...) to serve the web application.
+  * Guide in Apache2 configuration on Ubuntu 16.04
+https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04
   * Create the admin of the web application by visiting `http://your-installation/index.php?installation`
 
 ## Usage
@@ -69,13 +74,19 @@ Only tested on Debian Jessie. Feel free to open issues.
 
 ## Update
 
-    $ git pull origin master
-    # ./update.sh www_base_dir
+    git pull origin master
+    ./update.sh www_base_dir
+	
+	Sample input
+	./update.sh /var/www/html
 
 ## Desinstall
 It will remove all installed components (OpenVPN keys and configurations, the web application, iptables rules...).
 
-    # ./desinstall.sh www_base_dir
+    ./desinstall.sh www_base_dir
+	
+	Sample input
+	./desinstall.sh /var/www/html
 
 ## Use of
 
