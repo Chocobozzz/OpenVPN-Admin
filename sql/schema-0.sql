@@ -22,15 +22,19 @@ CREATE TABLE IF NOT EXISTS `log` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `user` (
-  `user_id` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `user_pass` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Free_user123',
-  `user_mail` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `user_phone` varchar(16) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `user_subs` varchar(16) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Free',
-  `user_online` tinyint(1) NOT NULL DEFAULT '0',
-  `user_enable` tinyint(1) NOT NULL DEFAULT '1',
-  `user_start_date` date NOT NULL,
-  `user_end_date` date NOT NULL,
-  PRIMARY KEY (`user_id`),
-  KEY `user_pass` (`user_pass`)
+  `memberID` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `phone` varchar(16) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `subscription` varchar(16) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Free',
+  `online` tinyint(1) NOT NULL DEFAULT '0',
+  `enable` tinyint(1) NOT NULL DEFAULT '1',
+  `startdate` date NOT NULL DEFAULT CURDATE(),
+  `enddate` date NOT NULL CURDATE() + INTERVAL 1 MONTH,
+  `activate` varchar(255) NOT NULL,
+  `resetToken` varchar(255) DEFAULT NULL,
+  `resetComplete` varchar(3) DEFAULT 'No',
+  PRIMARY KEY (`memberID`),
+  KEY `username` (`username`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
