@@ -22,6 +22,7 @@
           <label for="configuration_os">OS</label>
           <select name="configuration_os" id="configuration_os" class="form-control">
             <option value="gnu_linux">GNU/Linux</option>
+            <option value="osx_viscosity">OSX/Viscosity</option>
             <option value="windows">Windows</option>
           </select>
         </div>
