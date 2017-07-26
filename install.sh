@@ -47,6 +47,12 @@ printf "\n################## Server informations ##################\n"
 
 read -p "Server Hostname/IP: " ip_server
 
+read -p "OpenVPN protocol (tcp or udp) [tcp]: " openvpn_proto
+
+if [[ -z $openvpn_proto ]]; then
+  openvpn_proto="tcp"
+fi
+
 read -p "Port [443]: " server_port
 
 if [[ -z $server_port ]]; then
@@ -177,6 +183,10 @@ cp "$base_path/installation/server.conf" "/etc/openvpn/"
 mkdir "/etc/openvpn/ccd"
 sed -i "s/port 443/port $server_port/" "/etc/openvpn/server.conf"
 
+if [ $openvpn_proto = "udp" ]; then
+  sed -i "s/proto tcp/proto $openvpn_proto/" "/etc/openvpn/server.conf"
+fi
+
 nobody_group=$(id -ng nobody)
 sed -i "s/group nogroup/group $nobody_group/" "/etc/openvpn/server.conf"
 
@@ -226,15 +236,19 @@ cd "$openvpn_admin"
 sed -i "s/\$user = '';/\$user = '$mysql_user';/" "./include/config.php"
 sed -i "s/\$pass = '';/\$pass = '$mysql_pass';/" "./include/config.php"
 
-# Replace in the client configurations with the ip of the server
-sed -i "s/remote xxx\.xxx\.xxx\.xxx 443/remote $ip_server $server_port/" "./client-conf/gnu-linux/client.conf"
-sed -i "s/remote xxx\.xxx\.xxx\.xxx 443/remote $ip_server $server_port/" "./client-conf/osx-viscosity/client.conf"
-sed -i "s/remote xxx\.xxx\.xxx\.xxx 443/remote $ip_server $server_port/" "./client-conf/windows/client.ovpn"
+# Replace in the client configurations with the ip of the server and openvpn protocol
+for file in "./client-conf/gnu-linux/client.conf" "./client-conf/osx-viscosity/client.conf" "./client-conf/windows/client.ovpn"; do
+  sed -i "s/remote xxx\.xxx\.xxx\.xxx 443/remote $ip_server $server_port/" $file
+
+  if [ $openvpn_proto = "udp" ]; then
+    sed -i "s/proto tcp-client/proto udp/" $file
+  fi
+done
 
 # Copy ta.key inside the client-conf directory
-cp "/etc/openvpn/"{ca.crt,ta.key} "./client-conf/gnu-linux/"
-cp "/etc/openvpn/"{ca.crt,ta.key} "./client-conf/osx-viscosity/"
-cp "/etc/openvpn/"{ca.crt,ta.key} "./client-conf/windows/"
+for directory in "./client-conf/gnu-linux/" "./client-conf/osx-viscosity/" "./client-conf/windows/"; do
+  cp "/etc/openvpn/"{ca.crt,ta.key} $directory
+done
 
 # Install third parties
 bower --allow-root install
