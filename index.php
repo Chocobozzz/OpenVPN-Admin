@@ -190,7 +190,7 @@
       <nav class="navbar navbar-default">
         <div class="row col-md-12">
           <div class="col-md-6">
-            <p class="navbar-text signed">Signed as <?php echo $_SESSION['admin_id']; ?>
+            <p class="navbar-text signed">Signed in as <?php echo $_SESSION['admin_id']; ?>
             </div>
             <div class="col-md-6">
               <a class="navbar-text navbar-right" href="index.php?logout" title="Logout"><button class="btn btn-danger">Logout</button></a>
