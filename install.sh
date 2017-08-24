@@ -126,7 +126,7 @@ EASYRSA_RELEASES=( $(
 EASYRSA_LATEST=${EASYRSA_RELEASES[0]}
 
 # Get the rsa keys
-wget -q https://github.com/OpenVPN/easy-rsa/releases/download/${EASYRSA_LATEST}/EasyRSA-${EASYRSA_LATEST}.tgz
+wget -q https://github.com/OpenVPN/easy-rsa/releases/download/v${EASYRSA_LATEST}/EasyRSA-${EASYRSA_LATEST}.tgz
 tar -xaf EasyRSA-${EASYRSA_LATEST}.tgz
 mv EasyRSA-${EASYRSA_LATEST} /etc/openvpn/easy-rsa
 rm -r EasyRSA-${EASYRSA_LATEST}.tgz
