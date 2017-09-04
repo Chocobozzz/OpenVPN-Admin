@@ -59,8 +59,8 @@
 
         do {
           // Better in Kb or Mb
-          $received = ($data['log_received'] > 100000) ? $data['log_received']/100000 . " Mo" : $data['log_received']/100 . " Ko";
-          $sent = ($data['log_send'] > 100000) ? $data['log_send']/100000 . " Mo" : $data['log_send']/100 . " Ko";
+          $received = ($data['log_received'] > 1000000) ? $data['log_received']/1000000 . " Mo" : $data['log_received']/1000 . " Ko";
+          $sent = ($data['log_send'] > 1000000) ? $data['log_send']/1000000 . " Mo" : $data['log_send']/1000 . " Ko";
 
           // We add to the array the new line of logs
           array_push($list, array(
