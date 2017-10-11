@@ -17,6 +17,10 @@ $(function () {
     alert('Error: ' + textStatus);
   }
 
+   function checkFormatter(value, row, index) {
+      return '<input type="checkbox" '+(parseInt(value)===1?'checked':'')+' />';
+   }
+
   // ------------------------- USERS definitions -------------------------
   var $userTable = $('#table-users');
   var $modalUserAdd = $('#modal-user-add');
@@ -44,6 +48,23 @@ $(function () {
       data: {
         del_user: true,
         del_user_id: user_id
+      },
+      method: 'POST',
+      success: function() {
+        refreshTable($userTable);
+      },
+      error: onAjaxError
+    });
+  }
+
+  function genericSetField(field, new_value, pk) {
+    $.ajax({
+      url: gridsUrl,
+      data: {
+        set_user: true,
+        name: field,
+        value: new_value,
+        pk : pk
       },
       method: 'POST',
       success: function() {
@@ -131,6 +152,7 @@ $(function () {
   $userTable.bootstrapTable({
     url: gridsUrl,
     sortable: false,
+    checkboxHeader: false,
     queryParams: function (params) {
       params.select = 'user';
       return params;
@@ -143,7 +165,16 @@ $(function () {
       { title: "Mail", field: "user_mail", editable: userEditable },
       { title: "Phone", field: "user_phone", editable: userEditable },
       { title: "Online", field: "user_online" },
-      { title: "Enabled", field: "user_enable" },
+      {
+         title: "Enabled",
+         field: "user_enable",
+         formatter : checkFormatter,
+         events: {
+            'click input': function (e, value, row) {
+               genericSetField('user_enable', $(this).is(':checked') ? '1' : '0', row.user_id);
+            }
+         }
+      },
       { title: "Start Date", field: "user_start_date", editable: userDateEditable },
       { title: "End Date", field: "user_end_date", editable: userDateEditable },
       {
