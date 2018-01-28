@@ -1,0 +1,35 @@
+{
+  "name": "openvpn-admin",
+  "version": "0.3.2",
+  "description": "Setup and administration of openvpn with a web interface",
+  "homepage": "https://github.com/EvilFreelancer/OpenVPN-Admin#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EvilFreelancer/OpenVPN-Admin.git"
+  },
+  "authors": [
+    "Florian Bigard <florian.bigard@gmail.com>"
+  ],
+  "keywords": [
+    "openvpn",
+    "admin",
+    "setup"
+  ],
+  "license": "GPLv3",
+  "bugs": {
+    "url": "https://github.com/EvilFreelancer/OpenVPN-Admin/issues"
+  },
+  "dependencies": {
+    "gulp": "^3.9.0",
+    "gulp-copy": "^1.1.0",
+    "del": "^2.0.0",
+    "bootstrap": "^3.3.7",
+    "bootstrap-table": "^1.11.0",
+    "jquery": "^2.2.4",
+    "x-editable": "^1.5.1",
+    "bootstrap-datepicker": "^1.6.4"
+  },
+  "scripts": {
+    "postinstall": "gulp"
+  }
+}

@@ -1,2 +1,10 @@
-.phpintel
-vendor/
+/.phpintel
+/.env
+/.idea/
+/vendor/
+/node_modules/
+/composer.lock
+/package-lock.json
+/public/css/
+/public/js/
+/public/img/
