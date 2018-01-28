@@ -1,5 +1,5 @@
 <?php
-  # Enable dotEnv support
+  // Enable dotEnv support
   require_once __DIR__ . '/../vendor/autoload.php';
   (new Dotenv\Dotenv(__DIR__ . '/../'))->load();
 
@@ -204,9 +204,17 @@
         </div>
       </nav>
 
-  <?php
-      require(dirname(__FILE__) . '/../include/html/grids.php');
-    }
-  ?>
+      <?php
+          require(dirname(__FILE__) . '/../include/html/grids.php');
+        }
+      ?>
+
+      <script src="/js/jquery.min.js"></script>
+      <script src="/js/bootstrap.min.js"></script>
+      <script src="/js/bootstrap-table.min.js"></script>
+      <script src="/js/bootstrap-datepicker.js"></script>
+      <script src="/js/bootstrap-table-editable.min.js"></script>
+      <script src="/js/bootstrap-editable.js"></script>
+      <script src="/js/grids.js"></script>
   </body>
 </html>
