@@ -1,8 +1,12 @@
 <?php
+  # Enable dotEnv support
+  require_once __DIR__ . '/../vendor/autoload.php';
+  (new Dotenv\Dotenv(__DIR__ . '/../'))->load();
+
   session_start();
 
-  require(dirname(__FILE__) . '/include/functions.php');
-  require(dirname(__FILE__) . '/include/connect.php');
+  require(dirname(__FILE__) . '/../include/functions.php');
+  require(dirname(__FILE__) . '/../include/connect.php');
 
   // Disconnecting ?
   if(isset($_GET['logout'])){
@@ -129,7 +133,7 @@
         // Create the initial tables
         $migrations = getMigrationSchemas();
         foreach ($migrations as $migration_value) {
-          $sql_file = dirname(__FILE__) . "/sql/schema-$migration_value.sql";
+          $sql_file = dirname(__FILE__) . "/../scripts/sql/schema-$migration_value.sql";
           try {
             $sql = file_get_contents($sql_file);
             $bdd->exec($sql);
@@ -158,8 +162,8 @@
       }
       // Print the installation form
       else {
-        require(dirname(__FILE__) . '/include/html/menu.php');
-        require(dirname(__FILE__) . '/include/html/form/installation.php');
+        require(dirname(__FILE__) . '/../include/html/menu.php');
+        require(dirname(__FILE__) . '/../include/html/form/installation.php');
       }
 
       exit(-1);
@@ -170,8 +174,8 @@
       if(isset($error) && $error == true)
         printError('Login error');
 
-      require(dirname(__FILE__) . '/include/html/menu.php');
-      require(dirname(__FILE__) . '/include/html/form/configuration.php');
+      require(dirname(__FILE__) . '/../include/html/menu.php');
+      require(dirname(__FILE__) . '/../include/html/form/configuration.php');
     }
 
 
@@ -180,8 +184,8 @@
       if(isset($error) && $error == true)
         printError('Login error');
 
-      require(dirname(__FILE__) . '/include/html/menu.php');
-      require(dirname(__FILE__) . '/include/html/form/login.php');
+      require(dirname(__FILE__) . '/../include/html/menu.php');
+      require(dirname(__FILE__) . '/../include/html/form/login.php');
     }
 
     // --------------- GRIDS ---------------
@@ -201,7 +205,7 @@
       </nav>
 
   <?php
-      require(dirname(__FILE__) . '/include/html/grids.php');
+      require(dirname(__FILE__) . '/../include/html/grids.php');
     }
   ?>
   </body>
