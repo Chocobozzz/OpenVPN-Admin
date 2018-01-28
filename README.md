@@ -16,11 +16,19 @@ Administrate its OpenVPN with a web interface (logs visualisations, users managi
   * PHP >= 5.5 with modules:
     * zip
     * pdo_mysql
-  * bower
+  * composer
+  * npm
   * unzip
   * wget
   * sed
   * curl
+
+### Debian Stretch
+
+````
+# apt-get install openvpn nginx composer php-fpm php-mysql mysql-server php nodejs unzip git wget sed curl
+# ln -s /usr/bin/nodejs /usr/bin/node
+````
 
 ### Debian Jessie
 
@@ -46,16 +54,29 @@ Administrate its OpenVPN with a web interface (logs visualisations, users managi
 
 Only tested on Debian Jessie. Feel free to open issues.
 
-## Installation
+## Installation (full)
 
   * Setup OpenVPN and the web application:
 
         $ cd ~/my_coding_workspace
         $ git clone https://github.com/Chocobozzz/OpenVPN-Admin openvpn-admin
         $ cd openvpn-admin
-        # ./install.sh www_base_dir web_user web_group
+        $ npm install
+        $ composer install
 
-  * Setup the web server (Apache, NGinx...) to serve the web application.
+You can predefine all environment parameters, just copy example and put your changes in `.env`
+
+    # cp .env.example .env
+
+If you want to make ths full installation (with preparing of MySQL, Web-server and OpenVPN)
+
+    # ./install.sh www_base_dir web_user web_group
+
+If you want to configure only OpenVPN:
+
+    # ./install-openvpn.sh
+
+  * Setup the web server (Apache, Nginx...) to serve the web application.
   * Create the admin of the web application by visiting `http://your-installation/index.php?installation`
 
 ## Usage
