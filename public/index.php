@@ -1,8 +1,12 @@
 <?php
+  // Enable dotEnv support
+  require_once __DIR__ . '/../vendor/autoload.php';
+  (new Dotenv\Dotenv(__DIR__ . '/../'))->load();
+
   session_start();
 
-  require(dirname(__FILE__) . '/include/functions.php');
-  require(dirname(__FILE__) . '/include/connect.php');
+  require(dirname(__FILE__) . '/../include/functions.php');
+  require(dirname(__FILE__) . '/../include/connect.php');
 
   // Disconnecting ?
   if(isset($_GET['logout'])){
@@ -95,13 +99,13 @@
 
     <title>OpenVPN-Admin</title>
 
-    <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css" type="text/css" />
-    <link rel="stylesheet" href="vendor/bootstrap-table/dist/bootstrap-table.min.css" type="text/css" />
-    <link rel="stylesheet" href="vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" type="text/css" />
-    <link rel="stylesheet" href="css/index.css" type="text/css" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="/css/bootstrap-editable.css" type="text/css" />
+    <link rel="stylesheet" href="/css/bootstrap-table.min.css" type="text/css" />
+    <link rel="stylesheet" href="/css/bootstrap-datepicker3.css" type="text/css" />
+    <link rel="stylesheet" href="/css/index.css" type="text/css" />
 
-    <link rel="icon" type="image/png" href="css/icon.png">
+    <link rel="icon" type="image/png" href="/img/icon.png">
   </head>
   <body class='container-fluid'>
   <?php
@@ -129,7 +133,7 @@
         // Create the initial tables
         $migrations = getMigrationSchemas();
         foreach ($migrations as $migration_value) {
-          $sql_file = dirname(__FILE__) . "/sql/schema-$migration_value.sql";
+          $sql_file = dirname(__FILE__) . "/../scripts/sql/schema-$migration_value.sql";
           try {
             $sql = file_get_contents($sql_file);
             $bdd->exec($sql);
@@ -158,8 +162,8 @@
       }
       // Print the installation form
       else {
-        require(dirname(__FILE__) . '/include/html/menu.php');
-        require(dirname(__FILE__) . '/include/html/form/installation.php');
+        require(dirname(__FILE__) . '/../include/html/menu.php');
+        require(dirname(__FILE__) . '/../include/html/form/installation.php');
       }
 
       exit(-1);
@@ -170,8 +174,8 @@
       if(isset($error) && $error == true)
         printError('Login error');
 
-      require(dirname(__FILE__) . '/include/html/menu.php');
-      require(dirname(__FILE__) . '/include/html/form/configuration.php');
+      require(dirname(__FILE__) . '/../include/html/menu.php');
+      require(dirname(__FILE__) . '/../include/html/form/configuration.php');
     }
 
 
@@ -180,8 +184,8 @@
       if(isset($error) && $error == true)
         printError('Login error');
 
-      require(dirname(__FILE__) . '/include/html/menu.php');
-      require(dirname(__FILE__) . '/include/html/form/login.php');
+      require(dirname(__FILE__) . '/../include/html/menu.php');
+      require(dirname(__FILE__) . '/../include/html/form/login.php');
     }
 
     // --------------- GRIDS ---------------
@@ -200,9 +204,17 @@
         </div>
       </nav>
 
-  <?php
-      require(dirname(__FILE__) . '/include/html/grids.php');
-    }
-  ?>
+      <?php
+          require(dirname(__FILE__) . '/../include/html/grids.php');
+        }
+      ?>
+
+      <script src="/js/jquery.min.js"></script>
+      <script src="/js/bootstrap.min.js"></script>
+      <script src="/js/bootstrap-table.min.js"></script>
+      <script src="/js/bootstrap-datepicker.js"></script>
+      <script src="/js/bootstrap-table-editable.min.js"></script>
+      <script src="/js/bootstrap-editable.js"></script>
+      <script src="/js/grids.js"></script>
   </body>
 </html>

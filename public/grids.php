@@ -4,9 +4,14 @@
   if(!isset($_SESSION['admin_id']))
     exit -1;
 
-  require(dirname(__FILE__) . '/connect.php');
-  require(dirname(__FILE__) . '/functions.php');
+  // Enable dotEnv support
+  require_once __DIR__ . '/../vendor/autoload.php';
+  (new Dotenv\Dotenv(__DIR__ . '/../'))->load();
 
+  session_start();
+
+  require(dirname(__FILE__) . '/../include/functions.php');
+  require(dirname(__FILE__) . '/../include/connect.php');
 
   // ---------------- SELECT ----------------
   if(isset($_GET['select'])){

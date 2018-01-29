@@ -1,0 +1,16 @@
+{
+    "name": "chocobozzz/openvpn-admin",
+    "authors": [
+        {
+            "name": "Florian Bigard",
+            "email": "florian.bigard@gmail.com"
+        },
+        {
+            "name": "Paul Rock",
+            "email": "paul@drteam.rocks"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^2.4"
+    }
+}

@@ -2,7 +2,7 @@ $(function () {
   "use strict";
 
   // ------------------------- GLOBAL definitions -------------------------
-  var gridsUrl = 'include/grids.php';
+  var gridsUrl = 'grids.php';
 
   function deleteFormatter() {
     return "<span class='glyphicon glyphicon-remove action'></span";
