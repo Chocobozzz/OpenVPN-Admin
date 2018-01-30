@@ -25,49 +25,27 @@ if (isset($_POST['configuration_get'], $_POST['configuration_username'], $_POST[
 
     // Error ?
     if ($data && passEqual($_POST['configuration_pass'], $data['user_pass'])) {
-        // Thanks http://stackoverflow.com/questions/4914750/how-to-zip-a-whole-folder-using-php
-        if ($_POST['configuration_os'] == "gnu_linux") {
-            $conf_dir = 'gnu-linux';
-        } elseif ($_POST['configuration_os'] == "osx_viscosity") {
-            $conf_dir = 'osx-viscosity';
-        } else {
-            $conf_dir = 'windows';
-        }
-        $rootPath = realpath("./client-conf/$conf_dir");
+        $vpn_dev = getenv('VPN_INIF');
+        $vpn_proto = getenv('VPN_PROTO');
+        $vpn_remote = getenv('VPN_ADDR'). ' ' . getenv('VPN_PORT');
 
-        // Initialize archive object
-        $archive_base_name = "openvpn-$conf_dir";
-        $archive_name = "$archive_base_name.zip";
-        $archive_path = "./client-conf/$archive_name";
-        $zip = new ZipArchive();
-        $zip->open($archive_path, ZipArchive::CREATE | ZipArchive::OVERWRITE);
-
-        $files = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($rootPath),
-            RecursiveIteratorIterator::LEAVES_ONLY
-        );
-
-        foreach ($files as $name => $file) {
-            // Skip directories (they would be added automatically)
-            if (!$file->isDir()) {
-                // Get real and relative path for current file
-                $filePath = $file->getRealPath();
-                $relativePath = substr($filePath, strlen($rootPath) + 1);
-
-                // Add current file to archive
-                $zip->addFile($filePath, "$archive_base_name/$relativePath");
-            }
+        switch ($_POST['configuration_os']) {
+            case 'gnu_linux':
+            case 'configuration_os':
+                $filename = 'client.conf';
+                break;
+            default:
+                $filename = 'client.ovpn';
+                break;
         }
 
-        // Zip archive will be created only after closing object
-        $zip->close();
-
-        //then send the headers to foce download the zip file
-        header("Content-type: application/zip");
-        header("Content-Disposition: attachment; filename=$archive_name");
+        header('Content-Type:text/plain');
+        header("Content-Disposition: attachment; filename=$filename");
         header("Pragma: no-cache");
         header("Expires: 0");
-        readfile($archive_path);
+
+        require(dirname(__FILE__) . '/../app/ovpn.php');
+        die();
     } else {
         $error = true;
     }
@@ -96,13 +74,13 @@ else if (isset($_POST['admin_login'], $_POST['admin_username'], $_POST['admin_pa
 
     <title>OpenVPN-Admin</title>
 
-    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css"/>
-    <link rel="stylesheet" href="/css/bootstrap-editable.css" type="text/css"/>
-    <link rel="stylesheet" href="/css/bootstrap-table.min.css" type="text/css"/>
-    <link rel="stylesheet" href="/css/bootstrap-datepicker3.css" type="text/css"/>
-    <link rel="stylesheet" href="/css/index.css" type="text/css"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css"/>
+    <link rel="stylesheet" href="css/bootstrap-editable.css" type="text/css"/>
+    <link rel="stylesheet" href="css/bootstrap-table.min.css" type="text/css"/>
+    <link rel="stylesheet" href="css/bootstrap-datepicker3.css" type="text/css"/>
+    <link rel="stylesheet" href="css/index.css" type="text/css"/>
 
-    <link rel="icon" type="image/png" href="/img/icon.png">
+    <link rel="icon" type="image/png" href="img/icon.png">
 </head>
 <body class='container-fluid'>
 <?php
@@ -202,12 +180,12 @@ else {
 }
 ?>
 
-<script src="/js/jquery.min.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/bootstrap-table.min.js"></script>
-<script src="/js/bootstrap-datepicker.js"></script>
-<script src="/js/bootstrap-table-editable.min.js"></script>
-<script src="/js/bootstrap-editable.js"></script>
-<script src="/js/grids.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-table.min.js"></script>
+<script src="js/bootstrap-datepicker.js"></script>
+<script src="js/bootstrap-table-editable.min.js"></script>
+<script src="js/bootstrap-editable.js"></script>
+<script src="js/grids.js"></script>
 </body>
 </html>
