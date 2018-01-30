@@ -1,152 +1,148 @@
 <?php
-  // Enable dotEnv support
-  require_once __DIR__ . '/../vendor/autoload.php';
-  (new Dotenv\Dotenv(__DIR__ . '/../'))->load();
+// Enable dotEnv support
+require_once __DIR__ . '/../vendor/autoload.php';
+$dotenv = new Dotenv\Dotenv(__DIR__ . '/../');
+if (file_exists(__DIR__ . '/../.env')) $dotenv->load();
 
-  session_start();
+session_start();
 
-  require(dirname(__FILE__) . '/../include/functions.php');
-  require(dirname(__FILE__) . '/../include/connect.php');
+require(dirname(__FILE__) . '/../app/functions.php');
+require(dirname(__FILE__) . '/../app/connect.php');
 
-  // Disconnecting ?
-  if(isset($_GET['logout'])){
+// Disconnecting ?
+if (isset($_GET['logout'])) {
     session_destroy();
     header("Location: .");
     exit(-1);
-  }
+}
 
-  // Get the configuration files ?
-  if(isset($_POST['configuration_get'], $_POST['configuration_username'], $_POST['configuration_pass'], $_POST['configuration_os'])
-     && !empty($_POST['configuration_pass'])) {
+// Get the configuration files ?
+if (isset($_POST['configuration_get'], $_POST['configuration_username'], $_POST['configuration_pass'], $_POST['configuration_os'])
+    && !empty($_POST['configuration_pass'])) {
     $req = $bdd->prepare('SELECT * FROM user WHERE user_id = ?');
     $req->execute(array($_POST['configuration_username']));
     $data = $req->fetch();
 
     // Error ?
-    if($data && passEqual($_POST['configuration_pass'], $data['user_pass'])) {
-      // Thanks http://stackoverflow.com/questions/4914750/how-to-zip-a-whole-folder-using-php
-      if($_POST['configuration_os'] == "gnu_linux") {
-        $conf_dir = 'gnu-linux';
-      } elseif($_POST['configuration_os'] == "osx_viscosity") {
-        $conf_dir = 'osx-viscosity';
-      } else {
-        $conf_dir = 'windows';
-      }
-      $rootPath = realpath("./client-conf/$conf_dir");
-
-      // Initialize archive object
-      $archive_base_name = "openvpn-$conf_dir";
-      $archive_name = "$archive_base_name.zip";
-      $archive_path = "./client-conf/$archive_name";
-      $zip = new ZipArchive();
-      $zip->open($archive_path, ZipArchive::CREATE | ZipArchive::OVERWRITE);
-
-      $files = new RecursiveIteratorIterator(
-        new RecursiveDirectoryIterator($rootPath),
-        RecursiveIteratorIterator::LEAVES_ONLY
-      );
-
-      foreach ($files as $name => $file) {
-        // Skip directories (they would be added automatically)
-        if (!$file->isDir()) {
-          // Get real and relative path for current file
-          $filePath = $file->getRealPath();
-          $relativePath = substr($filePath, strlen($rootPath) + 1);
-
-          // Add current file to archive
-          $zip->addFile($filePath, "$archive_base_name/$relativePath");
+    if ($data && passEqual($_POST['configuration_pass'], $data['user_pass'])) {
+        // Thanks http://stackoverflow.com/questions/4914750/how-to-zip-a-whole-folder-using-php
+        if ($_POST['configuration_os'] == "gnu_linux") {
+            $conf_dir = 'gnu-linux';
+        } elseif ($_POST['configuration_os'] == "osx_viscosity") {
+            $conf_dir = 'osx-viscosity';
+        } else {
+            $conf_dir = 'windows';
         }
-      }
+        $rootPath = realpath("./client-conf/$conf_dir");
 
-      // Zip archive will be created only after closing object
-      $zip->close();
+        // Initialize archive object
+        $archive_base_name = "openvpn-$conf_dir";
+        $archive_name = "$archive_base_name.zip";
+        $archive_path = "./client-conf/$archive_name";
+        $zip = new ZipArchive();
+        $zip->open($archive_path, ZipArchive::CREATE | ZipArchive::OVERWRITE);
 
-      //then send the headers to foce download the zip file
-      header("Content-type: application/zip");
-      header("Content-Disposition: attachment; filename=$archive_name");
-      header("Pragma: no-cache");
-      header("Expires: 0");
-      readfile($archive_path);
+        $files = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($rootPath),
+            RecursiveIteratorIterator::LEAVES_ONLY
+        );
+
+        foreach ($files as $name => $file) {
+            // Skip directories (they would be added automatically)
+            if (!$file->isDir()) {
+                // Get real and relative path for current file
+                $filePath = $file->getRealPath();
+                $relativePath = substr($filePath, strlen($rootPath) + 1);
+
+                // Add current file to archive
+                $zip->addFile($filePath, "$archive_base_name/$relativePath");
+            }
+        }
+
+        // Zip archive will be created only after closing object
+        $zip->close();
+
+        //then send the headers to foce download the zip file
+        header("Content-type: application/zip");
+        header("Content-Disposition: attachment; filename=$archive_name");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        readfile($archive_path);
+    } else {
+        $error = true;
     }
-    else {
-      $error = true;
-    }
-  }
-
-  // Admin login attempt ?
-  else if(isset($_POST['admin_login'], $_POST['admin_username'], $_POST['admin_pass']) && !empty($_POST['admin_pass'])){
+} // Admin login attempt ?
+else if (isset($_POST['admin_login'], $_POST['admin_username'], $_POST['admin_pass']) && !empty($_POST['admin_pass'])) {
 
     $req = $bdd->prepare('SELECT * FROM admin WHERE admin_id = ?');
     $req->execute(array($_POST['admin_username']));
     $data = $req->fetch();
 
     // Error ?
-    if($data && passEqual($_POST['admin_pass'], $data['admin_pass'])) {
-      $_SESSION['admin_id'] = $data['admin_id'];
-      header("Location: index.php?admin");
-      exit(-1);
+    if ($data && passEqual($_POST['admin_pass'], $data['admin_pass'])) {
+        $_SESSION['admin_id'] = $data['admin_id'];
+        header("Location: index.php?admin");
+        exit(-1);
+    } else {
+        $error = true;
     }
-    else {
-      $error = true;
-    }
-  }
+}
 ?>
 
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
+<head>
+    <meta charset="utf-8"/>
 
     <title>OpenVPN-Admin</title>
 
-    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="/css/bootstrap-editable.css" type="text/css" />
-    <link rel="stylesheet" href="/css/bootstrap-table.min.css" type="text/css" />
-    <link rel="stylesheet" href="/css/bootstrap-datepicker3.css" type="text/css" />
-    <link rel="stylesheet" href="/css/index.css" type="text/css" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/css/bootstrap-editable.css" type="text/css"/>
+    <link rel="stylesheet" href="/css/bootstrap-table.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/css/bootstrap-datepicker3.css" type="text/css"/>
+    <link rel="stylesheet" href="/css/index.css" type="text/css"/>
 
     <link rel="icon" type="image/png" href="/img/icon.png">
-  </head>
-  <body class='container-fluid'>
-  <?php
+</head>
+<body class='container-fluid'>
+<?php
 
-    // --------------- INSTALLATION ---------------
-    if(isset($_GET['installation'])) {
-      if(isInstalled($bdd) == true) {
+// --------------- INSTALLATION ---------------
+if (isset($_GET['installation'])) {
+    if (isInstalled($bdd) == true) {
         printError('OpenVPN-admin is already installed. Redirection.');
-        header( "refresh:3;url=index.php?admin" );
+        header("refresh:3;url=index.php?admin");
         exit(-1);
-      }
+    }
 
-      // If the user sent the installation form
-      if(isset($_POST['admin_username'])) {
+    // If the user sent the installation form
+    if (isset($_POST['admin_username'])) {
         $admin_username = $_POST['admin_username'];
         $admin_pass = $_POST['admin_pass'];
         $admin_repeat_pass = $_POST['repeat_admin_pass'];
 
-        if($admin_pass != $admin_repeat_pass) {
-          printError('The passwords do not correspond. Redirection.');
-          header( "refresh:3;url=index.php?installation" );
-          exit(-1);
+        if ($admin_pass != $admin_repeat_pass) {
+            printError('The passwords do not correspond. Redirection.');
+            header("refresh:3;url=index.php?installation");
+            exit(-1);
         }
 
         // Create the initial tables
         $migrations = getMigrationSchemas();
         foreach ($migrations as $migration_value) {
-          $sql_file = dirname(__FILE__) . "/../scripts/sql/schema-$migration_value.sql";
-          try {
-            $sql = file_get_contents($sql_file);
-            $bdd->exec($sql);
-          }
-          catch (PDOException $e) {
-            printError($e->getMessage());
-            exit(1);
-          }
+            $sql_file = dirname(__FILE__) . "/../scripts/sql/schema-$migration_value.sql";
+            try {
+                $sql = file_get_contents($sql_file);
+                $bdd->exec($sql);
+            } catch (PDOException $e) {
+                printError($e->getMessage());
+                exit(1);
+            }
 
-          unlink($sql_file);
+            unlink($sql_file);
 
-          // Update schema to the new value
-          updateSchema($bdd, $migration_value);
+            // Update schema to the new value
+            updateSchema($bdd, $migration_value);
         }
 
         // Generate the hash
@@ -158,63 +154,60 @@
 
         rmdir(dirname(__FILE__) . '/sql');
         printSuccess('Well done, OpenVPN-Admin is installed. Redirection.');
-        header( "refresh:3;url=index.php?admin" );
-      }
-      // Print the installation form
-      else {
-        require(dirname(__FILE__) . '/../include/html/menu.php');
-        require(dirname(__FILE__) . '/../include/html/form/installation.php');
-      }
-
-      exit(-1);
+        header("refresh:3;url=index.php?admin");
+    } // Print the installation form
+    else {
+        require(dirname(__FILE__) . '/../app/html/menu.php');
+        require(dirname(__FILE__) . '/../app/html/form/installation.php');
     }
 
-    // --------------- CONFIGURATION ---------------
-    if(!isset($_GET['admin'])) {
-      if(isset($error) && $error == true)
+    exit(-1);
+}
+
+// --------------- CONFIGURATION ---------------
+if (!isset($_GET['admin'])) {
+    if (isset($error) && $error == true)
         printError('Login error');
 
-      require(dirname(__FILE__) . '/../include/html/menu.php');
-      require(dirname(__FILE__) . '/../include/html/form/configuration.php');
-    }
-
-
-    // --------------- LOGIN ---------------
-    else if(!isset($_SESSION['admin_id'])){
-      if(isset($error) && $error == true)
+    require(dirname(__FILE__) . '/../app/html/menu.php');
+    require(dirname(__FILE__) . '/../app/html/form/configuration.php');
+} // --------------- LOGIN ---------------
+else if (!isset($_SESSION['admin_id'])) {
+    if (isset($error) && $error == true)
         printError('Login error');
 
-      require(dirname(__FILE__) . '/../include/html/menu.php');
-      require(dirname(__FILE__) . '/../include/html/form/login.php');
-    }
-
-    // --------------- GRIDS ---------------
-    else{
-  ?>
-      <nav class="navbar navbar-default">
+    require(dirname(__FILE__) . '/../app/html/menu.php');
+    require(dirname(__FILE__) . '/../app/html/form/login.php');
+} // --------------- GRIDS ---------------
+else {
+    ?>
+    <nav class="navbar navbar-default">
         <div class="row col-md-12">
-          <div class="col-md-6">
-            <p class="navbar-text signed">Signed in as <?php echo $_SESSION['admin_id']; ?>
+            <div class="col-md-6">
+                <p class="navbar-text signed">Signed in as <?php echo $_SESSION['admin_id']; ?>            </p>
             </div>
             <div class="col-md-6">
-              <a class="navbar-text navbar-right" href="index.php?logout" title="Logout"><button class="btn btn-danger">Logout</button></a>
-              <a class="navbar-text navbar-right" href="index.php" title="Configuration"><button class="btn btn-default">Configurations</button></a>
-            </p>
-          </div>
+                <a class="navbar-text navbar-right" href="index.php?logout" title="Logout">
+                    <button class="btn btn-danger">Logout</button>
+                </a>
+                <a class="navbar-text navbar-right" href="index.php" title="Configuration">
+                    <button class="btn btn-default">Configurations</button>
+                </a>
+            </div>
         </div>
-      </nav>
+    </nav>
 
-      <?php
-          require(dirname(__FILE__) . '/../include/html/grids.php');
-        }
-      ?>
+    <?php
+    require(dirname(__FILE__) . '/../app/html/grids.php');
+}
+?>
 
-      <script src="/js/jquery.min.js"></script>
-      <script src="/js/bootstrap.min.js"></script>
-      <script src="/js/bootstrap-table.min.js"></script>
-      <script src="/js/bootstrap-datepicker.js"></script>
-      <script src="/js/bootstrap-table-editable.min.js"></script>
-      <script src="/js/bootstrap-editable.js"></script>
-      <script src="/js/grids.js"></script>
-  </body>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/bootstrap-table.min.js"></script>
+<script src="/js/bootstrap-datepicker.js"></script>
+<script src="/js/bootstrap-table-editable.min.js"></script>
+<script src="/js/bootstrap-editable.js"></script>
+<script src="/js/grids.js"></script>
+</body>
 </html>

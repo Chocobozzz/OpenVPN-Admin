@@ -41,5 +41,3 @@
   function passEqual($pass, $hash) {
     return password_verify($pass, $hash);
   }
-
-?>
