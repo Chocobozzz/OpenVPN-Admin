@@ -1,15 +1,3 @@
-<?php
-// Enable dotEnv support
-require_once __DIR__ . '/../vendor/autoload.php';
-$dotenv = new Dotenv\Dotenv(__DIR__ . '/../');
-if (file_exists(__DIR__ . '/../.env')) $dotenv->load();
-
-$vpn_dev = getenv('VPN_INIF');
-$vpn_proto = getenv('VPN_PROTO');
-$vpn_remote = getenv('VPN_ADDR'). ' ' . getenv('VPN_PORT');
-
-header('Content-Type:text/plain');
-?>
 client
 dev <?php echo $vpn_dev . "\n" ?>
 proto <?php echo $vpn_proto ?>-client
