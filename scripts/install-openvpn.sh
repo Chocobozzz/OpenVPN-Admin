@@ -27,9 +27,13 @@ read_env "$base_path/../.env"
 
 printf "\n################## Server informations ##################\n"
 
-[ ! -z "$VPN_ADDR" ] && echo "VPN_ADDR=$VPN_ADDR"
-[ -z "$VPN_ADDR" ]  && read -p "Server Hostname/IP: " VPN_ADDR
-[ -z "$VPN_ADDR" ]  && print_error "Server address is required!"
+[ ! -z "$VPN_LOCAL" ] && echo "VPN_LOCAL=$VPN_LOCAL"
+[ -z "$VPN_LOCAL" ]  && read -p "Server local Hostname/IP: " VPN_LOCAL
+[ -z "$VPN_LOCAL" ]  && print_error "Server local address is required!"
+
+[ ! -z "$VPN_REMOTE" ] && echo "VPN_LOCAL=$VPN_REMOTE"
+[ -z "$VPN_REMOTE" ]  && read -p "Server remote Hostname/IP: " VPN_REMOTE
+[ -z "$VPN_REMOTE" ]  && print_error "Server remote address is required!"
 
 [ ! -z "$VPN_PROTO" ] && echo "VPN_PROTO=$VPN_PROTO"
 [ -z "$VPN_PROTO" ] && read -p "OpenVPN protocol (tcp or udp) [tcp]: " VPN_PROTO
@@ -47,7 +51,7 @@ printf "\n################## Server informations ##################\n"
 [ -z "$VPN_INIF" ]  && read -p "OpenVPN input interface [tun0]: " VPN_INIF
 [ -z "$VPN_INIF" ]  && VPN_INIF="tun0"
 
-[ ! -z "VPN_OUTIF" ] && echo "VPN_OUTIF=$VPN_OUTIF"
+[ ! -z "$VPN_OUTIF" ] && echo "VPN_OUTIF=$VPN_OUTIF"
 [ -z "$VPN_OUTIF" ] && read -p "OpenVPN output interface [eth0]: " VPN_OUTIF
 [ -z "$VPN_OUTIF" ] && VPN_OUTIF="eth0"
 
@@ -104,11 +108,14 @@ printf "\n################## Setup OpenVPN ##################\n"
 
 # Copy certificates and the server configuration in the openvpn directory
 cp /etc/openvpn/easy-rsa/pki/{ca.crt,ta.key,issued/server.crt,private/server.key,dh.pem} "/etc/openvpn/"
-cp "$base_path/installation/server.conf" "/etc/openvpn/"
-mkdir "/etc/openvpn/ccd"
-sed -i "s/port 443/port $VPN_PORT/" "/etc/openvpn/server.conf"
-sed -i "s/proto tcp/proto $VPN_PROTO/" "/etc/openvpn/server.conf"
-sed -i "s/group nogroup/group $VPN_GROUP/" "/etc/openvpn/server.conf"
+cp "$base_path/../configs/server.conf" "/etc/openvpn/"
+mkdir -p "/etc/openvpn/ccd"
+sed -i "
+s/VPN_SERVER/$VPN_SERVER/;
+s/VPN_PORT/$VPN_PORT/;
+s/VPN_INIF/$VPN_INIF/;
+s/VPN_PROTO/$VPN_PROTO/;
+s/VPN_GROUP/$VPN_GROUP/" "/etc/openvpn/server.conf"
 
 
 printf "\n################## Setup firewall ##################\n"
@@ -124,25 +131,6 @@ iptables -I OUTPUT -o $VPN_INIF -j ACCEPT
 
 iptables -A FORWARD -i $VPN_INIF -o $VPN_OUTIF -j ACCEPT
 iptables -t nat -A POSTROUTING -o $VPN_OUTIF -j MASQUERADE
-iptables -t nat -A POSTROUTING -s $VPN_NET -o eth0 -j MASQUERADE
-
-
-printf "\n################## Setup web application ##################\n"
-
-# Copy bash scripts (which will insert row in MySQL)
-cp -r "$base_path/installation/scripts" "/etc/openvpn/"
-chmod +x "/etc/openvpn/scripts/"*
-
-# Configure MySQL in openvpn scripts
-sed -i "s/USER=''/USER='$DB_USER'/" "/etc/openvpn/scripts/config.sh"
-sed -i "s/PASS=''/PASS='$DB_PASS'/" "/etc/openvpn/scripts/config.sh"
-
-# New workspace
-cd "$base_path/../public"
-
-# Copy ta.key inside the client-conf directory
-for directory in "./client-conf/gnu-linux/" "./client-conf/osx-viscosity/" "./client-conf/windows/"; do
-  cp "/etc/openvpn/"{ca.crt,ta.key} $directory
-done
+iptables -t nat -A POSTROUTING -s $VPN_NET -o $VPN_OUTIF -j MASQUERADE
 
 printf "\033[1m\n#################################### Finish ####################################\n"

@@ -27,7 +27,7 @@ if (isset($_POST['configuration_get'], $_POST['configuration_username'], $_POST[
     if ($data && passEqual($_POST['configuration_pass'], $data['user_pass'])) {
         $vpn_dev = getenv('VPN_INIF');
         $vpn_proto = getenv('VPN_PROTO');
-        $vpn_remote = getenv('VPN_ADDR'). ' ' . getenv('VPN_PORT');
+        $vpn_remote = getenv('VPN_REMOTE'). ' ' . getenv('VPN_PORT');
 
         switch ($_POST['configuration_os']) {
             case 'gnu_linux':
