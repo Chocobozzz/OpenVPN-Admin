@@ -137,18 +137,8 @@ chmod +x "/etc/openvpn/scripts/"*
 sed -i "s/USER=''/USER='$DB_USER'/" "/etc/openvpn/scripts/config.sh"
 sed -i "s/PASS=''/PASS='$DB_PASS'/" "/etc/openvpn/scripts/config.sh"
 
-cp -r "$base_path/installation/client-conf" "$base_path/../public"
 # New workspace
 cd "$base_path/../public"
-
-# Replace in the client configurations with the ip of the server and openvpn protocol
-for file in "./client-conf/gnu-linux/client.conf" "./client-conf/osx-viscosity/client.conf" "./client-conf/windows/client.ovpn"; do
-  sed -i "s/remote xxx\.xxx\.xxx\.xxx 443/remote $VPN_ADDR $VPN_PORT/" $file
-
-  if [ $VPN_PROTO = "udp" ]; then
-    sed -i "s/proto tcp-client/proto udp/" $file
-  fi
-done
 
 # Copy ta.key inside the client-conf directory
 for directory in "./client-conf/gnu-linux/" "./client-conf/osx-viscosity/" "./client-conf/windows/"; do
