@@ -15,10 +15,10 @@ base_path=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 # Read dotEnv file
 source "$base_path/../.env"
 
-source ./install/00_env.sh
-source ./install/03_certificate.sh
-source ./install/04_openvpn.sh
-source ./install/05_firewall.sh
+source "$base_path/install/00_env.sh"
+source "$base_path/install/03_certificate.sh"
+source "$base_path/install/04_openvpn.sh"
+source "$base_path/install/05_firewall.sh"
 
 printf "\033[1m\n#################################### Finish ####################################\n"
 
