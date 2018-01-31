@@ -18,16 +18,20 @@ printf "\n################## Server informations ##################\n"
 [ -z "$VPN_PORT" ]  && read -p "OpenVPN port [443]: " VPN_PORT
 [ -z "$VPN_PORT" ]  && VPN_PORT="443"
 
+[ ! -z "$VPN_USER" ] && echo "VPN_USER=$VPN_USER"
+[ -z "$VPN_USER" ] && read -p "OpenVPN user [nobody]: " VPN_USER
+[ -z "$VPN_USER" ] && VPN_USER="nobody"
+
 [ ! -z "$VPN_GROUP" ] && echo "VPN_GROUP=$VPN_GROUP"
 [ -z "$VPN_GROUP" ] && read -p "OpenVPN group [nogroup]: " VPN_GROUP
 [ -z "$VPN_GROUP" ] && VPN_GROUP="nogroup"
 
 [ ! -z "$VPN_INIF" ] && echo "VPN_INIF=$VPN_INIF"
-[ -z "$VPN_INIF" ]  && read -p "OpenVPN input interface [tun0]: " VPN_INIF
+[ -z "$VPN_INIF" ]  && read -p "OpenVPN tunnel interface [tun0]: " VPN_INIF
 [ -z "$VPN_INIF" ]  && VPN_INIF="tun0"
 
 [ ! -z "$VPN_OUTIF" ] && echo "VPN_OUTIF=$VPN_OUTIF"
-[ -z "$VPN_OUTIF" ] && read -p "OpenVPN output interface [eth0]: " VPN_OUTIF
+[ -z "$VPN_OUTIF" ] && read -p "OpenVPN physical interface [eth0]: " VPN_OUTIF
 [ -z "$VPN_OUTIF" ] && VPN_OUTIF="eth0"
 
 [ ! -z "$VPN_NET" ] && echo "VPN_NET=$VPN_NET"
