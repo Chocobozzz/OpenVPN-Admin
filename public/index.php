@@ -25,27 +25,8 @@ if (isset($_POST['configuration_get'], $_POST['configuration_username'], $_POST[
 
     // Error ?
     if ($data && passEqual($_POST['configuration_pass'], $data['user_pass'])) {
-        $vpn_dev = getenv('VPN_INIF');
-        $vpn_proto = getenv('VPN_PROTO');
-        $vpn_remote = getenv('VPN_REMOTE'). ' ' . getenv('VPN_PORT');
-
-        switch ($_POST['configuration_os']) {
-            case 'gnu_linux':
-            case 'configuration_os':
-                $filename = 'client.conf';
-                break;
-            default:
-                $filename = 'client.ovpn';
-                break;
-        }
-
-        header('Content-Type:text/plain');
-        header("Content-Disposition: attachment; filename=$filename");
-        header("Pragma: no-cache");
-        header("Expires: 0");
-
-        require(dirname(__FILE__) . '/../app/ovpn.php');
-        die();
+        // Answer with config
+        include __DIR__ . "/../app/ovpn.php";
     } else {
         $error = true;
     }
