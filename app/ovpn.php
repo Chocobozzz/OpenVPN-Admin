@@ -1,28 +1,44 @@
-client
-dev <?php echo $vpn_dev . "\n" ?>
-proto <?php echo $vpn_proto ?>-client
-remote <?php echo $vpn_remote . "\n" ?>
-resolv-retry infinite
-cipher AES-256-CBC
-redirect-gateway
+<?php
 
-# Keys
-ca       [inline]
-<?php echo file_get_contents("/etc/openvpn/ca.crt") . "\n" ?>
-tls-auth [inline] 1
-<?php echo file_get_contents("/etc/openvpn/ta.key") . "\n" ?>
+$_ovpn = new EvilFreelancer\OpenVPN();
 
-key-direction 1
-remote-cert-tls server
-auth-user-pass
-auth-nocache
+$_ovpn->dev = getenv('VPN_INIF');
+$_ovpn->proto = getenv('VPN_PROTO');
+$_ovpn->port = getenv('VPN_PORT');
+$_ovpn->remote = getenv('VPN_REMOTE');
+$_ovpn->resolvRetry = 'infinite';
+$_ovpn->cipher = 'AES-256-CBC';
+$_ovpn->redirectGateway = true;
 
-# Security
-nobind
-persist-key
-persist-tun
-comp-lzo
-verb 3
+$_ovpn->addCert('ca', getenv('VPN_CONF') . '/ca.crt', true)
+->addCert('tls-auth', getenv('VPN_CONF') . '/ta.key', true);
 
-# Proxy ?
-# http-proxy cache.univ.fr 3128
+$_ovpn->keyDirection = 1;
+$_ovpn->remoteCertTls = 'server';
+$_ovpn->authUserPass = true;
+$_ovpn->authNocache = true;
+
+$_ovpn->nobind = true;
+$_ovpn->persistKey = true;
+$_ovpn->persistTun = true;
+$_ovpn->compLzo = true;
+$_ovpn->verb = 3;
+
+$config = $_ovpn->getClientConfig();
+
+switch ($_POST['configuration_os']) {
+case 'gnu_linux':
+case 'configuration_os':
+$filename = 'client.conf';
+break;
+default:
+$filename = 'client.ovpn';
+break;
+}
+
+header('Content-Type:text/plain');
+header("Content-Disposition: attachment; filename=$filename");
+header("Pragma: no-cache");
+header("Expires: 0");
+
+die("$config");
