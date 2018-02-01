@@ -1,10 +1,11 @@
 #!/bin/bash
 
 print_help () {
-  echo -e "./install.sh www_basedir user group"
-  echo -e "\tbase_dir: The place where the web application will be put in"
-  echo -e "\tuser:     User of the web application"
-  echo -e "\tgroup:    Group of the web application"
+    echo -e "./install.sh www_basedir user group (eg /var/www/openvpn-admin)"
+    echo -e "\tbase_dir: The place where the web application will be put in"
+    echo -e "\tuser:     User of the web application"
+    echo -e "\tgroup:    Group of the web application"
+    exit
 }
 
 print_error() {
@@ -20,7 +21,6 @@ fi
 # Ensure there are enought arguments
 if [ "$#" -ne 3 ]; then
   print_help
-  exit
 fi
 
 # Ensure there are the prerequisites
@@ -35,7 +35,7 @@ www=$1
 user=$2
 group=$3
 
-openvpn_admin="$www/openvpn-admin"
+openvpn_admin="$www"
 
 # Check the validity of the arguments
 if [ ! -d "$www" ] ||  ! grep -q "$user" "/etc/passwd" || ! grep -q "$group" "/etc/group" ; then

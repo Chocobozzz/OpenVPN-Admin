@@ -38,6 +38,24 @@ printf "\n################## Server informations ##################\n"
 [ -z "$VPN_NET" ]   && read -p "OpenVPN clients subnet [10.8.0.0/24]: " VPN_NET
 [ -z "$VPN_NET" ]   && VPN_NET="10.8.0.0/24"
 
+printf "\n################## Application informations ##################\n"
+
+[ ! -z "$APP_PATH" ] && echo "APP_PATH=$APP_PATH"
+[ -z "$APP_PATH" ]   && read -p "Web application root folder [/var/www/html]: " APP_PATH
+[ -z "$APP_PATH" ]   && APP_PATH="/var/www/html"
+
+[ ! -z "$SCRIPTS_PATH" ] && echo "SCRIPTS_PATH=$SCRIPTS_PATH"
+[ -z "$SCRIPTS_PATH" ]   && read -p "Folder with scripts for OpenVPN [$APP_PATH/scripts/auth-bash]: " SCRIPTS_PATH
+[ -z "$SCRIPTS_PATH" ]   && SCRIPTS_PATH="$APP_PATH/scripts/auth-bash"
+
+SCRIPTS_LOGIN="$SCRIPTS_PATH/login.sh"
+[ ! -z "$SCRIPTS_LOGIN" ] && echo "SCRIPTS_LOGIN=$SCRIPTS_LOGIN"
+
+SCRIPTS_CONNECT="$SCRIPTS_PATH/connect.sh"
+[ ! -z "$SCRIPTS_CONNECT" ] && echo "SCRIPTS_CONNECT=$SCRIPTS_CONNECT"
+
+SCRIPTS_DISCONNECT="$SCRIPTS_PATH/disconnect.sh"
+[ ! -z "$SCRIPTS_DISCONNECT" ] && echo "SCRIPTS_DISCONNECT=$SCRIPTS_DISCONNECT"
 
 printf "\n################## Certificates informations ##################\n"
 
