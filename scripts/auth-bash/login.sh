@@ -10,7 +10,7 @@ username=$(echap "$username")
 password=$(echap "$password")
 
 # Authentication
-user_pass=$(mysql -h$DB_HOST -P$DB_PORT -u$DBUSER -p$DB_PASS $DB_NAME -sN -e "SELECT user_pass FROM user WHERE user_id = '$username' AND user_enable=1 AND (TO_DAYS(now()) >= TO_DAYS(user_start_date) OR user_start_date IS NULL) AND (TO_DAYS(now()) <= TO_DAYS(user_end_date) OR user_end_date IS NULL)")
+user_pass=$(mysql -h$DB_HOST -P$DB_PORT -u$DB_USER -p$DB_PASS $DB_NAME -sN -e "SELECT user_pass FROM user WHERE user_id = '$username' AND user_enable=1 AND (TO_DAYS(now()) >= TO_DAYS(user_start_date) OR user_start_date IS NULL) AND (TO_DAYS(now()) <= TO_DAYS(user_end_date) OR user_end_date IS NULL)")
 
 # Check the user
 if [ "$user_pass" == '' ]; then
