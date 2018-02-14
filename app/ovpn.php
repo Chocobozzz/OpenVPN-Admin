@@ -4,21 +4,21 @@ $_ovpn = new EvilFreelancer\OpenVPN();
 
 $_ovpn
     ->addParam('client')
-    ->addParam('dev', getenv('VPN_INIF'))
+    ->addParam('dev', getenv('VPN_DEV'))
     ->addParam('proto', getenv('VPN_PROTO'))
     ->addParam('remote', getenv('VPN_REMOTE'))
     ->addParam('port', getenv('VPN_REMOTE_PORT'))
     ->addParam('resolv-retry', 'infinite')
     ->addParam('cipher', 'AES-256-CBC')
-    ->addParam('redirect-gateway', true)
+    ->addParam('redirect-gateway')
     ->addParam('key-direction', 1)
     ->addParam('remote-cert-tls', 'server')
-    ->addParam('auth-user-pass', true)
-    ->addParam('auth-nocache', true)
-    ->addParam('nobind', true)
-    ->addParam('persist-key', true)
-    ->addParam('persist-tun', true)
-    ->addParam('comp-lzo', true)
+    ->addParam('auth-user-pass')
+    ->addParam('auth-nocache')
+    ->addParam('nobind')
+    ->addParam('persist-key')
+    ->addParam('persist-tun')
+    ->addParam('comp-lzo')
     ->addParam('verb', 3);
 
 $_ovpn
