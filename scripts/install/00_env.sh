@@ -3,8 +3,8 @@
 printf "\n################## Server informations ##################\n"
 
 [ ! -z "$VPN_LOCAL" ] && echo "VPN_LOCAL=$VPN_LOCAL"
-[ -z "$VPN_LOCAL" ] && read -p "Server local Hostname/IP: " VPN_LOCAL
-[ -z "$VPN_LOCAL" ] && print_error "Server local address is required!"
+[ -z "$VPN_LOCAL" ] && read -p "Server local Hostname/IP (can be empty): " VPN_LOCAL
+[ -z "$VPN_LOCAL" ] && VPN_LOCAL=""
 
 [ ! -z "$VPN_LOCAL_PORT" ] && echo "VPN_LOCAL_PORT=$VPN_LOCAL_PORT"
 [ -z "$VPN_LOCAL_PORT" ] && read -p "OpenVPN local port [1194]: " VPN_LOCAL_PORT

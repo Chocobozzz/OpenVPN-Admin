@@ -9,6 +9,7 @@ $_ovpn = new EvilFreelancer\OpenVPN();
 // TCP or UDP, port 443, tunneling
 $_ovpn
     ->addParam('mode', 'server')
+    ->addParam('tls-server')
     ->addParam('dev', getenv('VPN_DEV'))
     ->addParam('proto', getenv('VPN_PROTO'))
     ->addParam('port', getenv('VPN_LOCAL_PORT'));
@@ -23,7 +24,8 @@ $_ovpn
     ->addCert('cert', getenv('VPN_CONF') . '/server.crt')
     ->addCert('key', getenv('VPN_CONF') . '/server.key')
     ->addCert('dh', getenv('VPN_CONF') . '/dh.pem')
-    ->addCert('tls-auth', getenv('VPN_CONF') . '/ta.key', false, '0')
+    ->addCert('tls-auth', getenv('VPN_CONF') . '/ta.key')
+    ->addParam('key-direction', 0)
     ->addParam('cipher', 'AES-256-CBC')
     ->addParam('server', trim(getenv('VPN_SERVER'),'"'))
     ->addPush('redirect-gateway def1')

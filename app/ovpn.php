@@ -4,6 +4,7 @@ $_ovpn = new EvilFreelancer\OpenVPN();
 
 $_ovpn
     ->addParam('client')
+    ->addParam('tls-client')
     ->addParam('dev', getenv('VPN_DEV'))
     ->addParam('proto', getenv('VPN_PROTO'))
     ->addParam('remote', getenv('VPN_REMOTE'))
