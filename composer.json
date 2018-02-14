@@ -12,6 +12,6 @@
     ],
     "require": {
         "vlucas/phpdotenv": "^2.4",
-        "evilfreelancer/openvpn-php": "^0.1.1"
+        "evilfreelancer/openvpn-php": "^0.2.0"
     }
 }

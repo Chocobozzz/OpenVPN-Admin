@@ -2,21 +2,25 @@
 
 printf "\n################## Server informations ##################\n"
 
-[ ! -z "$VPN_LOCAL" ] && echo "VPN_LOCAL=$VPN_LOCAL"
-[ -z "$VPN_LOCAL" ]  && read -p "Server local Hostname/IP: " VPN_LOCAL
-[ -z "$VPN_LOCAL" ]  && print_error "Server local address is required!"
+[ ! -z "$VPN_LISTEN" ] && echo "VPN_LISTEN=$VPN_LISTEN"
+[ -z "$VPN_LISTEN" ]  && read -p "Server local Hostname/IP: " VPN_LISTEN
+[ -z "$VPN_LISTEN" ]  && print_error "Server local address is required!"
 
-[ ! -z "$VPN_REMOTE" ] && echo "VPN_LOCAL=$VPN_REMOTE"
+[ ! -z "$VPN_LISTEN_PORT" ] && echo "VPN_LISTEN_PORT=$VPN_LISTEN_PORT"
+[ -z "$VPN_LISTEN_PORT" ]  && read -p "OpenVPN listen port [1194]: " VPN_LISTEN_PORT
+[ -z "$VPN_LISTEN_PORT" ]  && VPN_LISTEN_PORT="1194"
+
+[ ! -z "$VPN_REMOTE" ] && echo "VPN_REMOTE=$VPN_REMOTE"
 [ -z "$VPN_REMOTE" ]  && read -p "Server remote Hostname/IP: " VPN_REMOTE
 [ -z "$VPN_REMOTE" ]  && print_error "Server remote address is required!"
+
+[ ! -z "$VPN_REMOTE_PORT" ] && echo "VPN_REMOTE_PORT=$VPN_REMOTE_PORT"
+[ -z "$VPN_REMOTE_PORT" ]  && read -p "OpenVPN remote port [443]: " VPN_REMOTE_PORT
+[ -z "$VPN_REMOTE_PORT" ]  && VPN_REMOTE_PORT="443"
 
 [ ! -z "$VPN_PROTO" ] && echo "VPN_PROTO=$VPN_PROTO"
 [ -z "$VPN_PROTO" ] && read -p "OpenVPN protocol (tcp or udp) [tcp]: " VPN_PROTO
 [ -z "$VPN_PROTO" ] && VPN_PROTO="tcp"
-
-[ ! -z "$VPN_PORT" ] && echo "VPN_PORT=$VPN_PORT"
-[ -z "$VPN_PORT" ]  && read -p "OpenVPN port [443]: " VPN_PORT
-[ -z "$VPN_PORT" ]  && VPN_PORT="443"
 
 [ ! -z "$VPN_USER" ] && echo "VPN_USER=$VPN_USER"
 [ -z "$VPN_USER" ] && read -p "OpenVPN user [nobody]: " VPN_USER
@@ -26,13 +30,13 @@ printf "\n################## Server informations ##################\n"
 [ -z "$VPN_GROUP" ] && read -p "OpenVPN group [nogroup]: " VPN_GROUP
 [ -z "$VPN_GROUP" ] && VPN_GROUP="nogroup"
 
-[ ! -z "$VPN_INIF" ] && echo "VPN_INIF=$VPN_INIF"
-[ -z "$VPN_INIF" ]  && read -p "OpenVPN tunnel interface [tun0]: " VPN_INIF
-[ -z "$VPN_INIF" ]  && VPN_INIF="tun0"
+[ ! -z "$VPN_DEV" ] && echo "VPN_DEV=$VPN_DEV"
+[ -z "$VPN_DEV" ]  && read -p "OpenVPN tunnel interface [tun0]: " VPN_DEV
+[ -z "$VPN_DEV" ]  && VPN_DEV="tun0"
 
-[ ! -z "$VPN_OUTIF" ] && echo "VPN_OUTIF=$VPN_OUTIF"
-[ -z "$VPN_OUTIF" ] && read -p "OpenVPN physical interface [eth0]: " VPN_OUTIF
-[ -z "$VPN_OUTIF" ] && VPN_OUTIF="eth0"
+[ ! -z "$VPN_IF" ] && echo "VPN_IF=$VPN_IF"
+[ -z "$VPN_IF" ] && read -p "OpenVPN physical interface [eth0]: " VPN_IF
+[ -z "$VPN_IF" ] && VPN_IF="eth0"
 
 [ ! -z "$VPN_NET" ] && echo "VPN_NET=$VPN_NET"
 [ -z "$VPN_NET" ]   && read -p "OpenVPN clients subnet [10.8.0.0/24]: " VPN_NET
