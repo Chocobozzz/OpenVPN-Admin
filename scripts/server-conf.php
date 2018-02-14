@@ -11,11 +11,11 @@ $_ovpn
     ->addParam('mode', 'server')
     ->addParam('dev', getenv('VPN_DEV'))
     ->addParam('proto', getenv('VPN_PROTO'))
-    ->addParam('port', getenv('VPN_LISTEN_PORT'));
+    ->addParam('port', getenv('VPN_LOCAL_PORT'));
 
 // If listening address is set
-if (!empty(getenv('VPN_LISTEN')))
-    $_ovpn->addParam('listen', getenv('VPN_LISTEN'));
+if (!empty(getenv('VPN_LOCAL')))
+    $_ovpn->addParam('local', getenv('VPN_LOCAL'));
 
 // KEY, CERTS AND NETWORK CONFIGURATION
 $_ovpn
@@ -25,7 +25,7 @@ $_ovpn
     ->addCert('dh', getenv('VPN_CONF') . '/dh.pem')
     ->addCert('tls-auth', getenv('VPN_CONF') . '/ta.key', false, '0')
     ->addParam('cipher', 'AES-256-CBC')
-    ->addParam('server', getenv('VPN_SERVER'))
+    ->addParam('server', trim(getenv('VPN_SERVER'),'"'))
     ->addPush('redirect-gateway def1')
     ->addPush('dhcp-option DNS 8.8.8.8')
     ->addPush('dhcp-option DNS 8.8.4.4')
