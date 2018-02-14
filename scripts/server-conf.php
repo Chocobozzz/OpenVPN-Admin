@@ -8,7 +8,7 @@ $_ovpn = new EvilFreelancer\OpenVPN();
 
 // TCP or UDP, port 443, tunneling
 $_ovpn
-    ->addParam('server')
+    ->addParam('mode', 'server')
     ->addParam('dev', getenv('VPN_DEV'))
     ->addParam('proto', getenv('VPN_PROTO'))
     ->addParam('port', getenv('VPN_LISTEN_PORT'));
