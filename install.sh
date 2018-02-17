@@ -196,15 +196,18 @@ printf "\n################## Setup firewall ##################\n"
 echo 1 > "/proc/sys/net/ipv4/ip_forward"
 echo "net.ipv4.ip_forward = 1" >> "/etc/sysctl.conf"
 
+# Get primary NIC device name
+primary_nic=`route | grep '^default' | grep -o '[^ ]*$'`
+
 # Iptable rules
 iptables -I FORWARD -i tun0 -j ACCEPT
 iptables -I FORWARD -o tun0 -j ACCEPT
 iptables -I OUTPUT -o tun0 -j ACCEPT
 
-iptables -A FORWARD -i tun0 -o eth0 -j ACCEPT
-iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
-iptables -t nat -A POSTROUTING -s 10.8.0.2/24 -o eth0 -j MASQUERADE
+iptables -A FORWARD -i tun0 -o $primary_nic -j ACCEPT
+iptables -t nat -A POSTROUTING -o $primary_nic -j MASQUERADE
+iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o $primary_nic -j MASQUERADE
+iptables -t nat -A POSTROUTING -s 10.8.0.2/24 -o $primary_nic -j MASQUERADE
 
 
 printf "\n################## Setup MySQL database ##################\n"
