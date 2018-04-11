@@ -61,7 +61,7 @@ Only tested on Debian Jessie. Feel free to open issues.
         $ cd ~/my_coding_workspace
         $ git clone https://github.com/Chocobozzz/OpenVPN-Admin openvpn-admin
         $ cd openvpn-admin
-        # ./install.sh www_base_dir web_user web_group
+        # ./install.sh /var/www www-data www-data
 
   * Setup the web server (Apache, NGinx...) to serve the web application.
   * Create the admin of the web application by visiting `http://your-installation/index.php?installation`
@@ -78,12 +78,12 @@ Only tested on Debian Jessie. Feel free to open issues.
 ## Update
 
     $ git pull origin master
-    # ./update.sh www_base_dir
+    # ./update.sh /var/www
 
 ## Desinstall
 It will remove all installed components (OpenVPN keys and configurations, the web application, iptables rules...).
 
-    # ./desinstall.sh www_base_dir
+    # ./desinstall.sh /var/www
 
 ## Use of
 
