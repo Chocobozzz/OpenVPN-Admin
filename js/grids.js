@@ -1,6 +1,18 @@
 $(function () {
   "use strict";
 
+  // ------------------------- GENERIC STUFF ------------------------------
+  window.printStatus = function(msg, alert_type='warning', bootstrap_icon='') {
+     $('#message-stage').empty()
+         .append(
+            $(document.createElement('div'))
+            .addClass('alert alert-'+alert_type)
+            .html(bootstrap_icon?'<i class="stauts-icon glyphicon glyphicon-'+bootstrap_icon+'"></i>':'')
+            .append(msg)
+            .hide().fadeIn().delay(2000).fadeOut()
+         );
+  }
+
   // ------------------------- GLOBAL definitions -------------------------
   var gridsUrl = 'include/grids.php';
 
@@ -19,6 +31,10 @@ $(function () {
 
    function checkFormatter(value, row, index) {
       return '<input type="checkbox" '+(parseInt(value)===1?'checked':'')+' />';
+   }
+
+   function LEDIndicatorFormatter(value, row, index) {
+      return '<div class="'+(parseInt(value)===1?'mini-led-green':'mini-led-red')+'"></div>';
    }
 
   // ------------------------- USERS definitions -------------------------
@@ -84,6 +100,27 @@ $(function () {
     success: function () {
       refreshTable($userTable);
     }
+  }
+
+  function updateConfig(config_file, config_content) {
+    $.ajax({
+      url: gridsUrl,
+      data: {
+        update_config : true,
+        config_file: config_file,
+        config_content: config_content
+      },
+      success : function(res){
+         printStatus(
+            res.config_success?'Config Successfully updated!':'An error occured while trying to save the updated config.',
+            res.config_success?'success':'danger',
+            res.config_success?'ok':'warning-sign'
+         );
+      },
+      dataType : 'json',
+      method: 'POST',
+      error: onAjaxError
+    });
   }
 
   // ES 2015 so be prudent
@@ -164,7 +201,11 @@ $(function () {
       { title: "Pass", field: "user_pass", editable: userEditable },
       { title: "Mail", field: "user_mail", editable: userEditable },
       { title: "Phone", field: "user_phone", editable: userEditable },
-      { title: "Online", field: "user_online" },
+      {
+         title: "Online",
+         field: "user_online",
+         formatter : LEDIndicatorFormatter
+      },
       {
          title: "Enabled",
          field: "user_enable",
@@ -253,18 +294,27 @@ $(function () {
     },
     columns: [
       { title: "Log ID", field: "log_id" },
-      { title: "User ID", field: "user_id" },
-      { title: "Trusted IP", field: "log_trusted_ip" },
-      { title: "Trusted Port", field: "log_trusted_port" },
-      { title: "Remote IP", field: "log_remote_ip" },
-      { title: "Remote Port", field: "log_remote_port" },
+      { title: "User ID", field: "user_id", filterControl : 'select' },
+      { title: "Trusted IP", field: "log_trusted_ip", filterControl : 'select' },
+      { title: "Trusted Port", field: "log_trusted_port", filterControl : 'select' },
+      { title: "Remote IP", field: "log_remote_ip", filterControl : 'select' },
+      { title: "Remote Port", field: "log_remote_port", filterControl : 'select' },
       { title: "Start Time", field: "log_start_time" },
       { title: "End Time", field: "log_end_time" },
       { title: "Receveid", field: "log_received" },
       { title: "Sent", field: "log_send" }
     ]
   });
-});
+
+  // watch the config textareas for changes an persist them if a change was made
+  $('textarea').keyup(function(){
+     $('#save-config-btn').removeClass('saved-success hidden').addClass('get-attention');
+  }).change(function(){
+      updateConfig($(this).data('config-file'), $(this).val());
+      $('#save-config-btn').removeClass('get-attention').addClass('saved-success');
+  });
+
+}); // doc ready end
 
 // -------------------- HACKS --------------------
 

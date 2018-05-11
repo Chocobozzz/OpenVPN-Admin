@@ -17,3 +17,54 @@ body {
 .signed {
   margin-top: 20px;
 }
+
+/*
+https://bootsnipp.com/snippets/jvP6z
+*/
+.mini-led-green, .mini-led-green-blink {
+    background-color: #80FF00;
+    box-shadow: #7D7B80 0 -1px 6px 1px, inset #460 0 -1px 8px, #80FF00 0 3px 11px;
+}
+.mini-led-red, .mini-led-red-blink {
+    background-color: #F00;
+    box-shadow: #7D7B80 0 -1px 6px 1px, inset #600 0 -1px 8px, #F00 0 3px 11px;
+}
+.mini-led-gray,
+.mini-led-gray-blink,
+.mini-led-red,
+.mini-led-red-blink,
+.mini-led-orange,
+.mini-led-orange-blink,
+.mini-led-green,
+.mini-led-green-blink,
+.mini-led-yellow,
+.mini-led-yellow-blink,
+.mini-led-blue,
+.mini-led-blue-blink {
+    margin: 0 auto;
+    margin-top: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+#config-cards textarea {
+   font-family: Courier;
+}
+
+#message-stage {
+   position: fixed;
+   bottom: 0;
+}
+#message-stage i.stauts-icon {
+   margin-right: 10px;
+}
+
+#save-config-btn.get-attention a {
+   background-color: #f0ad4e; /* orange */
+   color: white;
+}
+#save-config-btn.saved-success a {
+   background-color: #5cb85c; /* green */
+   color: white;
+}

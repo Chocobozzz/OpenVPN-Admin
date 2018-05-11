@@ -45,9 +45,27 @@
       // Creation of the LIMIT for build different pages
       $page = "LIMIT $offset, $limit";
 
+      // ... filtering by the bootstrap table plugin
+      $filter = isset($_GET['filter']) ? json_decode($_GET['filter'],true) : []; // this is passed by the bootstrap table filter plugin (if a filter was chosen by the user): these are the concrete set filters with their value
+      $where = !empty($filter)?'WHERE TRUE':'';
+      $allowed_query_filters = ['user_id', 'log_trusted_ip','log_trusted_port','log_remote_ip','log_remote_port']; // these are valid filters that could be used (defined here for sql security reason)
+      $query_filters_existing = [];
+      foreach($filter as $unsanitized_filter_key => $unsanitized_filter_val) {
+         if(in_array($unsanitized_filter_key, $allowed_query_filters)) { // if this condition does not match: ignore it, because this parameter should not be passed
+            // if $unsanitized_filter_key is in array $allowed_query_filters its a valid key and can not be harmful, so it can be considered sanitized
+            $where .= " AND $unsanitized_filter_key = ?";
+            $query_filters_existing[] = $unsanitized_filter_key;
+         }
+      }
+
       // Select the logs
-      $req_string = "SELECT *, (SELECT COUNT(*) FROM log) AS nb FROM log ORDER BY log_id DESC $page";
+      $req_string = "SELECT *, (SELECT COUNT(*) FROM log $where) AS nb FROM log $where ORDER BY log_id DESC $page";
       $req = $bdd->prepare($req_string);
+
+      // dynamically bind the params
+      foreach(array_merge($query_filters_existing,$query_filters_existing) as $i => $query_filter) // array_merge -> duplicated the array contents; this is needed because our where clause is bound two times (in subquery + the outer query)
+         $req->bindValue($i+1, $filter[$query_filter]);
+
       $req->execute();
 
       $list = array();
@@ -74,7 +92,6 @@
                                   "log_end_time" => $data['log_end_time'],
                                   "log_received" => $received,
                                   "log_send" => $sent));
-
 
         } while ($data = $req->fetch());
       }
@@ -201,6 +218,38 @@
   else if(isset($_POST['del_admin'], $_POST['del_admin_id'])){
     $req = $bdd->prepare('DELETE FROM admin WHERE admin_id = ?');
     $req->execute(array($_POST['del_admin_id']));
+  }
+
+  // ---------------- UPDATE CONFIG ----------------
+  else if(isset($_POST['update_config'])){
+
+      $pathinfo = pathinfo($_POST['config_file']);
+
+      $config_full_uri = $_POST['config_file']; // the complete path to the file, including the file (name) its self and the fully qualified path
+      $config_full_path = $pathinfo['dirname']; // path to file (without filename its self)
+      $config_name = basename($_POST['config_file']); // config file name only (without path)
+      $config_parent_dir = basename($config_full_path); // name of the dir that contains the config file (without path)
+
+      /*
+       * create backup for history
+       */
+      if (!file_exists($dir="../$config_full_path/history"))
+         mkdir($dir, 0777, true);
+      $ts = time();
+      copy("../$config_full_uri", "../$config_full_path/history/${ts}_${config_name}");
+
+      /*
+       *  write config
+       */
+      $conf_success = file_put_contents('../'.$_POST['config_file'], $_POST['config_content']);
+
+      echo json_encode([
+        'debug' => [
+            'config_file' => $_POST['config_file'],
+            'config_content' => $_POST['config_content']
+        ],
+        'config_success' => $conf_success !== false,
+      ]);
   }
 
 ?>

@@ -30,7 +30,7 @@
       }
       $rootPath = realpath("./client-conf/$conf_dir");
 
-      // Initialize archive object
+      // Initialize archive object ;;;; why doing this every time the user logs in, when the cert is static?
       $archive_base_name = "openvpn-$conf_dir";
       $archive_name = "$archive_base_name.zip";
       $archive_path = "./client-conf/$archive_name";
@@ -99,6 +99,7 @@
     <link rel="stylesheet" href="vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css" type="text/css" />
     <link rel="stylesheet" href="vendor/bootstrap-table/dist/bootstrap-table.min.css" type="text/css" />
     <link rel="stylesheet" href="vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" type="text/css" />
+    <link rel="stylesheet" href="vendor/bootstrap-table/dist/extensions/filter-control/bootstrap-table-filter-control.css" type="text/css" />
     <link rel="stylesheet" href="css/index.css" type="text/css" />
 
     <link rel="icon" type="image/png" href="css/icon.png">
@@ -193,7 +194,7 @@
             <p class="navbar-text signed">Signed in as <?php echo $_SESSION['admin_id']; ?>
             </div>
             <div class="col-md-6">
-              <a class="navbar-text navbar-right" href="index.php?logout" title="Logout"><button class="btn btn-danger">Logout</button></a>
+              <a class="navbar-text navbar-right" href="index.php?logout" title="Logout"><button class="btn btn-danger">Logout <span class="glyphicon glyphicon-off" aria-hidden="true"></span></button></a>
               <a class="navbar-text navbar-right" href="index.php" title="Configuration"><button class="btn btn-default">Configurations</button></a>
             </p>
           </div>
@@ -204,5 +205,8 @@
       require(dirname(__FILE__) . '/include/html/grids.php');
     }
   ?>
+     <div id="message-stage">
+        <!-- used to display application messages (failures / status-notes) to the user -->
+     </div>
   </body>
 </html>
