@@ -33,7 +33,7 @@ Administrate its OpenVPN with a web interface (logs visualisations, users managi
 ### Debian 9 Stretch
 
 ````
-# apt-get install openvpn openvpn apache2 php-mysql mysql-server php-zip php nodejs unzip git wget sed npm curl
+# apt-get install openvpn apache2 php-mysql mysql-server php-zip php nodejs unzip git wget sed npm curl
 # npm install -g bower
 # ln -s /usr/bin/nodejs /usr/bin/node
 ````
