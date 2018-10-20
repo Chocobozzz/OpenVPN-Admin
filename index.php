@@ -25,7 +25,9 @@
         $conf_dir = 'gnu-linux';
       } elseif($_POST['configuration_os'] == "osx_viscosity") {
         $conf_dir = 'osx-viscosity';
-      } else {
+      } elseif($_POST['configuration_os'] == "mobile") {
+        $conf_dir = 'mobile';
+      }  else {
         $conf_dir = 'windows';
       }
       $rootPath = realpath("./client-conf/$conf_dir");

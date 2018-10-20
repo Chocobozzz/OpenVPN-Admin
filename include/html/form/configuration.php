@@ -24,6 +24,7 @@
             <option value="gnu_linux">GNU/Linux</option>
             <option value="osx_viscosity">OSX/Viscosity</option>
             <option value="windows">Windows</option>
+            <option value="mobile">Mobile</option>
           </select>
         </div>
 

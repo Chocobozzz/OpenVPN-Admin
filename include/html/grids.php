@@ -144,6 +144,13 @@ function getHistory($cfg_file, $accordion_id, $open_first_history_tab = false) {
                <?= getHistory($cfg_file, ++$accId) ?>
 
             </div>
+            <div id="menu-1-3" class="tab-pane fade">
+
+               <textarea class="form-control" data-config-file="<?= $cfg_file='client-conf/mobile/client.ovpn' ?>" name="" id="" cols="30" rows="20"><?= file_get_contents($cfg_file) ?></textarea>
+               <?= getHistory($cfg_file, ++$accId) ?>
+
+            </div>
+
          </div>
 
       </div>
