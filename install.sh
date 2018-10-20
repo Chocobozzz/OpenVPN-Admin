@@ -258,17 +258,18 @@ sed -i "s/\$user = '';/\$user = '$mysql_user';/" "./include/config.php"
 sed -i "s/\$pass = '';/\$pass = '$mysql_pass';/" "./include/config.php"
 
 # Replace in the client configurations with the ip of the server and openvpn protocol
-for file in "./client-conf/gnu-linux/client.conf" "./client-conf/osx-viscosity/client.conf" "./client-conf/windows/client.ovpn"  "./client-conf/mobile/client.ovpn"; do
-  sed -i "s/remote xxx\.xxx\.xxx\.xxx 443/remote $ip_server $server_port/" $file
+for file in "./client-conf/gnu-linux/client.ovpn" "./client-conf/osx-viscosity/client.ovpn" "./client-conf/windows/client.ovpn" "./client-conf/mobile/client.ovpn"; do
+    sed -i "s/remote xxx\.xxx\.xxx\.xxx 443/remote $ip_server $server_port/" $file
+    echo "<ca>" >> $file
+    cat "/etc/openvpn/ca.crt" >> $file
+    echo "</ca>" >> $file
+    echo "<tls-auth>" >> $file
+    cat "/etc/openvpn/ta.key" >> $file
+    echo "</tls-auth>"
 
   if [ $openvpn_proto = "udp" ]; then
     sed -i "s/proto tcp-client/proto udp/" $file
   fi
-done
-
-# Copy ta.key inside the client-conf directory
-for directory in "./client-conf/gnu-linux/" "./client-conf/osx-viscosity/" "./client-conf/windows/"; do
-  cp "/etc/openvpn/"{ca.crt,ta.key} $directory
 done
 
 # Install third parties
