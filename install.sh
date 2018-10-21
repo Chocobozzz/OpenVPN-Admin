@@ -200,14 +200,32 @@ echo "net.ipv4.ip_forward = 1" >> "/etc/sysctl.conf"
 primary_nic=`route | grep '^default' | grep -o '[^ ]*$'`
 
 # Iptable rules
-iptables -I FORWARD -i tun0 -j ACCEPT
-iptables -I FORWARD -o tun0 -j ACCEPT
-iptables -I OUTPUT -o tun0 -j ACCEPT
+if [ -x "$(command -v firewall-cmd)" ]; then
+    firewall-cmd --add-port=1194/udp --permanent
+    firewall-cmd --zone=trusted --add-service openvpn
+    firewall-cmd --zone=trusted --add-service openvpn --permanent
+    firewall-cmd --add-masquerade
+    firewall-cmd --permanent --add-masquerade
+    firewall-cmd --permanent --direct --passthrough ipv4 -t nat -A POSTROUTING -s 10.8.0.0./24 -o $primary_nic -j MASQUERADE
+    firewall-cmd --reload
+elif [ -x "$command -v ufw" ]; then
+    sed "/# Don't delete these/i \
+   # START OPENVPN RULES\n# NAT table rules\n*nat\n:POSTROUTING ACCEPT [0:0]\n# Allow traffic from OpenVPN client to eth0 (change to the interface ou discovered!)\n-A POSTROUTING -s 10.8.0.0/8 -o eth0 -j MASQUERADE\nCOMMIT\n# END OPENVPN RULES " -i /etc/ufw/before.rules
+    sed 's/\(DEFAULT_FORWARD_POLICY="\)\(.*\)"/\1ACCEPT"/'  /etc/ufw/before.rules
+    ufw allow 1194/udp
+    ufw allow OpenSSH
+else
+    # Iptable rules
+    iptables -I FORWARD -i tun0 -j ACCEPT
+    iptables -I FORWARD -o tun0 -j ACCEPT
+    iptables -I OUTPUT -o tun0 -j ACCEPT
 
-iptables -A FORWARD -i tun0 -o $primary_nic -j ACCEPT
-iptables -t nat -A POSTROUTING -o $primary_nic -j MASQUERADE
-iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o $primary_nic -j MASQUERADE
-iptables -t nat -A POSTROUTING -s 10.8.0.2/24 -o $primary_nic -j MASQUERADE
+    iptables -A FORWARD -i tun0 -o $primary_nic -j ACCEPT
+
+    iptables -t nat -A POSTROUTING -o $primary_nic -j MASQUERADE
+    iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o $primary_nic -j MASQUERADE
+    iptables -t nat -A POSTROUTING -s 10.8.0.2/24 -o $primary_nic -j MASQUERADE
+fi
 
 
 printf "\n################## Setup MySQL database ##################\n"
