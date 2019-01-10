@@ -123,7 +123,12 @@ EASYRSA_RELEASES=( $(
   awk '{ print $2 }' | \
   sed 's/[,|"|v]//g'
 ) )
+
 EASYRSA_LATEST=${EASYRSA_RELEASES[0]}
+
+if [[ ! -z $EASYRSA_LATEST ]]; then
+  EASYRSA_LATEST=3.0.5
+fi
 
 # Get the rsa keys
 wget -q https://github.com/OpenVPN/easy-rsa/releases/download/v${EASYRSA_LATEST}/EasyRSA-nix-${EASYRSA_LATEST}.tgz
