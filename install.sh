@@ -116,20 +116,11 @@ read -p "Common Name (eg, your name or your server's hostname) [ChangeMe]: " key
 
 printf "\n################## Creating the certificates ##################\n"
 
-EASYRSA_RELEASES=( $(
-  curl -s https://api.github.com/repos/OpenVPN/easy-rsa/releases | \
-  grep 'tag_name' | \
-  grep -E '3(\.[0-9]+)+' | \
-  awk '{ print $2 }' | \
-  sed 's/[,|"|v]//g'
-) )
-EASYRSA_LATEST=${EASYRSA_RELEASES[0]}
-
 # Get the rsa keys
-wget -q https://github.com/OpenVPN/easy-rsa/releases/download/v${EASYRSA_LATEST}/EasyRSA-nix-${EASYRSA_LATEST}.tgz
-tar -xaf EasyRSA-nix-${EASYRSA_LATEST}.tgz
-mv EasyRSA-${EASYRSA_LATEST} /etc/openvpn/easy-rsa
-rm -r EasyRSA-nix-${EASYRSA_LATEST}.tgz
+wget "https://github.com/OpenVPN/easy-rsa/releases/download/v3.0.6/EasyRSA-unix-v3.0.6.tgz"
+tar -xaf "EasyRSA-unix-v3.0.6.tgz"
+mv "EasyRSA-v3.0.6" /etc/openvpn/easy-rsa
+rm "EasyRSA-unix-v3.0.6.tgz"
 cd /etc/openvpn/easy-rsa
 
 if [[ ! -z $key_size ]]; then
