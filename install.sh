@@ -239,7 +239,7 @@ for file in $(find -name client.ovpn); do
     echo "</ca>" >> $file
     echo "<tls-auth>" >> $file
     cat "/etc/openvpn/ta.key" >> $file
-    echo "</tls-auth>"
+    echo "</tls-auth>" >> $file
 
   if [ $openvpn_proto = "udp" ]; then
     sed -i "s/proto tcp-client/proto udp/" $file
