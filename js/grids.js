@@ -212,7 +212,7 @@ $(function () {
          formatter : checkFormatter,
          events: {
             'click input': function (e, value, row) {
-               genericSetField('user_enable', $(this).is(':checked') ? '1' : '0', row.user_id);
+              genericSetField('user_enable', value === '1' ? '0': '1', row.user_id);
             }
          }
       },
