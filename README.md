@@ -1,4 +1,4 @@
-# OpenVPN Admin
+# Raspberry Pi OpenVPN Admin (Supported Ubuntu and Raspbian)
 
 ## Summary
 Administrate its OpenVPN with a web interface (logs visualisations, users managing...) and a SQL database.
@@ -21,14 +21,13 @@ Administrate its OpenVPN with a web interface (logs visualisations, users managi
   * wget
   * sed
   * curl
+  * node
+  * npm
 
-### Debian 8 Jessie
+### Debian 10, Raspbian Buster, Ubuntu 20 (Focal Fossa)
 
-````
-# apt-get install openvpn apache2 php5-mysql mysql-server php5 nodejs unzip git wget sed npm curl
-# npm install -g bower
-# ln -s /usr/bin/nodejs /usr/bin/node
-````
+# just let the script take care of everything
+
 
 ### Debian 9 Stretch
 
@@ -40,30 +39,32 @@ In order to install `npm`, [stretch-backports need to be added to your sources.l
 # npm install -g bower
 ````
 
-### CentOS 7
+
+### Debian 8 Jessie
 
 ````
-# yum install epel-release
-# yum install openvpn httpd php-mysql mariadb-server php nodejs unzip git wget sed npm
+# apt-get install openvpn apache2 php5-mysql mysql-server php5 nodejs unzip git wget sed npm curl
 # npm install -g bower
-# systemctl enable mariadb
-# systemctl start mariadb
+# ln -s /usr/bin/nodejs /usr/bin/node
 ````
+
 
 ### Other distribution... (PR welcome)
 
+not supported and tested
+
 ## Tests
 
-Only tested on Debian Jessie. Feel free to open issues.
+Only tested on Ubuntu 20.04 LTS (Focal Fossa) and Raspbian Buster. Feel free to open issues.
 
 ## Installation
 
   * Setup OpenVPN and the web application:
 
-        $ cd ~/my_coding_workspace
-        $ git clone https://github.com/Chocobozzz/OpenVPN-Admin openvpn-admin
+        $ cd ~
+        $ git clone https://github.com/arvage/OpenVPN-Admin openvpn-admin
         $ cd openvpn-admin
-        # ./install.sh /var/www www-data www-data
+        # sudo ./install.sh /var/www www-data www-data
 
   * Setup the web server (Apache, NGinx...) to serve the web application.
   * Create the admin of the web application by visiting `http://your-installation/index.php?installation`
