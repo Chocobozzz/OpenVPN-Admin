@@ -26,7 +26,7 @@ sleep 2
 printf "\033[1m\n######################################     OS Detection     #####################################\n"
 # Detecting OS Distribution
 OS=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f1 -d " ")
-echo -e "# Detected: $OS #\r"
+echo -e "Detected OS: $OS \r"
 sleep 2
 printf "\033[1m\n\n#################################### Installing Prerequisites ####################################\n"
 printf "\033[1m#################################### This could take long time ####################################\n"
