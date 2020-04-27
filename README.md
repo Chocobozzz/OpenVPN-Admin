@@ -1,4 +1,4 @@
-# Raspberry Pi OpenVPN Admin (Tested on Ubuntu and Raspbian using Apache2)
+## Raspberry Pi OpenVPN Admin (Tested on Ubuntu and Raspbian using Apache2)
 
 ## Summary
 Administrate its OpenVPN with a web interface (logs visualisations, users managing...) and a SQL database.
