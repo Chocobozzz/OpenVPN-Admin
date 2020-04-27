@@ -9,7 +9,7 @@ print_help () {
 
 # Ensure to be root
 if [ "$EUID" -ne 0 ]; then
-  echo "Please run as root"
+  echo "Please use sudo to run the script"
   exit
 fi
 
@@ -19,14 +19,45 @@ if [ "$#" -ne 3 ]; then
   exit
 fi
 
+
+cd ~
+printf "\033[1m\n###################################### Installation Started #####################################\n"
+sleep 2
+printf "\033[1m\n######################################     OS Detection     #####################################\n"
+# Detecting OS Distribution
+OS=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f1 -d " ")
+echo -e "# Detected: $OS #\r"
+sleep 2
+printf "\033[1m\n\n#################################### Installing Prerequisites ####################################\n"
+printf "\033[1m#################################### This will take long time ####################################\n"
+apt update && sudo apt upgrade -y
+
+case $OS in
+	Ubuntu)
+    apt install -y openvpn apache2 mysql-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc net-tools
+		;;
+	Raspbian)
+		apt install -y openvpn apache2 mariadb-server php php-mysql php-zip unzip git wget sed curl nodejs npm
+		;;
+	*)
+		echo "Can't detect OS distribution! you need to install prerequisites manully"
+    exit
+esac
+npm install -g bower
+
 # Ensure there are the prerequisites
 for i in openvpn mysql php bower node unzip wget sed; do
   which $i > /dev/null
   if [ "$?" -ne 0 ]; then
-    echo "Miss $i"
+    echo "$i is missing. Please install $i manually."
     exit
   fi
 done
+
+printf "\033[1m\n\n################################### Setting MySQL Configuration ####################################\n"
+printf "\033[1m######################## Note the MySQL root password! you will need it soon ########################\n"
+mysql_secure_installation
+
 
 www=$1
 user=$2
@@ -53,10 +84,10 @@ if [[ -z $openvpn_proto ]]; then
   openvpn_proto="tcp"
 fi
 
-read -p "Port [443]: " server_port
+read -p "Port [1194]: " server_port
 
 if [[ -z $server_port ]]; then
-  server_port="443"
+  server_port="1194"
 fi
 
 # Get root pass (to create the database and the user)
@@ -103,7 +134,7 @@ read -p "Country Name (2 letter code) [US]: " cert_country
 
 read -p "State or Province Name (full name) [California]: " cert_province
 
-read -p "Locality Name (eg, city) [San Francisco]: " cert_city
+read -p "Locality Name (eg, city) [Mission Viejo]: " cert_city
 
 read -p "Organization Name (eg, company) [Copyleft Certificate Co]: " cert_org
 
@@ -117,10 +148,15 @@ read -p "Common Name (eg, your name or your server's hostname) [ChangeMe]: " key
 printf "\n################## Creating the certificates ##################\n"
 
 # Get the rsa keys
-wget "https://github.com/OpenVPN/easy-rsa/releases/download/v3.0.6/EasyRSA-unix-v3.0.6.tgz"
-tar -xaf "EasyRSA-unix-v3.0.6.tgz"
-mv "EasyRSA-v3.0.6" /etc/openvpn/easy-rsa
-rm "EasyRSA-unix-v3.0.6.tgz"
+EASYRSA_VERSION=$(curl -s https://api.github.com/repos/OpenVPN/easy-rsa/releases/latest | grep "tag_name" | cut -f2 -d "v" | sed 's/[",]//g')
+EASYRSA_LOCATION=$(curl -s https://api.github.com/repos/OpenVPN/easy-rsa/releases/latest \
+| grep "tag_name" \
+| awk '{print "https://github.com/OpenVPN/easy-rsa/releases/download/" substr($2, 2, length($2)-3) "/EasyRSA-" substr($2, 3, length($2)-4) ".tgz"}') \
+; curl -L -o easyrsa.tgz $EASYRSA_LOCATION
+
+tar -xaf "easyrsa.tgz"
+mv "EasyRSA-$EASYRSA_VERSION" /etc/openvpn/easy-rsa
+rm "easyrsa.tgz"
 
 cd /etc/openvpn/easy-rsa
 
@@ -173,7 +209,7 @@ printf "\n################## Setup OpenVPN ##################\n"
 cp /etc/openvpn/easy-rsa/pki/{ca.crt,ta.key,issued/server.crt,private/server.key,dh.pem} "/etc/openvpn/"
 cp "$base_path/installation/server.conf" "/etc/openvpn/"
 mkdir "/etc/openvpn/ccd"
-sed -i "s/port 443/port $server_port/" "/etc/openvpn/server.conf"
+sed -i "s/port 1194/port $server_port/" "/etc/openvpn/server.conf"
 
 if [ $openvpn_proto = "udp" ]; then
   sed -i "s/proto tcp/proto $openvpn_proto/" "/etc/openvpn/server.conf"
@@ -233,7 +269,7 @@ sed -i "s/\$pass = '';/\$pass = '$mysql_pass';/" "./include/config.php"
 
 # Replace in the client configurations with the ip of the server and openvpn protocol
 for file in $(find -name client.ovpn); do
-    sed -i "s/remote xxx\.xxx\.xxx\.xxx 443/remote $ip_server $server_port/" $file
+    sed -i "s/remote xxx\.xxx\.xxx\.xxx 1194/remote $ip_server $server_port/" $file
     echo "<ca>" >> $file
     cat "/etc/openvpn/ca.crt" >> $file
     echo "</ca>" >> $file
@@ -255,11 +291,23 @@ done
 bower --allow-root install
 chown -R "$user:$group" "$openvpn_admin"
 
-printf "\033[1m\n#################################### Finish ####################################\n"
+printf "\033[1m\n\n################################### Setting Apache Configuration ####################################\n"
+cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/openvpn.conf
+sed -i 's/\/var\/www\/html/\/var\/www\/openvpn-admin/g' /etc/apache2/sites-available/openvpn.conf
+a2dissite 000-default
+a2ensite openvpn
+systemctl restart apache2
+
+printf "\033[1m\n\n################################# Setting OpenVPN Configuration ####################################\n"
+sed -i 's/explicit-exit-notify 1/# explicit-exit-notify 1/g' /etc/openvpn/server.conf
+sed -i 's/80.67.169.12/8.8.8.8/g' /etc/openvpn/server.conf
+sed -i 's/80.67.169.40/8.8.4.4/g' /etc/openvpn/server.conf
+systemctl start openvpn@server
+
+printf "\033[1m\n################################################################################\n"
+printf "\033[1m#################################### Finish ####################################\n"
 
 echo -e "# Congratulations, you have successfully setup OpenVPN-Admin! #\r"
-echo -e "Please, finish the installation by configuring your web server (Apache, NGinx...)"
 echo -e "and install the web application by visiting http://your-installation/index.php?installation\r"
-echo -e "Then, you will be able to run OpenVPN with systemctl start openvpn@server\r"
-echo "Please, report any issues here https://github.com/Chocobozzz/OpenVPN-Admin"
+echo "Please, report any issues here https://github.com/arvage/OpenVPN-Admin"
 printf "\n################################################################################ \033[0m\n"
