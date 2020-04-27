@@ -9,7 +9,8 @@ print_help () {
 
 # Ensure to be root
 if [ "$EUID" -ne 0 ]; then
-  echo "Please use sudo to run the script"
+  echo "Please use sudo to run the script. e.g:"
+  echo "sudo ./install.sh  /var/www www-data www-data"
   exit
 fi
 
@@ -137,7 +138,7 @@ read -p "Locality Name (eg, city) [Mission Viejo]: " cert_city
 
 read -p "Organization Name (eg, company) [Copyleft Certificate Co]: " cert_org
 
-read -p "Organizational Unit Name (eg, section) [My Organizational Unit]: " cert_ou
+read -p "Organizational Unit Name (eg, section) [IT]: " cert_ou
 
 read -p "Email Address [me@example.net]: " cert_email
 
@@ -298,9 +299,9 @@ a2ensite openvpn
 systemctl restart apache2
 
 printf "\033[1m\n\n################################# Setting OpenVPN Configuration ####################################\n"
-sed -i 's/explicit-exit-notify 1/# explicit-exit-notify 1/g' /etc/openvpn/server.conf
-sed -i 's/80.67.169.12/8.8.8.8/g' /etc/openvpn/server.conf
-sed -i 's/80.67.169.40/8.8.4.4/g' /etc/openvpn/server.conf
+#sed -i 's/explicit-exit-notify 1/# explicit-exit-notify 1/g' /etc/openvpn/server.conf
+#sed -i 's/80.67.169.12/8.8.8.8/g' /etc/openvpn/server.conf
+#sed -i 's/80.67.169.40/8.8.4.4/g' /etc/openvpn/server.conf
 systemctl start openvpn@server
 
 printf "\033[1m\n\n################################# Let'sEncrypt SSL Certificate ####################################\n"
