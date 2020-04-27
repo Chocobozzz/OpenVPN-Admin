@@ -1,4 +1,4 @@
-# Raspberry Pi OpenVPN Admin (Supported Ubuntu and Raspbian)
+# Raspberry Pi OpenVPN Admin (Tested on Ubuntu and Raspbian using Apache2)
 
 ## Summary
 Administrate its OpenVPN with a web interface (logs visualisations, users managing...) and a SQL database.
@@ -26,7 +26,7 @@ Administrate its OpenVPN with a web interface (logs visualisations, users managi
 
 ### Debian 10, Raspbian Buster, Ubuntu 20 (Focal Fossa)
 
-# just let the script take care of everything
+just let the script take care of everything
 
 
 ### Debian 9 Stretch
@@ -67,11 +67,10 @@ Only tested on Ubuntu 20.04 LTS (Focal Fossa) and Raspbian Buster. Feel free to 
         # sudo ./install.sh /var/www www-data www-data
 
   * Setup the web server (Apache, NGinx...) to serve the web application.
-  * Create the admin of the web application by visiting `http://your-installation/index.php?installation`
+  * Create the admin of the web application by visiting `http://your_hostname_or_ip/index.php?installation`
 
 ## Usage
 
-  * Start OpenVPN on the server (for example `systemctl start openvpn@server`)
   * Connect to the web application as an admin
   * Create an user
   * User get the configurations files via the web application (and put them in */etc/openvpn*)
