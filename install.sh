@@ -28,8 +28,8 @@ printf "\033[1m\n######################################     OS Detection     ###
 OS=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f1 -d " ")
 echo -e "Detected OS: $OS \r"
 sleep 2
-printf "\033[1m\n\n#################################### Installing Prerequisites ####################################\n"
-printf "\033[1m#################################### This could take long time ####################################\n"
+printf "\033[1m\n\n#################################### Installing Prerequisites ###################################\n"
+printf "\033[1m################################### This could take long time ###################################\n"
 apt update && sudo apt upgrade -y
 
 case $OS in
@@ -55,7 +55,7 @@ for i in openvpn mysql php bower node unzip wget sed; do
 done
 
 printf "\033[1m\n\n################################### Setting MySQL Configuration ####################################\n"
-printf "\033[1m######################## Note the MySQL root password! you will need it soon ########################\n"
+printf "\033[1m######################## Note the MySQL root password! you will need it soon #######################\n"
 mysql_secure_installation
 
 
@@ -74,7 +74,7 @@ fi
 base_path=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 
-printf "\n################## Server informations ##################\n"
+printf "\n#################### Server informations ####################\n"
 
 read -p "Server Hostname/IP: " ip_server
 
@@ -203,7 +203,7 @@ fi
 openvpn --genkey --secret pki/ta.key
 
 
-printf "\n################## Setup OpenVPN ##################\n"
+printf "\n##################### Setup OpenVPN #####################\n"
 
 # Copy certificates and the server configuration in the openvpn directory
 cp /etc/openvpn/easy-rsa/pki/{ca.crt,ta.key,issued/server.crt,private/server.key,dh.pem} "/etc/openvpn/"
@@ -218,7 +218,7 @@ fi
 nobody_group=$(id -ng nobody)
 sed -i "s/group nogroup/group $nobody_group/" "/etc/openvpn/server.conf"
 
-printf "\n################## Setup firewall ##################\n"
+printf "\n################## Setup firewall ####################\n"
 
 # Make ip forwading and make it persistent
 echo 1 > "/proc/sys/net/ipv4/ip_forward"
