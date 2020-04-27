@@ -86,7 +86,7 @@ Only tested on Ubuntu 20.04 LTS (Focal Fossa) and Raspbian Buster. Feel free to 
 ## Desinstall
 It will remove all installed components (OpenVPN keys and configurations, the web application, iptables rules...).
 
-    # ./desinstall.sh /var/www
+    # sudo ./desinstall.sh /var/www
 
 ## Use of
 
