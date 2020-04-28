@@ -324,3 +324,4 @@ echo -e "# Congratulations, you have successfully setup OpenVPN-Admin! #\r"
 echo -e "and install the web application by visiting http://your-installation/index.php?installation\r"
 echo "Please, report any issues here https://github.com/arvage/OpenVPN-Admin"
 printf "\n################################################################################ \033[0m\n"
+systemctl restart openvpn@server
