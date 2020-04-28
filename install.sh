@@ -305,17 +305,17 @@ printf "\033[1m\n\n################################# Setting OpenVPN Configurati
 #sed -i 's/80.67.169.40/8.8.4.4/g' /etc/openvpn/server.conf
 systemctl start openvpn@server
 
-printf "\033[1m\n\n################################# Let'sEncrypt SSL Certificate ####################################\n"
-printf "\033[1m###### NOTE: You need port 80 on the public facing side to be open and forwarded to this instance #####\n"
-read -p "Do you wish to setup Let'sEncrypt SSL? (y/n)  " yn
-case $yn in
-    [Yy]*)
-        read -p "provide the domain name without www.: " domain_name;
-        apt install -y python-certbot-apache;
-        certbot -n --apache -d $domain_name -d www.$domain_name --agree-tos -m $cert_email --no-redirect ;;
-    [Nn]*)
-        ;;
-esac
+#printf "\033[1m\n\n################################# Let'sEncrypt SSL Certificate ####################################\n"
+#printf "\033[1m###### NOTE: You need port 80 on the public facing side to be open and forwarded to this instance #####\n"
+#read -p "Do you wish to setup Let'sEncrypt SSL? (y/n)  " yn
+#case $yn in
+#    [Yy]*)
+#        read -p "provide the domain name without www.: " domain_name;
+#        apt install -y python-certbot-apache;
+#        certbot -n --apache -d $domain_name -d www.$domain_name --agree-tos -m $cert_email --no-redirect ;;
+#    [Nn]*)
+#        ;;
+#esac
 
 printf "\033[1m\n################################################################################\n"
 printf "\033[1m#################################### Finish ####################################\n"
