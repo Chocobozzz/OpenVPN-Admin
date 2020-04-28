@@ -12,7 +12,9 @@
   }
 
   // Get the configuration files ?
-  if(isset($_POST['configuration_get'], $_POST['configuration_username'], $_POST['configuration_pass'], $_POST['configuration_os'])
+//  if(isset($_POST['configuration_get'], $_POST['configuration_username'], $_POST['configuration_pass'], $_POST['configuration_os'])
+  if(isset($_POST['configuration_get'], $_POST['configuration_username'], $_POST['configuration_pass'])
+
      && !empty($_POST['configuration_pass'])) {
     $req = $bdd->prepare('SELECT * FROM user WHERE user_id = ?');
     $req->execute(array($_POST['configuration_username']));
