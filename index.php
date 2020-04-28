@@ -23,13 +23,13 @@
     // Error ?
     if($data && passEqual($_POST['configuration_pass'], $data['user_pass'])) {
       // Thanks http://stackoverflow.com/questions/4914750/how-to-zip-a-whole-folder-using-php
-      if($_POST['configuration_os'] == "gnu_linux") {
-        $conf_dir = 'gnu-linux';
-      } elseif($_POST['configuration_os'] == "osx_viscosity") {
-        $conf_dir = 'osx-viscosity';
-      } else {
+//      if($_POST['configuration_os'] == "gnu_linux") {
+//        $conf_dir = 'gnu-linux';
+//      } elseif($_POST['configuration_os'] == "osx_viscosity") {
+//        $conf_dir = 'osx-viscosity';
+//      } else {
         $conf_dir = 'windows';
-      }
+//      }
       $rootPath = realpath("./client-conf/$conf_dir");
 
       // Initialize archive object ;;;; why doing this every time the user logs in, when the cert is static?
