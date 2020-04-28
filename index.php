@@ -22,49 +22,15 @@
 
     // Error ?
     if($data && passEqual($_POST['configuration_pass'], $data['user_pass'])) {
-      // Thanks http://stackoverflow.com/questions/4914750/how-to-zip-a-whole-folder-using-php
-//      if($_POST['configuration_os'] == "gnu_linux") {
-//        $conf_dir = 'gnu-linux';
-//      } elseif($_POST['configuration_os'] == "osx_viscosity") {
-//        $conf_dir = 'osx-viscosity';
-//      } else {
-        $conf_dir = 'windows';
-//      }
-      $rootPath = realpath("./client-conf/$conf_dir");
+      $file_name = "client.ovpn";
+      $file_folder  = "windows";
+      $file_full_path  = './client-conf/' . $file_folder . '/' . $file_name;
 
-      // Initialize archive object ;;;; why doing this every time the user logs in, when the cert is static?
-      $archive_base_name = "openvpn-$conf_dir";
-      $archive_name = "$archive_base_name.zip";
-      $archive_path = "./client-conf/$archive_name";
-      $zip = new ZipArchive();
-      $zip->open($archive_path, ZipArchive::CREATE | ZipArchive::OVERWRITE);
-
-      $files = new RecursiveIteratorIterator(
-        new RecursiveDirectoryIterator($rootPath),
-        RecursiveIteratorIterator::LEAVES_ONLY
-      );
-
-      foreach ($files as $name => $file) {
-        // Skip directories (they would be added automatically)
-        if (!$file->isDir()) {
-          // Get real and relative path for current file
-          $filePath = $file->getRealPath();
-          $relativePath = substr($filePath, strlen($rootPath) + 1);
-
-          // Add current file to archive
-          $zip->addFile($filePath, "$archive_base_name/$relativePath");
-        }
-      }
-
-      // Zip archive will be created only after closing object
-      $zip->close();
-
-      //then send the headers to foce download the zip file
-      header("Content-type: application/zip");
-      header("Content-Disposition: attachment; filename=$archive_name");
+      header("Content-type: application/ovpn");
+      header("Content-disposition: attachment; filename=$file_name");
       header("Pragma: no-cache");
       header("Expires: 0");
-      readfile($archive_path);
+      readfile($file_full_path);
     }
     else {
       $error = true;
