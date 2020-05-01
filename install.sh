@@ -119,12 +119,6 @@ fi
 # Check if the user doesn't already exist
 read -p "MySQL user name for OpenVPN-Admin (required, please specify one): " mysql_user
 
-if [[ -z "$mysql_user" ]]; then
-   printf '%s\n' "No input entered"
-   read -p "MySQL user name for OpenVPN-Admin (required, please specify one): " mysql_user
-else
-fi
-
 echo "SHOW GRANTS FOR $mysql_user@localhost" | mysql -u root --password="$mysql_root_pass" &> /dev/null
 if [ $? -eq 0 ]; then
   echo "The MySQL user already exists."
@@ -132,11 +126,6 @@ if [ $? -eq 0 ]; then
 fi
 
 read -p "MySQL user password for OpenVPN-Admin (required, please specify one): " -s mysql_pass; echo
-if [[ -z "$mysql_pass" ]]; then
-   printf '%s\n' "No input entered"
-   read -p "MySQL user password for OpenVPN-Admin (required, please specify one): " mysql_pass
-else
-fi
 
 # TODO MySQL port & host ?
 
