@@ -225,7 +225,7 @@ fi
 nobody_group=$(id -ng nobody)
 sed -i "s/group nogroup/group $nobody_group/" "/etc/openvpn/server.conf"
 
-echo -e "${Green}################## Setup firewall ####################\r${NC}"
+echo -e "${Green}################## Setup Firewall ####################\r${NC}"
 
 # Make ip forwading and make it persistent
 echo 1 > "/proc/sys/net/ipv4/ip_forward"
