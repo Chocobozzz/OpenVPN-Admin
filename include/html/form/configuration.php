@@ -17,16 +17,6 @@
           <label for="configuration_pass">Password</label>
           <input type="password" id="configuration_pass" name="configuration_pass" class="form-control" />
         </div>
-<!--
-        <div class="form-group">
-          <label for="configuration_os">OS</label>
-          <select name="configuration_os" id="configuration_os" class="form-control">
-            <option value="gnu_linux">GNU/Linux</option>
-            <option value="osx_viscosity">OSX/Viscosity</option>
-            <option value="windows">Windows</option>
-          </select>
-        </div>
--->
         <input id="configuration_get" name="configuration_get" type="submit" value="Get configuration files" class="btn btn-default" />
       </div>
 
