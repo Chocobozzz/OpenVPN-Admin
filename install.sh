@@ -29,14 +29,14 @@ if [ "$#" -ne 3 ]; then
 fi
 
 
-echo -e "${Green}###################################### Installation Started #####################################\r"
+echo -e "${Green}\r###################################### Installation Started #####################################\r"
 sleep 2
-echo -e "${Purple}######################################     OS Detection     #####################################\r"
+echo -e "${Purple}\r######################################     OS Detection     #####################################\r"
 # Detecting OS Distribution
 OS=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f1 -d " ")
 echo -e "${Cyan}Detected OS: $OS \r"
 sleep 2
-echo -e "${Green}#################################### Installing Prerequisites ###################################\r"
+echo -e "${Green}\r#################################### Installing Prerequisites ###################################\r"
 echo -e "################################### This could take long time ###################################\r${NC}"
 apt update && sudo apt upgrade -y
 
@@ -62,8 +62,8 @@ for i in openvpn mysql php bower node unzip wget sed; do
   fi
 done
 
-echo -e "${Green}################################### Setting MySQL Configuration ####################################\r"
-echo -e "######################## Note the MySQL root password! you will need it soon #######################\r${NC}"
+echo -e "${Green}\r################################### Setting MySQL Configuration ####################################\r"
+echo -e "${Red}####################### Note: the MySQL root password! you will need it soon #######################\r${NC}"
 mysql_secure_installation
 
 
@@ -82,7 +82,7 @@ fi
 base_path=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 
-echo -e "${Green}#################### Server informations ####################\r${NC}"
+echo -e "${Green}\r#################### Server informations ####################\r${NC}"
 
 read -p "Server Hostname/IP: " ip_server
 
@@ -115,9 +115,13 @@ if [ "$sql_result" != "" ]; then
   exit
 fi
 
+echo -e "${Green}\r################## Creating OpenVPN-Admin SQL DB user credentials ##################\r${NC}"
 
 # Check if the user doesn't already exist
 read -p "MySQL user name for OpenVPN-Admin (required, please specify one): " mysql_user
+while [[ $mysql_user = "" ]]; do
+   read -p "MySQL user name for OpenVPN-Admin (required, please specify one): " mysql_user
+done
 
 echo "SHOW GRANTS FOR $mysql_user@localhost" | mysql -u root --password="$mysql_root_pass" &> /dev/null
 if [ $? -eq 0 ]; then
@@ -126,10 +130,13 @@ if [ $? -eq 0 ]; then
 fi
 
 read -p "MySQL user password for OpenVPN-Admin (required, please specify one): " -s mysql_pass; echo
+while [[ $mysql_pass = "" ]]; do
+	read -p "MySQL user password for OpenVPN-Admin (required, please specify one): " -s mysql_pass; echo
+done
 
 # TODO MySQL port & host ?
 
-echo -e "${Green}################## Certificates informations ##################\r${NC}"
+echo -e "${Green}\r################## Certificates informations ##################\r${NC}"
 
 read -p "Key size (1024, 2048 or 4096) [2048]: " key_size
 
@@ -152,7 +159,7 @@ read -p "Email Address [me@example.net]: " cert_email
 read -p "Common Name (eg, your name or your server's hostname) [ChangeMe]: " key_cn
 
 
-echo -e "${Green}################## Creating the certificates ##################\r${Yellow}"
+echo -e "${Green}\r################## Creating the certificates ##################\r${Yellow}"
 
 # Get the rsa keys
 EASYRSA_VERSION=$(curl -s https://api.github.com/repos/OpenVPN/easy-rsa/releases/latest | grep "tag_name" | cut -f2 -d "v" | sed 's/[",]//g')
@@ -210,7 +217,7 @@ fi
 openvpn --genkey --secret pki/ta.key
 
 
-echo -e "${Green}##################### Setup OpenVPN #####################\r${NC}"
+echo -e "${Green}\r##################### Setup OpenVPN #####################\r${NC}"
 
 # Copy certificates and the server configuration in the openvpn directory
 cp /etc/openvpn/easy-rsa/pki/{ca.crt,ta.key,issued/server.crt,private/server.key,dh.pem} "/etc/openvpn/"
@@ -225,7 +232,7 @@ fi
 nobody_group=$(id -ng nobody)
 sed -i "s/group nogroup/group $nobody_group/" "/etc/openvpn/server.conf"
 
-echo -e "${Green}################## Setup Firewall ####################\r${NC}"
+echo -e "${Green}\r################## Setup Firewall ####################\r${NC}"
 
 # Make ip forwading and make it persistent
 echo 1 > "/proc/sys/net/ipv4/ip_forward"
@@ -245,7 +252,7 @@ iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o $primary_nic -j MASQUERADE
 iptables -t nat -A POSTROUTING -s 10.8.0.2/24 -o $primary_nic -j MASQUERADE
 
 
-echo -e "${Green}################## Setup MySQL database ##################\r${NC}"
+echo -e "${Green}\r################## Setup MySQL Database ##################\r${NC}"
 
 echo "CREATE DATABASE \`openvpn-admin\`" | mysql -u root --password="$mysql_root_pass"
 echo "CREATE USER $mysql_user@localhost IDENTIFIED BY '$mysql_pass'" | mysql -u root --password="$mysql_root_pass"
@@ -253,7 +260,7 @@ echo "GRANT ALL PRIVILEGES ON \`openvpn-admin\`.*  TO $mysql_user@localhost" | m
 echo "FLUSH PRIVILEGES" | mysql -u root --password="$mysql_root_pass"
 
 
-echo -e "${Green}################## Setup web application ##################\r${NC}"
+echo -e "${Green}\r################## Setup Web Application ##################\r${NC}"
 
 # Copy bash scripts (which will insert row in MySQL)
 cp -r "$base_path/installation/scripts" "/etc/openvpn/"
@@ -299,7 +306,7 @@ done
 bower --allow-root install
 chown -R "$user:$group" "$openvpn_admin"
 
-echo -e "${Green}################################### Setting Apache Configuration ####################################\r${NC}"
+echo -e "${Green}\r################################### Setting Apache Configuration ####################################\r${NC}"
 cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/openvpn.conf
 sed -i 's/\/var\/www\/html/\/var\/www\/openvpn-admin/g' /etc/apache2/sites-available/openvpn.conf
 sed -i '/<\/VirtualHost>/i \\n\t<Directory \/var\/www\/openvpn-admin>\n\t\tOptions Indexes FollowSymLinks\n\t\tAllowOverride All\n\t\tRequire all granted\n\t<\/Directory>' /etc/apache2/sites-available/openvpn.conf
@@ -313,7 +320,7 @@ a2dissite 000-default
 a2ensite openvpn
 systemctl restart apache2
 
-echo -e "${Green}################################# Setting OpenVPN Configuration ####################################\r${NC}"
+echo -e "${Green}\r################################# Finalizing OpenVPN Configuration ####################################\r${NC}"
 #sed -i 's/explicit-exit-notify 1/# explicit-exit-notify 1/g' /etc/openvpn/server.conf
 #sed -i 's/80.67.169.12/8.8.8.8/g' /etc/openvpn/server.conf
 #sed -i 's/80.67.169.40/8.8.4.4/g' /etc/openvpn/server.conf
@@ -331,8 +338,8 @@ systemctl start openvpn@server
 #        ;;
 #esac
 
-echo -e "${Cyan}\n\n\n################################################################################"
-echo -e "#################################### Finish ####################################"
+echo -e "${Cyan}\r\r\r################################################################################"
+echo -e "################################### Finished ###################################"
 
 echo -e "${Cyan}#${Purple}          Congratulations, you have successfully setup OpenVPN-Admin!         ${Cyan}#"
 echo -e "${Cyan}#${Purple}   Finish the install using http://your-installation/index.php?installation   ${Cyan}#"
