@@ -62,6 +62,8 @@ Only tested on Ubuntu 20.04 LTS (Focal Fossa) and Raspbian Buster. Feel free to 
 
   * Setup OpenVPN and the web application:
 
+        $ sudo apt update
+        $ sudo apt install -y git
         $ cd ~
         $ git clone https://github.com/arvage/OpenVPN-Admin openvpn-admin
         $ cd openvpn-admin
