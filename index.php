@@ -19,12 +19,13 @@
 
     // Error ?
     if($data && passEqual($_POST['configuration_pass'], $data['user_pass'])) {
+      $download_name = $_POST['configuration_username'];
       $file_name = "client.ovpn";
       $file_folder  = "windows";
       $file_full_path  = './client-conf/' . $file_folder . '/' . $file_name;
 
       header("Content-type: application/ovpn");
-      header("Content-disposition: attachment; filename=$file_name");
+      header("Content-disposition: attachment; filename=$download_name.ovpn");
       header("Pragma: no-cache");
       header("Expires: 0");
       readfile($file_full_path);
