@@ -26,9 +26,7 @@ Administrate its OpenVPN with a web interface (logs visualisations, users managi
 
 ### Debian 10, Raspbian Buster, Ubuntu 20 (Focal Fossa)
 
-skip to "Install" section
-Just download and run the install.sh script.
-
+Skip to "Installation" section 
 
 ### Debian 9 Stretch
 
@@ -57,6 +55,8 @@ not supported and tested
 ## Tests
 
 Only tested on Ubuntu 20.04 LTS (Focal Fossa) and Raspbian Buster. Feel free to open issues.
+
+
 
 ## Installation
 
