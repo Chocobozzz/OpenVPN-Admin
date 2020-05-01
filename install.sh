@@ -334,8 +334,8 @@ systemctl start openvpn@server
 echo -e "${Cyan}################################################################################"
 echo -e "#################################### Finish ####################################"
 
-echo -e "${Purple}#          Congratulations, you have successfully setup OpenVPN-Admin!         #"
-echo -e "#   Finish the install using http://your-installation/index.php?installation   #"
-echo -e "#   Please, report any issues here https://github.com/arvage/OpenVPN-Admin     #"
+echo -e "${Cyan}#${Purple}          Congratulations, you have successfully setup OpenVPN-Admin!         ${Cyan}#"
+echo -e "${Cyan}#${Purple}   Finish the install using http://your-installation/index.php?installation   ${Cyan}#"
+echo -e "${Cyan}#${Purple}   Please, report any issues here https://github.com/arvage/OpenVPN-Admin     ${Cyan}#"
 echo -e "${Cyan}################################################################################${NC}"
 systemctl restart openvpn@server
