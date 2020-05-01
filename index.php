@@ -10,8 +10,8 @@
     header("Location: .");
     exit(-1);
   }
-// Get the instruction file ?
-if(isset($_POST['configuration_get'])) {
+  // Get the instruction file ?
+  if(isset($_POST['instruction_get'])) {
       $file_name = "Download and install the OpenVPN GUI.pdf";
       $file_folder  = "windows";
       $file_full_path  = './client-conf/' . $file_folder . '/' . $file_name;
@@ -22,9 +22,6 @@ if(isset($_POST['configuration_get'])) {
       header("Expires: 0");
       readfile($file_full_path);
       exit;
-    }
-    else {
-      $error = true;
     }
 
   // Get the configuration files ?
