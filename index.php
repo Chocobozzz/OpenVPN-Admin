@@ -10,6 +10,22 @@
     header("Location: .");
     exit(-1);
   }
+// Get the instruction file ?
+if(isset($_POST['configuration_get'])) {
+      $file_name = "Download and install the OpenVPN GUI.pdf";
+      $file_folder  = "windows";
+      $file_full_path  = './client-conf/' . $file_folder . '/' . $file_name;
+
+      header("Content-type: application/ovpn");
+      header("Content-disposition: attachment; filename=$file_name");
+      header("Pragma: no-cache");
+      header("Expires: 0");
+      readfile($file_full_path);
+      exit;
+    }
+    else {
+      $error = true;
+    }
 
   // Get the configuration files ?
   if(isset($_POST['configuration_get'], $_POST['configuration_username'], $_POST['configuration_pass']) && !empty($_POST['configuration_pass'])) {
