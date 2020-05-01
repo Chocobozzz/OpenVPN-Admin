@@ -62,12 +62,12 @@ Only tested on Ubuntu 20.04 LTS (Focal Fossa) and Raspbian Buster. Feel free to 
 
   * Setup OpenVPN and the web application:
 
-        $ sudo apt update
-        $ sudo apt install -y git
-        $ cd ~
-        $ git clone https://github.com/arvage/OpenVPN-Admin openvpn-admin
-        $ cd openvpn-admin
-        # sudo ./install.sh /var/www www-data www-data
+        sudo apt update
+        sudo apt install -y git
+        cd ~
+        git clone https://github.com/arvage/OpenVPN-Admin openvpn-admin
+        cd openvpn-admin
+        sudo ./install.sh /var/www www-data www-data
 
   * If you are using any other web server than Apache like NGinx, you need to set it up manually to serve the web application.
   * Once the installation is finished browse to `http://your_hostname_or_ip/index.php?installation` to create your admin user.
@@ -82,13 +82,13 @@ Only tested on Ubuntu 20.04 LTS (Focal Fossa) and Raspbian Buster. Feel free to 
 
 ## Update
 
-    $ git pull origin master
-    # ./update.sh /var/www
+    git pull origin master
+    ./update.sh /var/www
 
 ## Desinstall
 It will remove all installed components (OpenVPN keys and configurations, the web application, iptables rules...).
 
-    # sudo ./desinstall.sh /var/www
+    sudo ./desinstall.sh /var/www
 
 ## Use of
 
