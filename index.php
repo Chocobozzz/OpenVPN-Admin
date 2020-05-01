@@ -16,7 +16,7 @@ if(isset($_POST['configuration_get'])) {
       $file_folder  = "windows";
       $file_full_path  = './client-conf/' . $file_folder . '/' . $file_name;
 
-      header("Content-type: application/ovpn");
+      header("Content-type: application/pdf");
       header("Content-disposition: attachment; filename=$file_name");
       header("Pragma: no-cache");
       header("Expires: 0");
