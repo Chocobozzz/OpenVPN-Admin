@@ -24,7 +24,7 @@ Administrate its OpenVPN with a web interface (logs visualisations, users managi
   * node
   * npm
 
-### Debian 10, Raspbian Buster, Ubuntu 20 (Focal Fossa)
+### Raspbian Buster, Ubuntu 20 (Focal Fossa) and Debian 10
 
 Skip to "Installation" section 
 
@@ -69,8 +69,8 @@ Only tested on Ubuntu 20.04 LTS (Focal Fossa) and Raspbian Buster. Feel free to 
         $ cd openvpn-admin
         # sudo ./install.sh /var/www www-data www-data
 
-  * Setup the web server (Apache, NGinx...) to serve the web application.
-  * Create the admin of the web application by visiting `http://your_hostname_or_ip/index.php?installation`
+  * If you are using any other web server than Apache like NGinx, you need to set it up manually to serve the web application.
+  * Once the installation is finished browse to `http://your_hostname_or_ip/index.php?installation` to create your admin user.
 
 ## Usage
 
