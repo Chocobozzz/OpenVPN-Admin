@@ -306,7 +306,7 @@ sed -i '/<\/VirtualHost>/i \\n\t<Directory \/var\/www\/openvpn-admin>\n\t\tOptio
 touch /var/www/.htpasswd
 chown www-data:www-data /var/www/.htpasswd
 echo -e "${Yellow}It's time to secure client configuration folder from anonymous browser and assign a super admin user to be only able to browse it.\r"
-echo -e "This username / password will only applies to http:// your-site/client-config and all sub directories\r${NC}"
+echo -e "This username / password will only applies to http://your-site/client-config and all sub directories\r${NC}"
 read -p "Client Configuration Web Access Username: " client_folder_username
 htpasswd /var/www/.htpasswd $client_folder_username
 a2dissite 000-default
