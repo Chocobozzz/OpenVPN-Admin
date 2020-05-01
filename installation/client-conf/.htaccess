@@ -1,0 +1,6 @@
+Options -Indexes
+
+AuthType Basic
+AuthName "restricted area"
+AuthUserFile /var/www/.htpasswd
+require valid-user
