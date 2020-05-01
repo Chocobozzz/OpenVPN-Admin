@@ -37,7 +37,7 @@ OS=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -
 echo -e "${Cyan}Detected OS: $OS \r"
 sleep 2
 echo -e "${Green}\r#################################### Installing Prerequisites ###################################\r"
-echo -e "################################### This could take long time ###################################\r${NC}"
+echo -e "${Red}################################### This could take long time ###################################\r${NC}"
 apt update && sudo apt upgrade -y
 
 case $OS in
@@ -82,7 +82,7 @@ fi
 base_path=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 
-echo -e "${Green}\r#################### Server informations ####################\r${NC}"
+echo -e "${Green}\r#################### Server Informations ####################\r${NC}"
 
 read -p "Server Hostname/IP: " ip_server
 
@@ -116,6 +116,7 @@ if [ "$sql_result" != "" ]; then
 fi
 
 echo -e "${Green}\r################## Creating OpenVPN-Admin SQL DB user credentials ##################\r${NC}"
+echo -e "${Red}\r################## This is needed for web app to communicate with SQL ##################\r${NC}"
 
 # Check if the user doesn't already exist
 read -p "MySQL user name for OpenVPN-Admin (required, please specify one): " mysql_user
@@ -136,7 +137,7 @@ done
 
 # TODO MySQL port & host ?
 
-echo -e "${Green}\r################## Certificates informations ##################\r${NC}"
+echo -e "${Green}\r################## Certificates Information ##################\r${NC}"
 
 read -p "Key size (1024, 2048 or 4096) [2048]: " key_size
 
