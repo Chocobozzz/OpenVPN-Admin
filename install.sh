@@ -34,10 +34,10 @@ apt update && sudo apt upgrade -y
 
 case $OS in
 	Ubuntu)
-    apt install -y openvpn apache2 mysql-server php php-mysql php-zip php-mcrypt unzip git wget sed curl nodejs npm mc net-tools
+    apt install -y openvpn apache2 mysql-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc net-tools
 		;;
 	Raspbian)
-		apt install -y openvpn apache2 mariadb-server php php-mysql php-zip php-mcrypt unzip git wget sed curl nodejs npm mc
+		apt install -y openvpn apache2 mariadb-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc
 		;;
 	*)
 		echo "Can't detect OS distribution! you need to install prerequisites manully"
@@ -295,6 +295,8 @@ chown -R "$user:$group" "$openvpn_admin"
 printf "\033[1m\n\n################################### Setting Apache Configuration ####################################\n"
 cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/openvpn.conf
 sed -i 's/\/var\/www\/html/\/var\/www\/openvpn-admin/g' /etc/apache2/sites-available/openvpn.conf
+sed -i '/<\/VirtualHost>/i \\n\t<Directory \/var\/www\/openvpn-admin>\n\t\tOptions Indexes FollowSymLinks\n\t\tAllowOverride All\n\t\tRequire all granted\n\t<\/Directory>' /etc/apache2/sites-available/openvpn.conf
+
 a2dissite 000-default
 a2ensite openvpn
 systemctl restart apache2
