@@ -18,6 +18,8 @@
           <input type="password" id="configuration_pass" name="configuration_pass" class="form-control" />
         </div>
         <input id="configuration_get" name="configuration_get" type="submit" value="Get configuration files" class="btn btn-default" />
+        <input id="instruction_get" name="instruction_get" type="submit" value="Get Instructions" class="btn btn-default" />
+
       </div>
 
     </form>
