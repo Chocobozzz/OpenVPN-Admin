@@ -28,9 +28,9 @@ if [ "$#" -ne 3 ]; then
   exit
 fi
 
-
-echo -e "${Green}\n###################################### Installation Started #####################################\n"
+echo -e "${Green}\n################################# Automated Installation Started ################################\n"
 sleep 2
+
 echo -e "${Purple}\n######################################     OS Detection     #####################################\n"
 # Detecting OS Distribution
 OS=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f1 -d " ")
@@ -45,7 +45,7 @@ case $OS in
     apt install -y openvpn apache2 mysql-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc net-tools
 		;;
 	Raspbian)
-		apt install -y openvpn apache2 mariadb-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc
+		apt install -y openvpn apache2 mariadb-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc expect
 		;;
 	*)
 		echo -e "${Red}Can't detect OS distribution! you need to install prerequisites manully${NC}"
@@ -64,8 +64,15 @@ done
 
 echo -e "${Green}\n################################### Setting MySQL Configuration ####################################\n"
 echo -e "${Red}####################### Note: the MySQL root password! you will need it soon #######################\n${NC}"
-mysql_secure_installation
 
+mysql_root_pass=$(openssl rand -base64 12)
+mysql -u root <<-EOF
+UPDATE mysql.user SET Password=PASSWORD('$mysql_root_pass') WHERE User='root';
+DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+DELETE FROM mysql.user WHERE User='';
+DELETE FROM mysql.db WHERE Db='test' OR Db='test_%';
+FLUSH PRIVILEGES;
+EOF
 
 www=$1
 user=$2
@@ -83,27 +90,14 @@ base_path=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 
 echo -e "${Green}\n#################### Server Informations ####################\n${NC}"
-
-read -p "Server Hostname/IP: " ip_server
-
-read -p "OpenVPN protocol (tcp or udp) [tcp]: " openvpn_proto
-
-if [[ -z $openvpn_proto ]]; then
-  openvpn_proto="tcp"
-fi
-
-read -p "Port [1194]: " server_port
-
-if [[ -z $server_port ]]; then
-  server_port="1194"
-fi
+ip_server=$(hostname -I)
+openvpn_proto="udp"
+server_port="1194"
 
 # Get root pass (to create the database and the user)
-mysql_root_pass=""
 status_code=1
 
 while [ $status_code -ne 0 ]; do
-  read -p "MySQL root password: " -s mysql_root_pass; echo
   echo "SHOW DATABASES" | mysql -u root --password="$mysql_root_pass" &> /dev/null
   status_code=$?
 done
@@ -119,10 +113,8 @@ echo -e "${Green}\n################## Creating OpenVPN-Admin SQL DB user credent
 echo -e "${Red}\n################## This is needed for web app to communicate with SQL ##################\n${NC}"
 
 # Check if the user doesn't already exist
-read -p "MySQL user name for OpenVPN-Admin (required, please specify one): " mysql_user
-while [[ $mysql_user = "" ]]; do
-   read -p "MySQL user name for OpenVPN-Admin (required, please specify one): " mysql_user
-done
+mysql_user="openvpn"
+mysql_pass=$(openssl rand -base64 12)
 
 echo "SHOW GRANTS FOR $mysql_user@localhost" | mysql -u root --password="$mysql_root_pass" &> /dev/null
 if [ $? -eq 0 ]; then
@@ -130,35 +122,20 @@ if [ $? -eq 0 ]; then
   exit
 fi
 
-read -p "MySQL user password for OpenVPN-Admin (required, please specify one): " -s mysql_pass; echo
-while [[ $mysql_pass = "" ]]; do
-	read -p "MySQL user password for OpenVPN-Admin (required, please specify one): " -s mysql_pass; echo
-done
-
 # TODO MySQL port & host ?
 
 echo -e "${Green}\n################## Certificates Information ##################\n${NC}"
 
-read -p "Key size (1024, 2048 or 4096) [2048]: " key_size
-
-read -p "Root certificate expiration (in days) [3650]: " ca_expire
-
-read -p "Certificate expiration (in days) [3650]: " cert_expire
-
-read -p "Country Name (2 letter code) [US]: " cert_country
-
-read -p "State or Province Name (full name) [California]: " cert_province
-
-read -p "Locality Name (eg, city) [Mission Viejo]: " cert_city
-
-read -p "Organization Name (eg, company) [Copyleft Certificate Co]: " cert_org
-
-read -p "Organizational Unit Name (eg, section) [IT]: " cert_ou
-
-read -p "Email Address [me@example.net]: " cert_email
-
-read -p "Common Name (eg, your name or your server's hostname) [ChangeMe]: " key_cn
-
+key_size="2048"
+ca_expire="3650"
+cert_expire="3650"
+cert_country="US"
+cert_province="California"
+cert_city="Mission Viejo"
+cert_org="Arvage"
+cert_ou="IT"
+cert_email="example@test.net"
+key_cn=$(hostname -I)
 
 echo -e "${Green}\n################## Creating the certificates ##################\n${Yellow}"
 
