@@ -1,4 +1,4 @@
-## Raspberry Pi OpenVPN Admin (Tested on Ubuntu and Raspbian using Apache2)
+## Raspberry Pi OpenVPN Admin using Apache2 
 
 ## Summary
 Administrate its OpenVPN with a web interface (logs visualisations, users managing...) and a SQL database.
@@ -9,53 +9,12 @@ Administrate its OpenVPN with a web interface (logs visualisations, users managi
 
 ## Prerequisite
 
-  * GNU/Linux with Bash and root access
-  * Fresh install of OpenVPN
-  * Web server (NGinx, Apache...)
-  * MySQL
-  * PHP >= 5.5 with modules:
-    * zip
-    * pdo_mysql
-  * bower
-  * unzip
-  * wget
-  * sed
-  * curl
-  * node
-  * npm
-
-### Raspbian Buster, Ubuntu 20 (Focal Fossa) and Debian 10
-
-Skip to "Installation" section 
-
-### Debian 9 Stretch
-
-In order to install `npm`, [stretch-backports need to be added to your sources.list](https://backports.debian.org/Instructions/#index2h2).
-
-````
-# apt-get install -t stretch-backports npm nodejs
-# apt-get install openvpn apache2 php-mysql mysql-server php-zip php unzip git wget sed curl
-# npm install -g bower
-````
-
-
-### Debian 8 Jessie
-
-````
-# apt-get install openvpn apache2 php5-mysql mysql-server php5 nodejs unzip git wget sed npm curl
-# npm install -g bower
-# ln -s /usr/bin/nodejs /usr/bin/node
-````
-
-
-### Other distribution... (PR welcome)
-
-not supported and tested
+  * Raspbian with Bash access or remote SSH
+  * Git
 
 ## Tests
 
-Only tested on Ubuntu 20.04 LTS (Focal Fossa) and Raspbian Buster. Feel free to open issues.
-
+Only tested on Raspberry Pi 3 with Raspbian Buster. Feel free to open issues.
 
 
 ## Installation
