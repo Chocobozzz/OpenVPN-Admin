@@ -31,7 +31,7 @@ fi
 echo -e "${Green}\n################################# Automated Installation Started ################################\n"
 sleep 2
 
-echo -e "${Purple}\n######################################     OS Detection     #####################################\n"
+#echo -e "${Purple}\n######################################     OS Detection     #####################################\n"
 # Detecting OS Distribution
 OS=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f1 -d " ")
 echo -e "${Cyan}Detected OS: $OS \n"
@@ -63,8 +63,6 @@ for i in openvpn mysql php bower node unzip wget sed; do
 done
 
 echo -e "${Green}\n################################### Setting MySQL Configuration ####################################\n"
-echo -e "${Red}####################### Note: the MySQL root password! you will need it soon #######################\n${NC}"
-
 mysql_root_pass=$(openssl rand -base64 12)
 mysql -u root <<-EOF
 UPDATE mysql.user SET Password=PASSWORD('$mysql_root_pass') WHERE User='root';
@@ -73,6 +71,7 @@ DELETE FROM mysql.user WHERE User='';
 DELETE FROM mysql.db WHERE Db='test' OR Db='test_%';
 FLUSH PRIVILEGES;
 EOF
+echo "Auto Generated MySQL Root Password: $mysql_root_pass"
 
 www=$1
 user=$2
@@ -87,9 +86,6 @@ if [ ! -d "$www" ] ||  ! grep -q "$user" "/etc/passwd" || ! grep -q "$group" "/e
 fi
 
 base_path=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-
-
-echo -e "${Green}\n#################### Server Informations ####################\n${NC}"
 ip_server=$(hostname -I)
 openvpn_proto="udp"
 server_port="1194"
@@ -109,22 +105,19 @@ if [ "$sql_result" != "" ]; then
   exit
 fi
 
-echo -e "${Green}\n################## Creating OpenVPN-Admin SQL DB user credentials ##################\n${NC}"
-echo -e "${Red}\n################## This is needed for web app to communicate with SQL ##################\n${NC}"
+echo -e "${Green}\n################## Generating OpenVPN-Admin SQL DB user credentials ##################\n${NC}"
 
 # Check if the user doesn't already exist
 mysql_user="openvpn"
 mysql_pass=$(openssl rand -base64 12)
+echo "Auto Generated OpenVPN-Admin MySQL Username: $mysql_user"
+echo "Auto Generated OpenVPN-Admin MySQL Password: $mysql_pass"
 
 echo "SHOW GRANTS FOR $mysql_user@localhost" | mysql -u root --password="$mysql_root_pass" &> /dev/null
 if [ $? -eq 0 ]; then
   echo "The MySQL user already exists."
   exit
 fi
-
-# TODO MySQL port & host ?
-
-echo -e "${Green}\n################## Certificates Information ##################\n${NC}"
 
 key_size="2048"
 ca_expire="3650"
@@ -182,7 +175,8 @@ fi
 if [[ ! -z $key_cn ]]; then
   export EASYRSA_REQ_CN=$key_cn
 fi
-
+  
+export EASYRSA_BATCH=1
 # Init PKI dirs and build CA certs
 ./easyrsa init-pki
 ./easyrsa build-ca nopass
@@ -288,12 +282,12 @@ echo -e "${Green}\n################################### Setting Apache Configurat
 cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/openvpn.conf
 sed -i 's/\/var\/www\/html/\/var\/www\/openvpn-admin/g' /etc/apache2/sites-available/openvpn.conf
 sed -i '/<\/VirtualHost>/i \\n\t<Directory \/var\/www\/openvpn-admin>\n\t\tOptions Indexes FollowSymLinks\n\t\tAllowOverride All\n\t\tRequire all granted\n\t<\/Directory>' /etc/apache2/sites-available/openvpn.conf
-touch /var/www/.htpasswd
-chown www-data:www-data /var/www/.htpasswd
-echo -e "${Yellow}It's time to secure client configuration folder from anonymous browser and assign a super admin user to be only able to browse it.\n"
-echo -e "This username / password will only applies to http://your-site/client-config and all sub directories\n${NC}"
-read -p "Client Configuration Web Access Username: " client_folder_username
-htpasswd /var/www/.htpasswd $client_folder_username
+#touch /var/www/.htpasswd
+#chown www-data:www-data /var/www/.htpasswd
+#echo -e "${Yellow}It's time to secure client configuration folder from anonymous browser and assign a super admin user to be only able to browse it.\n"
+#echo -e "This username / password will only applies to http://your-site/client-config and all sub directories\n${NC}"
+#read -p "Client Configuration Web Access Username: " client_folder_username
+#htpasswd /var/www/.htpasswd $client_folder_username
 a2dissite 000-default
 a2ensite openvpn
 systemctl restart apache2
