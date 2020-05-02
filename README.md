@@ -16,7 +16,6 @@ Administrate its OpenVPN with a web interface (logs visualisations, users managi
 
 Only tested on Raspberry Pi 3 with Raspbian Buster. Feel free to open issues.
 
-
 ## Installation
 
   * Setup OpenVPN and the web application:
