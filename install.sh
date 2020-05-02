@@ -45,7 +45,7 @@ case $OS in
     apt install -y openvpn apache2 mysql-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc net-tools
 		;;
 	Raspbian)
-		apt install -y openvpn apache2 mariadb-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc expect
+		apt install -y openvpn apache2 mariadb-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc
 		;;
 	*)
 		echo -e "${Red}Can't detect OS distribution! you need to install prerequisites manully${NC}"
