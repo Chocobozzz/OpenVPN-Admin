@@ -4,21 +4,13 @@
   require(dirname(__FILE__) . '/include/functions.php');
   require(dirname(__FILE__) . '/include/connect.php');
 
-  // --------------- INSTALLATION ---------------
-  if(isset($_GET['installation'])) {
-    if(isInstalled($bdd) == false) {
-      printError('OpenVPN-Admin admin user not created. Redirecting.');
-      header( "refresh:2;url=index.php?installation" );
-      exit(-1);
-    }
-  }
-  
   // Disconnecting ?
   if(isset($_GET['logout'])){
     session_destroy();
     header("Location: .");
     exit(-1);
   }
+
   // Get the instruction file ?
   if(isset($_POST['instruction_get'])) {
       $file_name = "Download and install the OpenVPN GUI.pdf";
@@ -147,11 +139,10 @@
         header( "refresh:3;url=index.php?admin" );
       }
       // Print the installation form
-      else {
+      else {    
         require(dirname(__FILE__) . '/include/html/menu.php');
         require(dirname(__FILE__) . '/include/html/form/installation.php');
       }
-
       exit(-1);
     }
 
@@ -193,7 +184,7 @@
   <?php
       require(dirname(__FILE__) . '/include/html/grids.php');
     }
-  ?>
+  ?>  
      <div id="message-stage">
         <!-- used to display application messages (failures / status-notes) to the user -->
      </div>
