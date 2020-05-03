@@ -36,7 +36,7 @@ sleep 2
 OS=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f1 -d " ")
 echo -e "${Cyan}Detected OS: $OS \n"
 sleep 2
-echo -e "${Green}\n#################################### Installing Prerequisites ###################################\n"
+echo -e "${Green}\n#################################### Installing Prerequisites ###################################"
 echo -e "${Red}################################### This could take long time ###################################\n${NC}"
 apt update && sudo apt upgrade -y
 
@@ -85,7 +85,7 @@ if [ ! -d "$www" ] ||  ! grep -q "$user" "/etc/passwd" || ! grep -q "$group" "/e
 fi
 
 base_path=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-ip_server=$(hostname -I)
+ip_server=$(hostname -I | cut -f1 -d\ )
 openvpn_proto="udp"
 server_port="1194"
 
@@ -125,7 +125,7 @@ cert_city="Mission Viejo"
 cert_org="Arvage"
 cert_ou="IT"
 cert_email="example@test.net"
-key_cn=$(hostname -I)
+key_cn=$(hostname -I | cut -f1 -d\ )
 
 echo -e "${Green}\n################## Creating the certificates ##################\n${Yellow}"
 
@@ -310,11 +310,11 @@ systemctl start openvpn@server
 echo -e "${Cyan}\n\n\n################################################################################"
 echo -e "################################### Finished ###################################"
 echo -e "${Cyan}#${Purple}          Congratulations, you have successfully setup OpenVPN-Admin!         ${Cyan}#"
-echo -e "${Cyan}#${Purple}   Finish the install using http://$ip_server/index.php?installation          ${Cyan}#"
+echo -e "${Cyan}#${Purple}Finish the install using http://$ip_server/index.php?installation   ${Cyan}#"
 echo -e "${Cyan}#${Purple}   Please, report any issues here https://github.com/arvage/OpenVPN-Admin     ${Cyan}#"
 echo -e "${Cyan}#${Purple}             Auto Generated MySQL Root Password: $mysql_root_pass             ${Cyan}#" 
-echo -e "${Cyan}#${Purple}             Auto Generated OpenVPN-Admin MySQL Username: $mysql_user         ${Cyan}#"
-echo -e "${Cyan}#${Purple}             Auto Generated OpenVPN-Admin MySQL Password: $mysql_pass         ${Cyan}#"
+echo -e "${Cyan}#${Purple}             Auto Generated OpenVPN-Admin MySQL Username: $mysql_user     ${Cyan}#"
+echo -e "${Cyan}#${Purple}             Auto Generated OpenVPN-Admin MySQL Password: $mysql_pass     ${Cyan}#"
 
 echo -e "${Cyan}################################################################################${NC}"
 echo -e "${Cyan}################################################################################${NC}"
