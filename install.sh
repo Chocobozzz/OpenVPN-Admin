@@ -71,7 +71,6 @@ DELETE FROM mysql.user WHERE User='';
 DELETE FROM mysql.db WHERE Db='test' OR Db='test_%';
 FLUSH PRIVILEGES;
 EOF
-echo "Auto Generated MySQL Root Password: $mysql_root_pass"
 
 www=$1
 user=$2
@@ -108,10 +107,8 @@ fi
 echo -e "${Green}\n################## Generating OpenVPN-Admin SQL DB user credentials ##################\n${NC}"
 
 # Check if the user doesn't already exist
-mysql_user="openvpn"
+mysql_user=$(openssl rand -base64 12)
 mysql_pass=$(openssl rand -base64 12)
-echo "Auto Generated OpenVPN-Admin MySQL Username: $mysql_user"
-echo "Auto Generated OpenVPN-Admin MySQL Password: $mysql_pass"
 
 echo "SHOW GRANTS FOR $mysql_user@localhost" | mysql -u root --password="$mysql_root_pass" &> /dev/null
 if [ $? -eq 0 ]; then
@@ -312,10 +309,13 @@ systemctl start openvpn@server
 
 echo -e "${Cyan}\n\n\n################################################################################"
 echo -e "################################### Finished ###################################"
-
 echo -e "${Cyan}#${Purple}          Congratulations, you have successfully setup OpenVPN-Admin!         ${Cyan}#"
-echo -e "${Cyan}#${Purple}   Finish the install using http://your-installation/index.php?installation   ${Cyan}#"
+echo -e "${Cyan}#${Purple}   Finish the install using http://$ip_server/index.php?installation          ${Cyan}#"
 echo -e "${Cyan}#${Purple}   Please, report any issues here https://github.com/arvage/OpenVPN-Admin     ${Cyan}#"
+echo -e "${Cyan}#${Purple}             Auto Generated MySQL Root Password: $mysql_root_pass             ${Cyan}#" 
+echo -e "${Cyan}#${Purple}             Auto Generated OpenVPN-Admin MySQL Username: $mysql_user         ${Cyan}#"
+echo -e "${Cyan}#${Purple}             Auto Generated OpenVPN-Admin MySQL Password: $mysql_pass         ${Cyan}#"
+
 echo -e "${Cyan}################################################################################${NC}"
 echo -e "${Cyan}################################################################################${NC}"
 
