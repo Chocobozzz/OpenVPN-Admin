@@ -14,11 +14,12 @@ Administrate its OpenVPN with a web interface (logs visualisations, users managi
 
 ## Tests
 
-Only tested on Raspberry Pi 3 with Raspbian Buster. Feel free to open issues.
+Only tested on Raspberry Pi 3 with Raspbian Buster (No GUI).
 
 ## Installation
   * for online automated install
       wget -O - https://raw.githubusercontent.com/arvage/OpenVPN-Admin/master/online-install.sh | bash
+
   * Setup OpenVPN and the web application:
 
         sudo apt update

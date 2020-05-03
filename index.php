@@ -4,6 +4,13 @@
   require(dirname(__FILE__) . '/include/functions.php');
   require(dirname(__FILE__) . '/include/connect.php');
 
+  // --------------- INSTALLATION ---------------
+  if(isset($_GET['installation'])) {
+    if(isInstalled($bdd) == false) {
+      printError('OpenVPN-Admin admin user not created. Redirecting.');
+      header( "refresh:2;url=index.php?installation" );
+      exit(-1);
+    }
   // Disconnecting ?
   if(isset($_GET['logout'])){
     session_destroy();
