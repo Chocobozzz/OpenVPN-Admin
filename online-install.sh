@@ -1,6 +1,6 @@
 #!/bin/bash
-
-echo -e "${Green}\n############################### Updating and Getting Ready #############################\n"
+clear
+echo -e "${Green}Updating and Getting Ready"
 sudo apt update
 sudo apt install -y git
 cd ~
