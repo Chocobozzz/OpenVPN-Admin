@@ -1,6 +1,14 @@
+# Disabling Directory Browsing
 Options -Indexes
 
-AuthType Basic
-AuthName "restricted area"
-AuthUserFile /var/www/.htpasswd
-require valid-user
+# Block files starting with dot(.) like .htaaccess
+<FilesMatch "^\.">
+Order allow,deny
+Deny from all
+</FilesMatch>
+
+# Block files with any extenstion (this is for blocking ovpn files)
+<FilesMatch "\.*$">
+Order allow,deny
+Deny from all
+</FilesMatch>
