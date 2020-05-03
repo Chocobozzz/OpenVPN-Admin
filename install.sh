@@ -78,7 +78,7 @@ esac
 npm install -g bower
 
 # Ensure there are the prerequisites
-for i in openvpn apache2 mysql php php-mysql php-zip unzip git wget sed curl nodejs npm; do
+for i in openvpn apache2 mysql php unzip git wget sed curl nodejs npm; do
   which $i > /dev/null
   if [ "$?" -ne 0 ]; then
     echo -e "${Red}$i is missing. Please install $i manually.${NC}"
