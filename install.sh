@@ -309,12 +309,12 @@ systemctl start openvpn@server
 
 echo -e "${Cyan}\n\n\n################################################################################"
 echo -e "################################### Finished ###################################"
-echo -e "${Cyan}#${Purple}          Congratulations, you have successfully setup OpenVPN-Admin!         ${Cyan}#"
-echo -e "${Cyan}#${Purple}    Finish the install using http://$ip_server/index.php?installation     ${Cyan}#"
-echo -e "${Cyan}#${Purple}   Please, report any issues here https://github.com/arvage/OpenVPN-Admin     ${Cyan}#"
-echo -e "${Cyan}#${Purple}             Auto Generated MySQL Root Password: $mysql_root_pass             ${Cyan}#" 
-echo -e "${Cyan}#${Purple}             Auto Generated OpenVPN-Admin MySQL Username: $mysql_user    ${Cyan}#"
-echo -e "${Cyan}#${Purple}             Auto Generated OpenVPN-Admin MySQL Password: $mysql_pass    ${Cyan}#"
+echo -e "${Purple}          Congratulations, you have successfully setup OpenVPN-Admin!         "
+echo -e "    Finish the install using http://$ip_server/index.php?installation     "
+echo -e "   Please, report any issues here https://github.com/arvage/OpenVPN-Admin     "
+echo -e "             Auto Generated MySQL Root Password: $mysql_root_pass             " 
+echo -e "             Auto Generated OpenVPN-Admin MySQL Username: $mysql_user    "
+echo -e "             Auto Generated OpenVPN-Admin MySQL Password: $mysql_pass    "
 
 echo -e "${Cyan}################################################################################${NC}"
 echo -e "${Cyan}################################################################################${NC}"
