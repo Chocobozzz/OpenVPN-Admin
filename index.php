@@ -11,6 +11,8 @@
       header( "refresh:2;url=index.php?installation" );
       exit(-1);
     }
+  }
+  
   // Disconnecting ?
   if(isset($_GET['logout'])){
     session_destroy();
