@@ -13,9 +13,9 @@ ip_server=$(hostname -I | cut -f1 -d\ )
 openvpn_proto="udp"
 server_port="1194"
 # MySQL Variables
-mysql_root_pass=$(openssl rand -base64 12)
-mysql_user=$(openssl rand -base64 12)
-mysql_pass=$(openssl rand -base64 12)
+mysql_root_pass=$(openssl rand -base64 12 | sed 's/[^a-zA-Z0-9]//g')
+mysql_user=$(openssl rand -base64 12 | sed 's/[^a-zA-Z0-9]//g')
+mysql_pass=$(openssl rand -base64 12 | sed 's/[^a-zA-Z0-9]//g')
 # Certificates Variables
 key_size="2048"
 ca_expire="3650"
