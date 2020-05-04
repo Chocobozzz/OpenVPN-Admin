@@ -1,7 +1,7 @@
 ## Raspberry Pi OpenVPN Admin using LAMP
 
 ## Summary
-Administrate its OpenVPN with a web interface (logs visualisations, users managing...) and a SQL database.
+Administer OpenVPN Server with a web interface (Users Management, Logs, Visualizations)
 
 ![Previsualisation configuration](https://lutim.cpy.re/fUq2rxqz)
 ![Previsualisation administration](https://lutim.cpy.re/wwYMkHcM)
