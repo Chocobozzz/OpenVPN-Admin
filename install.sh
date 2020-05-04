@@ -2,7 +2,7 @@
 
 ### Variables
 OS=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f1 -d " ")
-timezone = "America/Los_Angeles"
+timezone="America/Los_Angeles"
 www=$1
 user=$2
 group=$3
