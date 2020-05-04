@@ -7,3 +7,5 @@ ALTER TABLE `log` CHANGE `log_end_time` `log_end_time` TIMESTAMP NULL DEFAULT NU
 UPDATE `user` SET `user_start_date` = NULL WHERE `user_start_date` = '0000-00-00';
 UPDATE `user` SET `user_end_date` = NULL WHERE `user_end_date` = '0000-00-00';
 UPDATE `log` SET `log_end_time` = NULL WHERE `log_end_time` = '0000-00-00';
+
+CREATE TABLE `configuration` ( `admin_created` BOOLEAN, `timezone` VARCHAR(100) ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

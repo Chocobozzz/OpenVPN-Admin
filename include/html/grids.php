@@ -32,7 +32,6 @@ function getHistory($cfg_file, $accordion_id, $open_first_history_tab = false) {
    <li><a data-toggle="tab" href="#menu1"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> OpenVPN logs</a></li>
    <li><a data-toggle="tab" href="#menu2"><span class="glyphicon glyphicon-king" aria-hidden="true"></span> Web Admins</a></li>
    <li><a data-toggle="tab" href="#menu3"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Configs</a></li>
-   <li><a id="configuration_form" method="POST" data-toggle="tab" href="#menu4"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Download Configuratio</a></li>
 </ul>
 <div class="tab-content">
 
