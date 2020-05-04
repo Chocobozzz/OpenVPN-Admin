@@ -12,10 +12,6 @@ Administrate its OpenVPN with a web interface (logs visualisations, users managi
   * Raspbian with Bash access or remote SSH
   * Git
 
-## Tests
-
-Only tested on Raspberry Pi 3 with Raspbian Buster (No GUI).
-
 ## Installation
 
   * For online automated install
@@ -33,6 +29,10 @@ Only tested on Raspberry Pi 3 with Raspbian Buster (No GUI).
 
   * If you are using any other web server than Apache like NGinx, you need to set it up manually to serve the web application.
   * Once the installation is finished browse to `http://your_hostname_or_ip/index.php?installation` to create your admin user.
+
+## Tests
+
+Only tested on Raspberry Pi 3 with Raspbian Buster (No GUI).
 
 ## Usage
 
