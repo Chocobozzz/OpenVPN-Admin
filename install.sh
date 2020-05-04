@@ -58,6 +58,14 @@ fi
 echo -e "${Green}\nAutomated Installation Started${NC}"
 sleep 2
 
+echo -p "Public IP/Hostname [$public_ip]: " public_hostname
+if [ -z "$public_hostname" ]
+then
+  public_ip=$(host myip.opendns.com resolver1.opendns.com | grep "myip.opendns.com has" | awk '{print $4}')
+else
+  $public_ip=$public_hostname
+fi
+
 # Detecting OS Distribution
 echo -e "${Cyan}Detected OS: $OS \n"
 sleep 2
@@ -251,8 +259,8 @@ sed -i "s/\$pass = '';/\$pass = '$mysql_pass';/" "./include/config.php"
 
 # Replace in the client configurations with the ip of the server and openvpn protocol
 for file in $(find -name client.ovpn); do
-    sed -i "s/remote xxx\.xxx\.xxx\.xxx 1194/remote $ip_server $server_port/" $file
-    sed -i "s/remote xxx\.xxx\.xxx\.xxx 443/remote $ip_server $server_port/" $file
+    sed -i "s/remote xxx\.xxx\.xxx\.xxx 1194/remote $public_ip $server_port/" $file
+    sed -i "s/remote xxx\.xxx\.xxx\.xxx 443/remote $public_ip $server_port/" $file
     echo "<ca>" >> $file
     cat "/etc/openvpn/ca.crt" >> $file
     echo "</ca>" >> $file
