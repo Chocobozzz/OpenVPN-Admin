@@ -50,7 +50,7 @@ Only tested on Raspberry Pi 3 with Raspbian Buster (No GUI).
 ## Desinstall
 It will remove all installed components (OpenVPN keys and configurations, the web application, iptables rules...).
 
-    sudo ./desinstall.sh /var/www
+    sudo ./uninstall.sh /var/www
 
 ## Use of
 
