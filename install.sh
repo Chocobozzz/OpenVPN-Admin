@@ -278,7 +278,7 @@ echo -e "${Green}Setting Apache Configuration${NC}"
 cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/openvpn.conf
 sed -i 's/\/var\/www\/html/\/var\/www\/openvpn-admin/g' /etc/apache2/sites-available/openvpn.conf
 sed -i '/<\/VirtualHost>/i \\n\t<Directory \/var\/www\/openvpn-admin>\n\t\tOptions Indexes FollowSymLinks\n\t\tAllowOverride All\n\t\tRequire all granted\n\t<\/Directory>' /etc/apache2/sites-available/openvpn.conf
-sed -i "/;date.timezone =/a date.timezone = $timezone" /etc/php/7.3/apache2/php.ini
+sed -i "/;date.timezone =/a date.timezone = $timezone ; added by openvpn-admin" /etc/php/7.3/apache2/php.ini
 #touch /var/www/.htpasswd
 #chown www-data:www-data /var/www/.htpasswd
 #echo -e "${Yellow}It's time to secure client configuration folder from anonymous browser and assign a super admin user to be only able to browse it.\n"
