@@ -4,6 +4,12 @@
   require(dirname(__FILE__) . '/include/functions.php');
   require(dirname(__FILE__) . '/include/connect.php');
 
+  // first time install
+  if(($_SERVER[REQUEST_URI] != "/index.php?installation") && (isInstalled($bdd) == false)) {
+    header("Location: index.php?installation");
+    exit(-1);
+  }
+  
   // Disconnecting ?
   if(isset($_GET['logout'])){
     session_destroy();
