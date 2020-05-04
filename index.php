@@ -25,7 +25,20 @@
       exit;
     }
 
-  // Get the configuration files ?
+  // Get configuration file from admin page
+  if(isset($_GET['admin_configuration_get'])  && !empty($_SESSION['admin_id']) ) {
+    $file_name = "client.ovpn";
+    $file_folder  = "windows";
+    $file_full_path  = './client-conf/' . $file_folder . '/' . $file_name;
+    header("Content-type: application/ovpn");
+    header("Content-disposition: attachment; filename=$file_name");
+    header("Pragma: no-cache");
+    header("Expires: 0");
+    readfile($file_full_path);
+    exit;
+  }
+
+  // Get the configuration files from configuration page
   if(isset($_POST['configuration_get'], $_POST['configuration_username'], $_POST['configuration_pass']) && !empty($_POST['configuration_pass'])) {
     $req = $bdd->prepare('SELECT * FROM user WHERE user_id = ?');
     $req->execute(array($_POST['configuration_username']));
@@ -176,6 +189,7 @@
             <div class="col-md-6">
               <a class="navbar-text navbar-right" href="index.php?logout" title="Logout"><button class="btn btn-danger">Logout <span class="glyphicon glyphicon-off" aria-hidden="true"></span></button></a>
               <a class="navbar-text navbar-right" href="index.php" title="Configuration"><button class="btn btn-default">Configurations</button></a>
+              <a class="navbar-text navbar-right" href="index.php?admin_configuration_get" title="Get Config File"><button class="btn btn-default">Get Config File</button></a>
             </p>
           </div>
         </div>
