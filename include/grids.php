@@ -136,7 +136,7 @@
     $phone = "";
     $online = 0;
     $enable = 1;
-    $start = null;
+    $start = date("Y-m-d");
     $end = null;
 
     $req = $bdd->prepare('INSERT INTO user (user_id, user_pass, user_mail, user_phone, user_online, user_enable, user_start_date, user_end_date)

@@ -2,6 +2,7 @@
 
 ### Variables
 OS=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f1 -d " ")
+$timezone = "America/Los_Angeles"
 www=$1
 user=$2
 group=$3
@@ -86,7 +87,7 @@ for i in openvpn apache2 mysql php unzip git wget sed curl nodejs npm; do
   fi
 done
 
-echo -e "${Green}Setting MySQL Configuration"
+echo -e "${Green}Setting MySQL Configuration${NC}"
 mysql -u root <<-EOF
 UPDATE mysql.user SET Password=PASSWORD('$mysql_root_pass') WHERE User='root';
 DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
@@ -277,6 +278,7 @@ echo -e "${Green}Setting Apache Configuration${NC}"
 cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/openvpn.conf
 sed -i 's/\/var\/www\/html/\/var\/www\/openvpn-admin/g' /etc/apache2/sites-available/openvpn.conf
 sed -i '/<\/VirtualHost>/i \\n\t<Directory \/var\/www\/openvpn-admin>\n\t\tOptions Indexes FollowSymLinks\n\t\tAllowOverride All\n\t\tRequire all granted\n\t<\/Directory>' /etc/apache2/sites-available/openvpn.conf
+sed -i "/;date.timezone =/a date.timezone = $timezone" /etc/php/7.3/apache2/php.ini
 #touch /var/www/.htpasswd
 #chown www-data:www-data /var/www/.htpasswd
 #echo -e "${Yellow}It's time to secure client configuration folder from anonymous browser and assign a super admin user to be only able to browse it.\n"
@@ -311,7 +313,7 @@ echo
 echo -e "${Purple}Congratulations, you have successfully setup OpenVPN-Admin!"
 echo
 echo -e "Finish the install by going to"
-echo -e "             http://$ip_server/"
+echo -e "             http://$ip_server/index.php?installation"
 echo
 echo -e "             Auto Generated MySQL Root Password: $mysql_root_pass" 
 echo -e "             Auto Generated OpenVPN-Admin MySQL Username: $mysql_user"
