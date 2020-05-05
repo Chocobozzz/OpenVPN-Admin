@@ -3,6 +3,7 @@
 ### Variables
 OS=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f1 -d " ")
 timezone="America/Los_Angeles"
+gmt_offset="-8:00"
 www=$1
 user=$2
 group=$3
@@ -239,8 +240,8 @@ echo "CREATE DATABASE \`openvpn-admin\`" | mysql -u root --password="$mysql_root
 echo "CREATE USER $mysql_user@localhost IDENTIFIED BY '$mysql_pass'" | mysql -u root --password="$mysql_root_pass"
 echo "GRANT ALL PRIVILEGES ON \`openvpn-admin\`.*  TO $mysql_user@localhost" | mysql -u root --password="$mysql_root_pass"
 echo "FLUSH PRIVILEGES" | mysql -u root --password="$mysql_root_pass"
-
-
+echo "SET GLOBAL time_zone = '$gmt_offset';" | mysql -u root --password="$mysql_root_pass"
+systemctl restart mysql
 echo -e "${Green}Setup Web Application${NC}"
 
 # Copy bash scripts (which will insert row in MySQL)
