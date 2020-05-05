@@ -59,7 +59,8 @@ fi
 echo -e "${Green}\nAutomated Installation Started\n"
 sleep 2
 
-read -p "Provide your public IP/Hostname [Detected IP: $public_ip]: " public_hostname
+
+read -t 10 -p "Provide your public IP/Hostname [Detected IP: $public_ip]: " public_hostname
 if [ -z "$public_hostname" ]
 then
   public_ip=$(host myip.opendns.com resolver1.opendns.com | grep "myip.opendns.com has" | awk '{print $4}')
