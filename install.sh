@@ -65,7 +65,7 @@ then
   public_ip=$(host myip.opendns.com resolver1.opendns.com | grep "myip.opendns.com has" | awk '{print $4}')
   echo -e "\n${Red}Selected IP: $public_ip ${NC}"
 else
-  $public_ip=$public_hostname
+  public_ip=$public_hostname
   echo -e "\n${Red}Selected IP/Hostname: $public_ip ${NC}"
 fi
 
