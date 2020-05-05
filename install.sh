@@ -56,10 +56,10 @@ if [ "$#" -ne 3 ]; then
   exit
 fi
 
-echo -e "${Green}\nAutomated Installation Started${NC}"
+echo -e "${Green}\nAutomated Installation Started\n"
 sleep 2
 
-read -p "Public IP/Hostname [$public_ip]: " public_hostname
+read -p "Provide your public IP/Hostname [Detected IP: $public_ip]: " public_hostname
 if [ -z "$public_hostname" ]
 then
   public_ip=$(host myip.opendns.com resolver1.opendns.com | grep "myip.opendns.com has" | awk '{print $4}')
@@ -68,10 +68,10 @@ else
   public_ip=$public_hostname
   echo -e "\n${Red}Selected IP/Hostname: $public_ip ${NC}"
 fi
-
+sleep 2
 
 # Detecting OS Distribution
-echo -e "${Cyan}Detected OS: $OS \n"
+echo -e "${Cyan}\nDetected OS: $OS\n"
 sleep 2
 # Installing prerequisites
 echo -e "${Green}Installing Prerequisites ${Red}(This could take long time)${NC}"
