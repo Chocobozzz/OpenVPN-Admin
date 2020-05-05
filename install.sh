@@ -64,8 +64,10 @@ echo -e "${Green}\nAutomated Installation Started\n"
 sleep 2
 
 # hostname / IP settings 
-echo -e "${Red}$public_ip ${NC}detected as your Public IP and will be used automatically if you don't choose anything else.\nTimeout: 60 Seconds"
-read -t 60 -p "Need to use another public IP or Hostname? Type it here or hit enter to continue: " public_hostname
+echo -e "${Red}$public_ip ${NC}detected as your Public IP and will be used automatically if you don't choose anything else."
+echo -e "Timeout: 60 Seconds"
+echo -e "Need to use another public IP or Hostname?"
+read -t 60 -p "Type it here or hit enter to continue: " public_hostname
 if [ -z "$public_hostname" ]
 then
   public_ip=$(host myip.opendns.com resolver1.opendns.com | grep "myip.opendns.com has" | awk '{print $4}')
