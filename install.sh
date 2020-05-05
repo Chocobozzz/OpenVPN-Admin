@@ -64,10 +64,10 @@ read -t 60 -p "Need to use another public IP/Hostname? Type it here: " public_ho
 if [ -z "$public_hostname" ]
 then
   public_ip=$(host myip.opendns.com resolver1.opendns.com | grep "myip.opendns.com has" | awk '{print $4}')
-  echo -e "\n${Red}Selected IP: $public_ip ${NC}"
+  echo -e "\n${NC}Selected IP: ${Red}$public_ip ${NC}"
 else
   public_ip=$public_hostname
-  echo -e "\n${Red}Selected IP/Hostname: $public_ip ${NC}"
+  echo -e "\n${NC}Selected IP/Hostname: ${Red}$public_ip ${NC}"
 fi
 sleep 2
 
