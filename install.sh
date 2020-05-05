@@ -60,7 +60,7 @@ echo -e "${Green}\nAutomated Installation Started\n"
 sleep 2
 
 echo -e "${Red}$public_ip ${NC}detected as your Public IP and will be used automatically if you don't choose anything else.\nTimeout: 60 Seconds"
-read -t 60 -p "Need to use another public IP/Hostname? Type it here: " public_hostname
+read -t 60 -p "Need to use another public IP/Hostname? Type it here or hit enter to continue: " public_hostname
 if [ -z "$public_hostname" ]
 then
   public_ip=$(host myip.opendns.com resolver1.opendns.com | grep "myip.opendns.com has" | awk '{print $4}')
@@ -72,7 +72,7 @@ fi
 sleep 2
 
 # Detecting OS Distribution
-echo -e "${Cyan}\nDetected OS: $OS\n"
+echo -e "${NC}Detected OS: ${Red}$OS\n"
 sleep 2
 # Installing prerequisites
 echo -e "${Green}Installing Prerequisites ${Red}(This could take long time)${NC}"
@@ -319,11 +319,11 @@ systemctl start openvpn@server
 #    [Nn]*)
 #        ;;
 #esac
-echo -e "\n\n\n${Purple}"
+echo -e "\n\n\n${Yellow}"
 echo -e "################################################################################"
 echo -e "################################### Finished ###################################"
 echo
-echo -e "${Cyan}Congratulations, you have successfully setup OpenVPN-Admin!"
+echo -e "${Green}Congratulations, you have successfully setup OpenVPN-Admin!"
 echo
 echo -e "Finish the install by going to"
 echo -e "             http://$ip_server"
@@ -335,7 +335,7 @@ echo -e "             Auto Generated OpenVPN-Admin MySQL Password: $mysql_pass $
 echo 
 echo -e " Please, report any issues here https://github.com/arvage/OpenVPN-Admin"
 echo
-echo -e "${Purple}################################################################################${NC}"
-echo -e "${Purple}################################################################################${NC}"
+echo -e "${Yellow}################################################################################${NC}"
+echo -e "${Yellow}################################################################################${NC}"
 
 systemctl restart openvpn@server
