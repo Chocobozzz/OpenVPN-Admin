@@ -67,7 +67,8 @@ sleep 2
 echo -e "${Red}$public_ip ${NC}detected as your Public IP and will be used automatically if you don't choose anything else."
 echo -e "Timeout: 60 Seconds"
 echo -e "Need to use another public IP or Hostname?"
-read -p "Type it here or hit enter to continue with detected IP: " public_hostname
+read -p "Type it here or hit enter to continue with detected IP: " public_hostname </dev/tty
+
 if [ -z "$public_hostname" ]
 then
   public_ip=$(host myip.opendns.com resolver1.opendns.com | grep "myip.opendns.com has" | awk '{print $4}')
