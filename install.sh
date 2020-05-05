@@ -78,6 +78,7 @@ else
   key_cn=$public_ip
   echo -e "\n${NC}Selected IP/Hostname: ${Red}$public_ip ${NC}"
 fi
+echo -e "${Yellow}\nNow sit back and wait for the script to finish the install${NC}"
 sleep 2
 
 # Detecting OS Distribution
@@ -99,7 +100,6 @@ case $OS in
 		echo -e "${Red}Can't detect OS distribution! you need to install prerequisites manully${NC}"
     exit
 esac
-npm install npm@latest -g
 npm install -g bower
 
 # Ensure the prerequisites are installed
