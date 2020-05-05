@@ -59,7 +59,7 @@ fi
 echo -e "${Green}\nAutomated Installation Started\n"
 sleep 2
 
-echo -e "${Red}$public_ip detected as your Public IP and will be used automatically if you don't choose anything else.\nTimeout: 60 Seconds"
+echo -e "${Red}$public_ip ${NC}detected as your Public IP and will be used automatically if you don't choose anything else.\nTimeout: 60 Seconds"
 read -t 60 -p "Need to use another public IP/Hostname? Type it here: " public_hostname
 if [ -z "$public_hostname" ]
 then
