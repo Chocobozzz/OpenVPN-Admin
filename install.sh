@@ -99,6 +99,7 @@ case $OS in
 		echo -e "${Red}Can't detect OS distribution! you need to install prerequisites manully${NC}"
     exit
 esac
+npm install npm@latest -g
 npm install -g bower
 
 # Ensure the prerequisites are installed
