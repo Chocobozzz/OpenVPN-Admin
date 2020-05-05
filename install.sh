@@ -10,6 +10,7 @@ group=$3
 openvpn_admin="$www/openvpn-admin"
 base_path=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 ip_server=$(hostname -I | cut -f1 -d\ )
+public_ip=$(host myip.opendns.com resolver1.opendns.com | grep "myip.opendns.com has" | awk '{print $4}')
 openvpn_proto="udp"
 server_port="1194"
 # MySQL Variables
