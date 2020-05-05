@@ -1,26 +1,29 @@
 #!/bin/bash
 
 ### Variables
-OS=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f1 -d " ")
-timezone="America/Los_Angeles"
-gmt_offset="-8:00"
+OS=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f1 -d " ") # Don't change this unless you know what you're doing
+timezone="America/Los_Angeles" # this is PHP timezone
+gmt_offset="-8:00" # this is MySQL timezone
 www=$1
 user=$2
 group=$3
+
 # OpenVPN
 openvpn_admin="$www/openvpn-admin"
 base_path=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-ip_server=$(hostname -I | cut -f1 -d\ )
-public_ip=$(host myip.opendns.com resolver1.opendns.com | grep "myip.opendns.com has" | awk '{print $4}')
-openvpn_proto="udp"
-server_port="1194"
-# MySQL Variables
-mysql_root_pass=$(openssl rand -base64 12 | sed 's/[^a-zA-Z0-9]//g')
-mysql_user=$(openssl rand -base64 12 | sed 's/[^a-zA-Z0-9]//g')
-mysql_pass=$(openssl rand -base64 12 | sed 's/[^a-zA-Z0-9]//g')
+ip_server=$(hostname -I | cut -f1 -d\ ) # added cut to remove openvpn tunnel IP from the string
+public_ip=$(host myip.opendns.com resolver1.opendns.com | grep "myip.opendns.com has" | awk '{print $4}') # don't change this
+openvpn_proto="udp" # UDP is a faster protocol than TCP
+server_port="1194"  # OpenVPN default port is 1194
+
+# MySQL Variables 
+mysql_root_pass=$(openssl rand -base64 12 | sed 's/[^a-zA-Z0-9]//g') # Random ceated secure string without special chatacters
+mysql_user=$(openssl rand -base64 12 | sed 's/[^a-zA-Z0-9]//g') # Random ceated secure string without special chatacters
+mysql_pass=$(openssl rand -base64 12 | sed 's/[^a-zA-Z0-9]//g') # Random ceated secure string without special chatacters
+
 # Certificates Variables
-key_size="2048"
-ca_expire="3650"
+key_size="2048" # anything less than 2048 may get rejected by some OSes. bigger sizes will take forever to generate!
+ca_expire="3650" # 10 Years
 cert_expire="3650"
 cert_country="US"
 cert_province="California"
@@ -28,15 +31,15 @@ cert_city="Mission Viejo"
 cert_org="Arvage"
 cert_ou="IT"
 cert_email="example@test.net"
-key_cn=$(hostname -I | cut -f1 -d\ )
-# Colors
+key_cn=$public_ip # will be changed when asking for public IP/Hostname user input
+
+# On-Screen Colors
 NC='\033[0m'            # No Color
 Red='\033[1;31m'        # Light Red
 Yellow='\033[0;33m'     # Yellow
 Green='\033[0;32m'      # Green
-Cyan='\033[0;36m'       # Cyan
-Purple='\033[0;35m'     # Purple
 
+# show on-screen help
 print_help () {
   echo -e "sudo ./install.sh www_basedir user group"
   echo -e "\tbase_dir: The place where the web application will be put in (e.g. /var/www)"
@@ -60,6 +63,7 @@ fi
 echo -e "${Green}\nAutomated Installation Started\n"
 sleep 2
 
+# hostname / IP settings 
 echo -e "${Red}$public_ip ${NC}detected as your Public IP and will be used automatically if you don't choose anything else.\nTimeout: 60 Seconds"
 read -t 60 -p "Need to use another public IP/Hostname? Type it here or hit enter to continue: " public_hostname
 if [ -z "$public_hostname" ]
@@ -68,6 +72,7 @@ then
   echo -e "\n${NC}Selected IP: ${Red}$public_ip ${NC}"
 else
   public_ip=$public_hostname
+  key_cn=$public_ip
   echo -e "\n${NC}Selected IP/Hostname: ${Red}$public_ip ${NC}"
 fi
 sleep 2
@@ -75,6 +80,7 @@ sleep 2
 # Detecting OS Distribution
 echo -e "${NC}Detected OS: ${Red}$OS\n"
 sleep 2
+
 # Installing prerequisites
 echo -e "${Green}Installing Prerequisites ${Red}(This could take long time)${NC}"
 apt update && sudo apt upgrade -y
@@ -92,7 +98,7 @@ case $OS in
 esac
 npm install -g bower
 
-# Ensure there are the prerequisites
+# Ensure the prerequisites are installed
 for i in openvpn apache2 mysql php unzip git wget sed curl nodejs npm; do
   which $i > /dev/null
   if [ "$?" -ne 0 ]; then
@@ -101,6 +107,7 @@ for i in openvpn apache2 mysql php unzip git wget sed curl nodejs npm; do
   fi
 done
 
+# setting up MySQL and secure it
 echo -e "${Green}Setting MySQL Configuration${NC}"
 mysql -u root <<-EOF
 UPDATE mysql.user SET Password=PASSWORD('$mysql_root_pass') WHERE User='root';
@@ -184,9 +191,10 @@ if [[ ! -z $cert_email ]]; then
 fi
 if [[ ! -z $key_cn ]]; then
   export EASYRSA_REQ_CN=$key_cn
-fi
-  
+fi 
+
 export EASYRSA_BATCH=1
+
 # Init PKI dirs and build CA certs
 ./easyrsa init-pki
 ./easyrsa build-ca nopass
@@ -197,7 +205,6 @@ export EASYRSA_BATCH=1
 
 # Generate shared-secret for TLS Authentication
 openvpn --genkey --secret pki/ta.key
-
 
 echo -e "${Green}Setup OpenVPN${NC}"
 
