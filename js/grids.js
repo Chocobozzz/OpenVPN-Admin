@@ -38,7 +38,7 @@ $(function () {
    }
 
    function BytesFormatter(value, row, index) {
-    return '<div class="'+(value.search("KB")?'td-kb':'td-mb')+'"></div>';
+    return '<div class="'+(value.includes("KB")===true?'mini-led-green':'mini-led-red')+'"></div>';
  }
 
   // ------------------------- USERS definitions -------------------------
@@ -306,7 +306,7 @@ $(function () {
       { title: "Start Time", field: "log_start_time" },
       { title: "End Time", field: "log_end_time" },
       { title: "Received", field: "log_received" },
-      { title: "Sent", field: "log_send", formatter : BytesFormatter }
+      { title: "Sent", field: "log_send" }
     ]
   });
 
