@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ### Variables
-OS=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f1 -d " ") # Don't change this unless you know what you're doing
+sudo OS=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f1 -d " ") # Don't change this unless you know what you're doing
 timezone="America/Los_Angeles" # this is PHP timezone
 gmt_offset="-8:00" # this is MySQL timezone
 www=$1
@@ -231,9 +231,11 @@ echo -e "${Green}Setup Firewall${NC}"
 case $OS in
 	Ubuntu)
     sysctl -w net.ipv4.ip_forward=1
+    ;;
   Raspbian)
     echo 1 > "/proc/sys/net/ipv4/ip_forward"
     echo "net.ipv4.ip_forward = 1" >> "/etc/sysctl.conf"
+    ;;
 
 # Get primary NIC device name
 primary_nic=`route | grep '^default' | grep -o '[^ ]*$'`
@@ -304,10 +306,13 @@ bower --allow-root install
 chown -R "$user:$group" "$openvpn_admin"
 
 echo -e "${Green}Setting Apache Configuration${NC}"
+# finding PHP version (major and minor only as OS uses x.x format in /etc/php folder)
+php_version=$(php -v | head -n1 | cut -f2 -d\ | cut -f1,2 -d.)
+
 cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/openvpn.conf
 sed -i 's/\/var\/www\/html/\/var\/www\/openvpn-admin/g' /etc/apache2/sites-available/openvpn.conf
 sed -i '/<\/VirtualHost>/i \\n\t<Directory \/var\/www\/openvpn-admin>\n\t\tOptions Indexes FollowSymLinks\n\t\tAllowOverride All\n\t\tRequire all granted\n\t<\/Directory>' /etc/apache2/sites-available/openvpn.conf
-sed -i "/;date.timezone =/a date.timezone = $timezone ; added by openvpn-admin" /etc/php/7.3/apache2/php.ini
+sed -i "/;date.timezone =/a date.timezone = $timezone ; added by openvpn-admin" /etc/php/$php_version/apache2/php.ini
 #touch /var/www/.htpasswd
 #chown www-data:www-data /var/www/.htpasswd
 #echo -e "${Yellow}It's time to secure client configuration folder from anonymous browser and assign a super admin user to be only able to browse it.\n"
