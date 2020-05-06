@@ -228,8 +228,12 @@ sed -i "s/group nogroup/group $nobody_group/" "/etc/openvpn/server.conf"
 echo -e "${Green}Setup Firewall${NC}"
 
 # Make ip forwading and make it persistent
-echo 1 > "/proc/sys/net/ipv4/ip_forward"
-echo "net.ipv4.ip_forward = 1" >> "/etc/sysctl.conf"
+case $OS in
+	Ubuntu)
+    sysctl -w net.ipv4.ip_forward=1
+  Raspbian)
+    echo 1 > "/proc/sys/net/ipv4/ip_forward"
+    echo "net.ipv4.ip_forward = 1" >> "/etc/sysctl.conf"
 
 # Get primary NIC device name
 primary_nic=`route | grep '^default' | grep -o '[^ ]*$'`
