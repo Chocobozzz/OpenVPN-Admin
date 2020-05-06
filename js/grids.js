@@ -37,6 +37,11 @@ $(function () {
       return '<div class="'+(parseInt(value)===1?'mini-led-green':'mini-led-red')+'"></div>';
    }
 
+   function cellStyle(value, row, index) {
+    return {
+        classes: value.trim() === 'KB' ? 'kb' : 'mb'
+    };
+}
   // ------------------------- USERS definitions -------------------------
   var $userTable = $('#table-users');
   var $modalUserAdd = $('#modal-user-add');
