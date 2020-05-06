@@ -301,7 +301,7 @@ $(function () {
       { title: "Remote Port", field: "log_remote_port", filterControl : 'select' },
       { title: "Start Time", field: "log_start_time" },
       { title: "End Time", field: "log_end_time" },
-      { title: "Receveid", field: "log_received" },
+      { title: "Received", field: "log_received" },
       { title: "Sent", field: "log_send" }
     ]
   });
