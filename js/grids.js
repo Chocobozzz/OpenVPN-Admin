@@ -37,11 +37,10 @@ $(function () {
       return '<div class="'+(parseInt(value)===1?'mini-led-green':'mini-led-red')+'"></div>';
    }
 
-   function cellStyle(value, row, index) {
-    return {
-        classes: value.trim() === 'KB' ? 'kb' : 'mb'
-    };
-}
+   function BytesFormatter(value, row, index) {
+    return '<div class="'+(value.search("KB")?'mini-led-green':'mini-led-red')+'"></div>';
+ }
+
   // ------------------------- USERS definitions -------------------------
   var $userTable = $('#table-users');
   var $modalUserAdd = $('#modal-user-add');
@@ -307,7 +306,7 @@ $(function () {
       { title: "Start Time", field: "log_start_time" },
       { title: "End Time", field: "log_end_time" },
       { title: "Received", field: "log_received" },
-      { title: "Sent", field: "log_send" }
+      { title: "Sent", field: "log_send", formatter : BytesFormatter }
     ]
   });
 
