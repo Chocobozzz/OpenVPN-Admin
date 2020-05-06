@@ -38,7 +38,7 @@ $(function () {
    }
 
    function BytesFormatter(value, row, index) {
-    return '<div class="'+(value.search("KB")?'mini-led-green':'mini-led-red')+'"></div>';
+    return '<div class="'+(value.search("KB")?'td-kb':'td-mb')+'"></div>';
  }
 
   // ------------------------- USERS definitions -------------------------
