@@ -345,7 +345,7 @@ echo -e "${Green}Finalizing OpenVPN Configuration${NC}"
 #sed -i 's/80.67.169.40/8.8.4.4/g' /etc/openvpn/server.conf
 if [ -z "$company_name" ]
 then
-
+  echo
 else
   sed -i "s/filename=\$save_name/filename=$company_name/g" /var/www/openvpn-admin/index.php
 fi
