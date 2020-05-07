@@ -93,7 +93,7 @@ fi
 
 
 
-echo -e "${Yellow}\nNow sit back and wait for the script to finish the install${NC}"
+echo -e "${Yellow}\nNow sit back and wait for the script to finish the install\n${NC}"
 sleep 2
 
 # Detecting OS Distribution
