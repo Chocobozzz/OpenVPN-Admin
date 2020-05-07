@@ -41,13 +41,13 @@ $(function () {
     if (value.includes("KB")===true){
       return {
       classes: 'text-nowrap another-class',
-      css: {"background-color": "rgba(20, 200, 20, 0.3);"}
+      css: {"background-color": "rgba(0, 100, 0, 0.3);"}
       };
     }
     else {
       return {
         classes: 'text-nowrap another-class',
-        css: {"background-color": "rgba(255, 0, 0, 0.3);"}
+        css: {"background-color": "rgba(100, 0, 0, 0.3);"}
       };
     }
    }
