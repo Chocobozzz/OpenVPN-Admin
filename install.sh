@@ -82,7 +82,7 @@ echo -e "\n\n\nSelect the VPN connection name for showing up on your client Open
 echo -e "This will help the user identify which VPN he is connecting to if he has multiple connection configuration."
 echo -e "Default file names will be used if you don't choose any. You may use your company Name."
 echo -e "Timeout: 60 Seconds"
-read -t 60 -p "Type it here or hit enter to use default naming (ovpn config filename): " company_name </dev/tty
+read -t 60 -p "Type it here or hit enter to use default naming (without .ovpn): " company_name </dev/tty
 
 if [ -z "$company_name" ]
 then
