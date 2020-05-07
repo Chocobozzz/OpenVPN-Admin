@@ -347,7 +347,7 @@ if [ -z "$company_name" ]
 then
   echo
 else
-  sed -i "s/filename=\$save_name/filename=$company_name/g" /var/www/openvpn-admin/index.php
+  sed -i "s/filename=\$save_name/filename=$company_name.ovpn/g" /var/www/openvpn-admin/index.php
 fi
 systemctl start openvpn@server
 
