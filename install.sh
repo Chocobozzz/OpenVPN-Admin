@@ -78,7 +78,7 @@ else
   key_cn=$public_ip
   echo -e "\n${NC}Selected IP/Hostname: ${Red}$public_ip ${NC}"
 fi
-echo -e "\nSelect the VPN connection name for showing up on your client OpenVPN application."
+echo -e "\n\n\nSelect the VPN connection name for showing up on your client OpenVPN application."
 echo -e "This will help the user identify which VPN he is connecting to if he has multiple connection configuration."
 echo -e "Default file names will be used if you don't choose any. You may use your company Name."
 echo -e "Timeout: 60 Seconds"
