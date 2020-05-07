@@ -309,11 +309,11 @@ $(function () {
       return params;
     },
     columns: [
-      { title: "Log ID", field: "log_id" },
-      { title: "User ID", field: "user_id", filterControl : 'select' },
-      { title: "Client IP", field: "log_trusted_ip", filterControl : 'select' },
+      { title: "Log ID", field: "log_id", align: "center" },
+      { title: "User ID", field: "user_id", filterControl : 'select', align: "center" },
+      { title: "Client IP", field: "log_trusted_ip", filterControl : 'select', align: "center" },
       //{ title: "Trusted Port", field: "log_trusted_port", filterControl : 'select' },
-      { title: "Local IP", field: "log_remote_ip", filterControl : 'select' },
+      { title: "Local IP", field: "log_remote_ip", filterControl : 'select', align: "center" },
       //{ title: "Remote Port", field: "log_remote_port", filterControl : 'select' },
       { title: "Start Time", field: "log_start_time", align: "center" },
       { title: "End Time", field: "log_end_time", align: "center" },
