@@ -366,16 +366,18 @@ echo -e "\n\n\n${Yellow}"
 echo -e "################################################################################"
 echo -e "################################### Finished ###################################"
 echo
-echo -e "${Green}Congratulations, you have successfully setup OpenVPN-Admin!"
+echo -e "${Green}Congratulations, you have successfully setup OpenVPN-Admin!${NC}"
 echo
-echo -e "Finish the install by going to"
-echo -e "             http://$ip_server"
+echo -e "Finish the install by going to: ${Red}"
+echo -e "             http://$ip_server${NC}"
 echo
-echo -e "             Your Public URL: http://$public_ip" 
-echo -e "             Auto Generated MySQL Root Password: $mysql_root_pass" 
-echo -e "             Auto Generated OpenVPN-Admin MySQL Username: $mysql_user"
-echo -e "             Auto Generated OpenVPN-Admin MySQL Password: $mysql_pass ${NC}"
-echo 
+echo -e "Here are more details:"
+echo -e "             Your Public URL: ${Red}http://$public_ip ${NC}" 
+echo -e "             Auto Generated MySQL Root Password: ${Red}$mysql_root_pass ${NC}" 
+echo -e "             Auto Generated OpenVPN-Admin MySQL Username: ${Red}$mysql_user ${NC}"
+echo -e "             Auto Generated OpenVPN-Admin MySQL Password: ${Red}$mysql_pass ${NC}"
+echo -e "             Selected download file name: ${Red}$company_name.ovpn ${NC}"
+echo
 echo -e " Please, report any issues here https://github.com/arvage/OpenVPN-Admin"
 echo
 echo -e "${Yellow}################################################################################${NC}"
