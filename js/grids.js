@@ -37,9 +37,21 @@ $(function () {
       return '<div class="'+(parseInt(value)===1?'mini-led-green':'mini-led-red')+'"></div>';
    }
 
-   function BytesFormatter(value, row, index) {
-    return '<div class="'+(value.includes("KB")===true?'mini-led-green':'mini-led-red')+'"></div>';
- }
+   function bytesStyle(value, row, index, field) {
+    if (value.includes("KB")===true){
+      return {
+      classes: 'text-nowrap another-class',
+      css: {"background-color": "rgba(20, 200, 20, 0.3);"}
+      };
+    }
+    else {
+      return {
+        classes: 'text-nowrap another-class',
+        css: {"background-color": "rgba(255, 0, 0, 0.3);"}
+      };
+    }
+   }
+
 
   // ------------------------- USERS definitions -------------------------
   var $userTable = $('#table-users');
@@ -303,10 +315,10 @@ $(function () {
       //{ title: "Trusted Port", field: "log_trusted_port", filterControl : 'select' },
       { title: "Local IP", field: "log_remote_ip", filterControl : 'select' },
       //{ title: "Remote Port", field: "log_remote_port", filterControl : 'select' },
-      { title: "Start Time", field: "log_start_time" },
-      { title: "End Time", field: "log_end_time" },
-      { title: "Received", field: "log_received" },
-      { title: "Sent", field: "log_send" }
+      { title: "Start Time", field: "log_start_time", align: "center" },
+      { title: "End Time", field: "log_end_time", align: "center" },
+      { title: "Received", field: "log_received", align: "center", cellStyle: bytesStyle },
+      { title: "Sent", field: "log_send", align: "center", cellStyle: bytesStyle }
     ]
   });
 
