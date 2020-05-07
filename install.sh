@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ### Variables
-sudo OS=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f1 -d " ") # Don't change this unless you know what you're doing
+OS=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f1 -d " ") # Don't change this unless you know what you're doing
 timezone="America/Los_Angeles" # this is PHP timezone
 gmt_offset="-8:00" # this is MySQL timezone
 www=$1
@@ -78,8 +78,8 @@ else
   key_cn=$public_ip
   echo -e "\n${NC}Selected IP/Hostname: ${Red}$public_ip ${NC}"
 fi
-echo -e "Select the file name for showing up in your OpenVPN client."
-echo -e "This will help the user identify which VPN user is connecting to if they have multiple connection configuration"
+echo -e "\nSelect the VPN connection name for showing up on your OpenVPN client."
+echo -e "This will help the user identify which VPN the user is connecting to if they have multiple connection configuration."
 read -p "You may use your company Name (ovpn config filename): " company_name </dev/tty
 echo -e "${Yellow}\nNow sit back and wait for the script to finish the install${NC}"
 sleep 2
@@ -330,7 +330,7 @@ echo -e "${Green}Finalizing OpenVPN Configuration${NC}"
 #sed -i 's/explicit-exit-notify 1/# explicit-exit-notify 1/g' /etc/openvpn/server.conf
 #sed -i 's/80.67.169.12/8.8.8.8/g' /etc/openvpn/server.conf
 #sed -i 's/80.67.169.40/8.8.4.4/g' /etc/openvpn/server.conf
-sed -i 's/filename=$file_name/filename=$company_name/g' /var/www/openvpn-admin/index.php
+sed -i "s/filename=\$file_name/filename=$company_name/g" /var/www/openvpn-admin/index.php
 systemctl start openvpn@server
 
 #printf "\033[1m\n\n################################# Let'sEncrypt SSL Certificate ####################################\n"
