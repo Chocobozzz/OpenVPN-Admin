@@ -1,7 +1,7 @@
 #!/bin/bash
 
 print_help () {
-  echo -e "./desinstall.sh www_basedir"
+  echo -e "./uninstall.sh www_basedir"
   echo -e "\tbase_dir: The place where the web application is in"
 }
 

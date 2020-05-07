@@ -67,7 +67,7 @@ sleep 2
 echo -e "${Red}$public_ip ${NC}detected as your Public IP and will be used automatically if you don't choose anything else."
 echo -e "Timeout: 60 Seconds"
 echo -e "Need to use another public IP or Hostname?"
-read -p "Type it here or hit enter to continue with detected IP: " public_hostname </dev/tty
+read -t 60 -p "Type it here or hit enter to continue with detected IP: " public_hostname </dev/tty
 
 if [ -z "$public_hostname" ]
 then
@@ -78,9 +78,21 @@ else
   key_cn=$public_ip
   echo -e "\n${NC}Selected IP/Hostname: ${Red}$public_ip ${NC}"
 fi
-echo -e "\nSelect the VPN connection name for showing up on your OpenVPN client."
-echo -e "This will help the user identify which VPN the user is connecting to if they have multiple connection configuration."
-read -p "You may use your company Name (ovpn config filename): " company_name </dev/tty
+echo -e "\nSelect the VPN connection name for showing up on your client OpenVPN application."
+echo -e "This will help the user identify which VPN he is connecting to if he has multiple connection configuration."
+echo -e "Default file names will be used if you don't choose any. You may use your company Name."
+echo -e "Timeout: 60 Seconds"
+read -t 60 -p "Type it here or hit enter to use default naming (ovpn config filename): " company_name </dev/tty
+
+if [ -z "$company_name" ]
+then
+  echo -e "\nDefault file naming selected."
+else
+  echo -e "\nSelected file name: ${Red}$company_name.ovpn${NC}"
+fi
+
+
+
 echo -e "${Yellow}\nNow sit back and wait for the script to finish the install${NC}"
 sleep 2
 
@@ -331,7 +343,12 @@ echo -e "${Green}Finalizing OpenVPN Configuration${NC}"
 #sed -i 's/explicit-exit-notify 1/# explicit-exit-notify 1/g' /etc/openvpn/server.conf
 #sed -i 's/80.67.169.12/8.8.8.8/g' /etc/openvpn/server.conf
 #sed -i 's/80.67.169.40/8.8.4.4/g' /etc/openvpn/server.conf
-sed -i "s/filename=\$file_name/filename=$company_name/g" /var/www/openvpn-admin/index.php
+if [ -z "$company_name" ]
+then
+
+else
+  sed -i "s/filename=\$save_name/filename=$company_name/g" /var/www/openvpn-admin/index.php
+fi
 systemctl start openvpn@server
 
 #printf "\033[1m\n\n################################# Let'sEncrypt SSL Certificate ####################################\n"
