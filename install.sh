@@ -242,17 +242,6 @@ sed -i "s/group nogroup/group $nobody_group/" "/etc/openvpn/server.conf"
 
 echo -e "${Green}Setup Firewall${NC}"
 
-# Make ip forwading and make it persistent
-case $OS in
-	Ubuntu)
-    sysctl -w net.ipv4.ip_forward=1
-    ;;
-  Raspbian)
-    echo 1 > "/proc/sys/net/ipv4/ip_forward"
-    echo "net.ipv4.ip_forward = 1" >> "/etc/sysctl.conf"
-    ;;
-esac
-
 # Get primary NIC device name
 primary_nic=`route | grep '^default' | grep -o '[^ ]*$'`
 
@@ -266,6 +255,23 @@ iptables -t nat -A POSTROUTING -o $primary_nic -j MASQUERADE
 iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o $primary_nic -j MASQUERADE
 iptables -t nat -A POSTROUTING -s 10.8.0.2/24 -o $primary_nic -j MASQUERADE
 
+# Make ip forwading and make it persistent
+case $OS in
+  Ubuntu)
+    sysctl -w net.ipv4.ip_forward=1
+    iptables-save ./rules.v4
+    if [[ ! -d "/etc/iptables" ]]
+    then
+      mkdir /etc/iptables
+    fi
+    mv ./rules.v4 /etc/iptables
+    apt-get install -y iptables-persistent
+    ;;
+  Raspbian)
+    echo 1 > "/proc/sys/net/ipv4/ip_forward"
+    echo "net.ipv4.ip_forward = 1" >> "/etc/sysctl.conf"
+    ;;
+esac
 
 echo -e "${Green}Setup MySQL Database${NC}"
 
