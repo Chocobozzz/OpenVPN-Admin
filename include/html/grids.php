@@ -128,7 +128,7 @@ function getHistory($cfg_file, $accordion_id, $open_first_history_tab = false) {
          <div class="tab-content">
             <div id="menu-1-0" class="tab-pane fade in active">
 
-               <textarea class="form-control" data-config-file="<?= $cfg_file='client-conf/gnu-linux/client.conf' ?>" name="" id="" cols="30" rows="20"><?= file_get_contents($cfg_file) ?></textarea>
+               <textarea class="form-control" data-config-file="<?= $cfg_file='client-conf/gnu-linux/client.ovpn' ?>" name="" id="" cols="30" rows="20"><?= file_get_contents($cfg_file) ?></textarea>
                <?= getHistory($cfg_file, @++$accId) ?>
 
             </div>
@@ -140,7 +140,7 @@ function getHistory($cfg_file, $accordion_id, $open_first_history_tab = false) {
             </div>
             <div id="menu-1-2" class="tab-pane fade">
 
-               <textarea class="form-control" data-config-file="<?= $cfg_file='client-conf/osx-viscosity/client.conf' ?>" name="" id="" cols="30" rows="20"><?= file_get_contents($cfg_file) ?></textarea>
+               <textarea class="form-control" data-config-file="<?= $cfg_file='client-conf/osx-viscosity/client.ovpn' ?>" name="" id="" cols="30" rows="20"><?= file_get_contents($cfg_file) ?></textarea>
                <?= getHistory($cfg_file, ++$accId) ?>
 
             </div>
