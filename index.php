@@ -17,8 +17,8 @@
     exit(-1);
   }
 
-  // Get the instruction file ?
-  if(isset($_POST['instruction_get'])) {
+  // Get the Windows instruction file 
+  if(isset($_POST['windows_instruction_get'])) {
       $download_file_name1 = "Download and install the OpenVPN GUI (Windows).pdf";
       $file_folder1  = "windows";
       $file_full_path1  = './client-conf/' . $file_folder1 . '/' . $download_file_name1;
@@ -27,6 +27,11 @@
       header("Pragma: no-cache");
       header("Expires: 0");
       readfile($file_full_path1);
+      exit;
+     }
+
+  // Get the MAC instruction file 
+  if(isset($_POST['mac_instruction_get'])) {
     
       $download_file_name2 = "Download and install the OpenVPN GUI (MAC).pdf";
       $file_folder2  = "osx-viscosity";
@@ -36,7 +41,6 @@
       header("Pragma: no-cache");
       header("Expires: 0");
       readfile($file_full_path2);
-    
       exit;
     }
 
