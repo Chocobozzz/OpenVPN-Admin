@@ -17,7 +17,7 @@
           <label for="configuration_pass">Password</label>
           <input type="password" id="configuration_pass" name="configuration_pass" class="form-control" />
         </div>
-        <input id="configuration_get" name="configuration_get" type="submit" value="Configuration File" class="btn btn-default" style="margin:10px;" />
+        <input id="configuration_get" name="configuration_get" type="submit" value="ovpn Configuration File" class="btn btn-default" style="margin:10px;" />
         <input id="windows_instruction_get" name="windows_instruction_get" type="submit" value="Windows Instructions" class="btn btn-default" style="margin:10px;" />
         <input id="mac_instruction_get" name="mac_instruction_get" type="submit" value="MAC Instructions" class="btn btn-default" style="margin:10px;" />
 
