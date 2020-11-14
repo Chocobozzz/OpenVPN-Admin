@@ -50,6 +50,14 @@ In order to install `npm`, [stretch-backports need to be added to your sources.l
 # systemctl start mariadb
 ````
 
+### Ubuntu 16.04
+
+```
+# apt-get install openvpn php7.0 php7.0-zip php7.0-mysql nginx mysql-server nodejs unzip git wget sed npm curl
+# npm install -g bower
+# ln -s /usr/bin/nodejs /usr/bin/node
+```
+
 ### Other distribution... (PR welcome)
 
 ## Tests
