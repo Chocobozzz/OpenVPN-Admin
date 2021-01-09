@@ -204,7 +204,7 @@ iptables -t nat -A POSTROUTING -s 10.8.0.2/24 -o $primary_nic -j MASQUERADE
 
 printf "\n################## Setup MySQL database ##################\n"
 
-echo "CREATE DATABASE \`openvpn-admin\`" | mysql -u root --password="$mysql_root_pass"
+echo "CREATE DATABASE \`openvpn-admin\` CHARACTER SET utf8 COLLATE utf8_general_ci" | mysql -u root --password="$mysql_root_pass"
 echo "CREATE USER $mysql_user@localhost IDENTIFIED BY '$mysql_pass'" | mysql -u root --password="$mysql_root_pass"
 echo "GRANT ALL PRIVILEGES ON \`openvpn-admin\`.*  TO $mysql_user@localhost" | mysql -u root --password="$mysql_root_pass"
 echo "FLUSH PRIVILEGES" | mysql -u root --password="$mysql_root_pass"

@@ -1,0 +1,27 @@
+version: '3.3'
+services: 
+  db:
+    image: mariadb:latest
+    restart: unless-stopped
+    volumes: 
+      - './data/database:/var/lib/mysql'
+    environment:
+      - MYSQL_ROOT_PASSWORD=${mysql_root_pass}
+
+  server:
+    build: .
+    image: openvpn-admin
+    cap_add: 
+      - NET_ADMIN
+    restart: unless-stopped
+    volumes: 
+      - './data/openvpn:/etc/openvpn'
+    env_file: 
+      - .env
+    ports: 
+      - "${server_port:-80}:80"
+      - "${openvpn_port:-443}:${openvpn_port:-443}/${openvpn_proto:-tcp}"
+    depends_on: 
+      - db
+    links: 
+      - db
