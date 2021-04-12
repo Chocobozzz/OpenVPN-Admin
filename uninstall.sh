@@ -1,7 +1,7 @@
 #!/bin/bash
 
 print_help () {
-  echo -e "./desinstall.sh www_basedir"
+  echo -e "./uninstall.sh www_basedir"
   echo -e "\tbase_dir: The place where the web application is in"
 }
 
@@ -70,4 +70,9 @@ iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
 iptables -t nat -D POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
 iptables -t nat -D POSTROUTING -s 10.8.0.2/24 -o eth0 -j MASQUERADE
 
+a2dissite openvpn 
+a2ensite 000-default
+systemctl restart apache2
+
+sed -i "/added by openvpn-admin/d" /etc/php/7.3/apache2/php.ini
 echo "The application has been completely removed!"

@@ -1,0 +1,14 @@
+# Disabling Directory Browsing
+Options -Indexes
+
+# Block files starting with dot(.) like .htaaccess
+<FilesMatch "^\.">
+Order allow,deny
+Deny from all
+</FilesMatch>
+
+# Block files with any extenstion (this is for blocking ovpn files)
+<FilesMatch "\.*$">
+Order allow,deny
+Deny from all
+</FilesMatch>
