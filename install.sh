@@ -108,6 +108,9 @@ case $OS in
 	Ubuntu)
     apt install -y openvpn apache2 mysql-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc net-tools
 		;;
+	Debian)
+    apt-get install -y openvpn apache2 mysql-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc net-tools
+		;;
 	Raspbian)
 		apt install -y openvpn apache2 mariadb-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc
 		;;
