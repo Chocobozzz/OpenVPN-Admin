@@ -270,6 +270,16 @@ case $OS in
     mv ./rules.v4 /etc/iptables
     apt-get install -y iptables-persistent
     ;;
+  Debian)
+    sysctl -w net.ipv4.ip_forward=1
+    iptables-save -f ./rules.v4
+    if [[ ! -d "/etc/iptables" ]]
+    then
+      mkdir /etc/iptables
+    fi
+    mv ./rules.v4 /etc/iptables
+    apt-get install -y iptables-persistent
+    ;;
   Raspbian)
     echo 1 > "/proc/sys/net/ipv4/ip_forward"
     echo "net.ipv4.ip_forward = 1" >> "/etc/sysctl.conf"
