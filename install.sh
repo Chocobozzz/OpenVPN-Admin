@@ -389,7 +389,9 @@ echo
 echo -e "${Green}Congratulations, you have successfully setup OpenVPN-Admin!${NC}"
 echo
 echo -e "Finish the install by going to: ${Red}"
-echo -e "             http://$ip_server$/index.php?installation{NC}"
+echo -e "             http://$ip_server/index.php?installation${NC}"
+echo -e "After install, Access GUI at: ${Red}"
+echo -e "             http://$ip_server/${NC}"
 echo
 echo -e "Here are more details:"
 echo -e "             Your Public URL: ${Red}http://$public_ip ${NC}" 
