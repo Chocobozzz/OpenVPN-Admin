@@ -271,6 +271,7 @@ case $OS in
     apt-get install -y iptables-persistent
     ;;
   Debian)
+    echo "net.ipv4.ip_forward = 1" >> "/etc/sysctl.conf"
     sysctl -w net.ipv4.ip_forward=1
     iptables-save -f ./rules.v4
     if [[ ! -d "/etc/iptables" ]]
@@ -388,7 +389,7 @@ echo
 echo -e "${Green}Congratulations, you have successfully setup OpenVPN-Admin!${NC}"
 echo
 echo -e "Finish the install by going to: ${Red}"
-echo -e "             http://$ip_server${NC}"
+echo -e "             http://$ip_server$/index.php?installation{NC}"
 echo
 echo -e "Here are more details:"
 echo -e "             Your Public URL: ${Red}http://$public_ip ${NC}" 
