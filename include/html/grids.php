@@ -148,7 +148,22 @@ function getHistory($cfg_file, $accordion_id, $open_first_history_tab = false) {
 
       </div>
    </div>
-
+   <div id="menu4" class="tab-pane fade">
+      <!-- configs -->
+      <div class="block-grid row" id="config-cards">
+         <ul class="nav nav-tabs nav-tabs-justified">
+                 <li><a data-toggle="tab" href="#menu-1-0"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Ovpn Filename (without .ovpn extension)</a></li>
+                 <li id="save-config-btn" class="pull-right hidden"><a class="progress-bar-striped" href="javascript:;"><span class="glyphicon glyphicon-save" aria-hidden="true"></span></a></li>
+         </ul>
+         <div class="tab-content">
+            <div id="menu-1-0" class="tab-pane fade in active">
+               <textarea class="form-control" data-config-file="<?= $cfg_file='client-conf/windows/filename' ?>" name="" id="" cols="30" rows="20"><?= file_get_contents($cfg_file) ?></textarea>
+               <?= getHistory($cfg_file, @++$accId) ?>
+            </div>
+         </div>
+      </div>
+   </div>
+   
 </div>
 
 <script src="vendor/jquery/dist/jquery.min.js"></script>
