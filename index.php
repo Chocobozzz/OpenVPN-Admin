@@ -17,6 +17,9 @@
     exit(-1);
   }
 
+  // Read ovpn file contents
+  $ovpn_filename= file_get_contents("./client-conf/windows/filename");
+
   // Get the Windows instruction file 
   if(isset($_POST['windows_instruction_get'])) {
       $download_file_name1 = "Download and install the OpenVPN GUI (Windows).pdf";
@@ -49,9 +52,8 @@
     $file_name = "client.ovpn";
     $file_folder  = "windows";
     $file_full_path  = './client-conf/' . $file_folder . '/' . $file_name;
-    $save_name = $file_name;
     header("Content-type: application/ovpn");
-    header("Content-disposition: attachment; filename=$save_name");
+    header("Content-disposition: attachment; filename=$ovpn_filename.ovpn");
     header("Pragma: no-cache");
     header("Expires: 0");
     readfile($file_full_path);
@@ -69,10 +71,8 @@
       $file_name = "client.ovpn";
       $file_folder  = "windows";
       $file_full_path  = './client-conf/' . $file_folder . '/' . $file_name;
-      $save_name = $_POST['configuration_username'].'.ovpn';
-
       header("Content-type: application/ovpn");
-      header("Content-disposition: attachment; filename=$save_name");
+      header("Content-disposition: attachment; filename=$ovpn_filename.ovpn");
       header("Pragma: no-cache");
       header("Expires: 0");
       readfile($file_full_path);
