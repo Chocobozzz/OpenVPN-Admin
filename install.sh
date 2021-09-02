@@ -394,7 +394,11 @@ echo -e "After install, Access GUI at: ${Red}"
 echo -e "             http://$ip_server/${NC}"
 echo
 echo -e "Here are more details:"
-echo -e "             Your Public URL: ${Red}http://$public_ip ${NC}" 
+echo -e "             Your Public URL: ${Red}http://$public_ip"
+echo
+echo -e "	We recommend only forward UDP port 1194 if you're behind a firewall"
+echo -e "	Publishing TCP port 80 over the web is a high risk and NOT recommended${NC} 
+echo
 echo -e "             Auto Generated MySQL Root Password: ${Red}$mysql_root_pass ${NC}" 
 echo -e "             Auto Generated OpenVPN-Admin MySQL Username: ${Red}$mysql_user ${NC}"
 echo -e "             Auto Generated OpenVPN-Admin MySQL Password: ${Red}$mysql_pass ${NC}"
