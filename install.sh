@@ -259,6 +259,7 @@ iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o $primary_nic -j MASQUERADE
 iptables -t nat -A POSTROUTING -s 10.8.0.2/24 -o $primary_nic -j MASQUERADE
 
 # Make ip forwading and make it persistent
+echo "net.ipv4.ip_forward = 1" >> "/etc/sysctl.conf"
 case $OS in
   Ubuntu)
     sysctl -w net.ipv4.ip_forward=1
@@ -268,10 +269,11 @@ case $OS in
       mkdir /etc/iptables
     fi
     mv ./rules.v4 /etc/iptables
+    echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
+    echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
     apt-get install -y iptables-persistent
     ;;
   Debian)
-    echo "net.ipv4.ip_forward = 1" >> "/etc/sysctl.conf"
     sysctl -w net.ipv4.ip_forward=1
     iptables-save -f ./rules.v4
     if [[ ! -d "/etc/iptables" ]]
@@ -279,11 +281,12 @@ case $OS in
       mkdir /etc/iptables
     fi
     mv ./rules.v4 /etc/iptables
+    echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
+    echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
     apt-get install -y iptables-persistent
     ;;
   Raspbian)
     echo 1 > "/proc/sys/net/ipv4/ip_forward"
-    echo "net.ipv4.ip_forward = 1" >> "/etc/sysctl.conf"
     ;;
 esac
 
