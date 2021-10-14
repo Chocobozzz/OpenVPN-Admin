@@ -107,8 +107,8 @@ case $OS in
     		apt install -y openvpn apache2 mysql-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc net-tools
 		;;
 	Debian)
-		echo "deb http://deb.debian.org/debian/ bullseye main contrib" > /etc/apt/sources.list
-    		echo "deb-src http://deb.debian.org/debian/ bullseye main contrib" > /etc/apt/sources.list
+		echo "deb http://deb.debian.org/debian/ bullseye main contrib" >> /etc/apt/sources.list
+    		echo "deb-src http://deb.debian.org/debian/ bullseye main contrib" >> /etc/apt/sources.list
     		apt update && sudo apt upgrade -y
     		apt-get install -y openvpn apache2 mariadb-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc net-tools
 		;;
