@@ -8,7 +8,7 @@ Green='\033[0;32m'      # Green
 
 ### Variables
 OS=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f1 -d " ") # Don't change this unless you know what you're doing
-if [ $OS -ne "Ubuntu" ] || [ $OS -ne "Raspbian"]; then
+if [ $OS = "Ubuntu" ] || [ $OS = "Raspbian"]; then
   echo -e "${Red}Oops! Only Ubuntu and Raspbian OS are supported.${NC}"
   exit
 fi
