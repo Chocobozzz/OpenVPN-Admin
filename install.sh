@@ -371,21 +371,13 @@ if [ -z "$company_name" ]
 then
   echo
 else
-  sed -i "s/VPN/$company_name/g" /var/www/openvpn-admin/client-conf/windows/filename
+  sed -i "s/VPN/$company_name/" /var/www/openvpn-admin/client-conf/windows/filename
 fi
 systemctl start openvpn@server
 
-#printf "\033[1m\n\n################################# Let'sEncrypt SSL Certificate ####################################\n"
-#printf "\033[1m###### NOTE: You need port 80 on the public facing side to be open and forwarded to this instance #####\n"
-#read -p "Do you wish to setup Let'sEncrypt SSL? (y/n)  " yn
-#case $yn in
-#    [Yy]*)
-#        read -p "provide the domain name without www.: " domain_name;
-#        apt install -y python-certbot-apache;
-#        certbot -n --apache -d $domain_name -d www.$domain_name --agree-tos -m $cert_email --no-redirect ;;
-#    [Nn]*)
-#        ;;
-#esac
+echo "Auto Generated MySQL Root Password: ${Red}$mysql_root_pass" > ~/OpenVPN_Creds
+echo "Auto Generated OpenVPN-Admin MySQL Username: ${Red}$mysql_user" > ~/OpenVPN_Creds
+echo "Auto Generated OpenVPN-Admin MySQL Password: ${Red}$mysql_pass" > ~/OpenVPN_Creds
 echo -e "\n\n\n${Yellow}"
 echo -e "################################################################################"
 echo -e "################################### Finished ###################################"
@@ -408,7 +400,7 @@ echo -e "             Auto Generated OpenVPN-Admin MySQL Username: ${Red}$mysql_
 echo -e "             Auto Generated OpenVPN-Admin MySQL Password: ${Red}$mysql_pass ${NC}"
 echo -e "             Selected download file name: ${Red}$company_name.ovpn ${NC}"
 echo
-echo -e " Please, report any issues here https://github.com/arvage/OpenVPN-Admin"
+echo -e " Please, report any issues here https://github.com/arvage/OpenVPN-Admin (Armin Gorji)"
 echo
 echo -e "${Yellow}################################################################################${NC}"
 echo -e "${Yellow}################################################################################${NC}"
