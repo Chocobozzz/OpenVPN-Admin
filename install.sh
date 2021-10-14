@@ -369,10 +369,11 @@ echo -e "${Green}Finalizing OpenVPN Configuration${NC}"
 #sed -i 's/80.67.169.40/8.8.4.4/g' /etc/openvpn/server.conf
 if [ -z "$company_name" ]
 then
-  echo
+  company_name="VPN"
 else
   sed -i "s/VPN/$company_name/" /var/www/openvpn-admin/client-conf/windows/filename
 fi
+truncate -s -1 /var/www/openvpn-admin/client-conf/windows/filename
 systemctl start openvpn@server
 
 echo "Auto Generated MySQL Root Password: ${Red}$mysql_root_pass" > ~/OpenVPN_Creds
