@@ -132,7 +132,7 @@ done
 # setting up MySQL and secure it
 echo -e "${Green}Setting MySQL Configuration${NC}"
 mysql -u root <<-EOF
-UPDATE mysql.user SET Password=PASSWORD('$mysql_root_pass') WHERE User='root';
+ALTER USER 'root'@'localhost' IDENTIFIED BY '$mysql_root_pass';
 DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
 DELETE FROM mysql.user WHERE User='';
 DELETE FROM mysql.db WHERE Db='test' OR Db='test_%';
@@ -263,7 +263,7 @@ case $OS in
   Ubuntu)
     sysctl -w net.ipv4.ip_forward=1
     sed -i "s/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/" "/etc/sysctl.conf"
-    iptables-save ./rules.v4
+    iptables-save -f ./rules.v4
     if [[ ! -d "/etc/iptables" ]]
     then
       mkdir /etc/iptables
