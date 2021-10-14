@@ -86,7 +86,7 @@ read -t 120 -p "Type it here or hit enter to use default naming (without .ovpn):
 
 if [ -z "$company_name" ]
 then
-  echo -e "\nDefault file naming selected."
+  echo -e "\nDefault file name VPN.ovpn selected."
 else
   echo -e "\nSelected file name: ${Red}$company_name.ovpn${NC}"
 fi
