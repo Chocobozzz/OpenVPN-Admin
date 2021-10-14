@@ -2,6 +2,11 @@
 
 ### Variables
 OS=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f1 -d " ") # Don't change this unless you know what you're doing
+if [ $OS -ne "Ubuntu" ] || [ $OS -ne "Raspbian"]; then
+echo -e "${Red}Oops! Only Ubuntu and Raspbian OS are supported.${NC}"
+exit
+fi
+
 timezone="America/Los_Angeles" # this is PHP timezone
 gmt_offset="-8:00" # this is MySQL timezone
 www=$1
@@ -105,12 +110,6 @@ case $OS in
 	Ubuntu)
     		apt update && sudo apt upgrade -y
     		apt install -y openvpn apache2 mysql-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc net-tools
-		;;
-	Debian)
-		echo "deb http://deb.debian.org/debian/ bullseye main contrib" >> /etc/apt/sources.list
-    		echo "deb-src http://deb.debian.org/debian/ bullseye main contrib" >> /etc/apt/sources.list
-    		apt update && sudo apt upgrade -y
-    		apt-get install -y openvpn apache2 mariadb-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc net-tools
 		;;
 	Raspbian)
 		apt install -y openvpn apache2 mariadb-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc
@@ -250,41 +249,17 @@ echo -e "${Green}Setup Firewall${NC}"
 primary_nic=`route | grep '^default' | grep -o '[^ ]*$'`
 
 # Iptable rules
-if [ $OS -ne "Debian" ]; then 
-  iptables -I FORWARD -i tun0 -j ACCEPT
-  iptables -I FORWARD -o tun0 -j ACCEPT
-  iptables -I OUTPUT -o tun0 -j ACCEPT
-
-  iptables -A FORWARD -i tun0 -o $primary_nic -j ACCEPT
-  iptables -t nat -A POSTROUTING -o $primary_nic -j MASQUERADE
-  iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o $primary_nic -j MASQUERADE
-  iptables -t nat -A POSTROUTING -s 10.8.0.2/24 -o $primary_nic -j MASQUERADE
-fi
+iptables -I FORWARD -i tun0 -j ACCEPT
+iptables -I FORWARD -o tun0 -j ACCEPT
+iptables -I OUTPUT -o tun0 -j ACCEPT
+iptables -A FORWARD -i tun0 -o $primary_nic -j ACCEPT
+iptables -t nat -A POSTROUTING -o $primary_nic -j MASQUERADE
+iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o $primary_nic -j MASQUERADE
+iptables -t nat -A POSTROUTING -s 10.8.0.2/24 -o $primary_nic -j MASQUERADE
 
 # Make ip forwading and make it persistent
 case $OS in
   Ubuntu)
-    sysctl -w net.ipv4.ip_forward=1
-    sed -i "s/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/" "/etc/sysctl.conf"
-    iptables-save -f ./rules.v4
-    if [[ ! -d "/etc/iptables" ]]
-    then
-      mkdir /etc/iptables
-    fi
-    mv ./rules.v4 /etc/iptables
-    echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
-    echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
-    apt-get install -y iptables-persistent
-    ;;
-  Debian)
-    sudo iptables -I FORWARD -i tun0 -j ACCEPT
-    sudo iptables -I FORWARD -o tun0 -j ACCEPT
-    sudo iptables -I OUTPUT -o tun0 -j ACCEPT
-
-    sudo iptables -A FORWARD -i tun0 -o $primary_nic -j ACCEPT
-    sudo iptables -t nat -A POSTROUTING -o $primary_nic -j MASQUERADE
-    sudo iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o $primary_nic -j MASQUERADE
-    sudo iptables -t nat -A POSTROUTING -s 10.8.0.2/24 -o $primary_nic -j MASQUERADE
     sysctl -w net.ipv4.ip_forward=1
     sed -i "s/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/" "/etc/sysctl.conf"
     iptables-save -f ./rules.v4
