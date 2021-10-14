@@ -91,8 +91,6 @@ else
   echo -e "\nSelected file name: ${Red}$company_name.ovpn${NC}"
 fi
 
-
-
 echo -e "${Yellow}\nNow sit back and wait for the script to finish the install\n${NC}"
 sleep 2
 
@@ -102,14 +100,17 @@ sleep 2
 
 # Installing prerequisites
 echo -e "${Green}Installing Prerequisites ${Red}(This could take long time)${NC}"
-apt update && sudo apt upgrade -y
 
 case $OS in
 	Ubuntu)
-    apt install -y openvpn apache2 mysql-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc net-tools
+    		apt update && sudo apt upgrade -y
+    		apt install -y openvpn apache2 mysql-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc net-tools
 		;;
 	Debian)
-    apt-get install -y openvpn apache2 mysql-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc net-tools
+		echo "deb http://deb.debian.org/debian/ bullseye main contrib" > /etc/apt/sources.list
+    		echo "deb-src http://deb.debian.org/debian/ bullseye main contrib" > /etc/apt/sources.list
+    		apt update && sudo apt upgrade -y
+    		apt-get install -y openvpn apache2 mariadb-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc net-tools
 		;;
 	Raspbian)
 		apt install -y openvpn apache2 mariadb-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc
@@ -226,7 +227,7 @@ export EASYRSA_BATCH=1
 ./easyrsa build-server-full server nopass
 
 # Generate shared-secret for TLS Authentication
-openvpn --genkey --secret pki/ta.key
+openvpn --genkey secret pki/ta.key
 
 echo -e "${Green}Setup OpenVPN${NC}"
 
@@ -249,14 +250,15 @@ echo -e "${Green}Setup Firewall${NC}"
 primary_nic=`route | grep '^default' | grep -o '[^ ]*$'`
 
 # Iptable rules
-iptables -I FORWARD -i tun0 -j ACCEPT
-iptables -I FORWARD -o tun0 -j ACCEPT
-iptables -I OUTPUT -o tun0 -j ACCEPT
+if [ $OS -ne "Debian" ]; then 
+  iptables -I FORWARD -i tun0 -j ACCEPT
+  iptables -I FORWARD -o tun0 -j ACCEPT
+  iptables -I OUTPUT -o tun0 -j ACCEPT
 
-iptables -A FORWARD -i tun0 -o $primary_nic -j ACCEPT
-iptables -t nat -A POSTROUTING -o $primary_nic -j MASQUERADE
-iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o $primary_nic -j MASQUERADE
-iptables -t nat -A POSTROUTING -s 10.8.0.2/24 -o $primary_nic -j MASQUERADE
+  iptables -A FORWARD -i tun0 -o $primary_nic -j ACCEPT
+  iptables -t nat -A POSTROUTING -o $primary_nic -j MASQUERADE
+  iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o $primary_nic -j MASQUERADE
+  iptables -t nat -A POSTROUTING -s 10.8.0.2/24 -o $primary_nic -j MASQUERADE
 
 # Make ip forwading and make it persistent
 case $OS in
@@ -274,6 +276,14 @@ case $OS in
     apt-get install -y iptables-persistent
     ;;
   Debian)
+    sudo iptables -I FORWARD -i tun0 -j ACCEPT
+    sudo iptables -I FORWARD -o tun0 -j ACCEPT
+    sudo iptables -I OUTPUT -o tun0 -j ACCEPT
+
+    sudo iptables -A FORWARD -i tun0 -o $primary_nic -j ACCEPT
+    sudo iptables -t nat -A POSTROUTING -o $primary_nic -j MASQUERADE
+    sudo iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o $primary_nic -j MASQUERADE
+    sudo iptables -t nat -A POSTROUTING -s 10.8.0.2/24 -o $primary_nic -j MASQUERADE
     sysctl -w net.ipv4.ip_forward=1
     sed -i "s/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/" "/etc/sysctl.conf"
     iptables-save -f ./rules.v4
