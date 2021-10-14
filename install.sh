@@ -259,10 +259,10 @@ iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o $primary_nic -j MASQUERADE
 iptables -t nat -A POSTROUTING -s 10.8.0.2/24 -o $primary_nic -j MASQUERADE
 
 # Make ip forwading and make it persistent
-echo "net.ipv4.ip_forward = 1" >> "/etc/sysctl.conf"
 case $OS in
   Ubuntu)
     sysctl -w net.ipv4.ip_forward=1
+    sed -i "s/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/" "/etc/sysctl.conf"
     iptables-save ./rules.v4
     if [[ ! -d "/etc/iptables" ]]
     then
@@ -275,6 +275,7 @@ case $OS in
     ;;
   Debian)
     sysctl -w net.ipv4.ip_forward=1
+    sed -i "s/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/" "/etc/sysctl.conf"
     iptables-save -f ./rules.v4
     if [[ ! -d "/etc/iptables" ]]
     then
