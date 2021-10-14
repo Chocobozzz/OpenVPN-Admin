@@ -6,8 +6,7 @@ Administer OpenVPN Server with a web interface (Users Management, Logs, Visualiz
 
 ## Prerequisite
 
-  * Raspbian with Bash access or remote SSH
-  * Git
+  * Debian,Raspbian or Ubuntu with Bash access or remote SSH
 
 ## Installation
 
@@ -24,17 +23,18 @@ Administer OpenVPN Server with a web interface (Users Management, Logs, Visualiz
         cd openvpn-admin
         sudo ./install.sh /var/www www-data www-data
 
-  * If you are using any other web server than Apache like NGinx, you need to set it up manually to serve the web application.
   * Once the installation is finished browse to `http://your_hostname_or_ip/index.php?installation` to create your admin user.
 
 ## Tests
 
-Only tested on Raspberry Pi 3 with Raspbian Buster (No GUI).
+Rasbian: Only tested on Raspberry Pi 3 with Raspbian Buster (No GUI).
+Ubuntu 20.04 LTS: Tested successfully
+Debian 11 (Bullseye): Tested successfully
 
 ## Usage
 
   * Connect to the web application as an admin
-  * Create an user
+  * Create a user
   * User get the configurations files via the web application (and put them in */etc/openvpn*)
   * Users on GNU/Linux systems, run `chmod +x /etc/openvpn/update-resolv.sh` as root
   * User run OpenVPN (for example `systemctl start openvpn@client`)
