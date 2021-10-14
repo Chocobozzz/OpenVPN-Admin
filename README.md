@@ -27,9 +27,9 @@ Administer OpenVPN Server with a web interface (Users Management, Logs, Visualiz
 
 ## Tests
 
-Rasbian: Only tested on Raspberry Pi 3 with Raspbian Buster (No GUI).
-Ubuntu 20.04 LTS: Tested successfully
-Debian 11 (Bullseye): Tested successfully
+* Rasbian: Only tested on Raspberry Pi 3 with Raspbian Buster (No GUI).
+* Ubuntu 20.04 LTS: Tested successfully
+* Debian 11 (Bullseye): Tested successfully
 
 ## Usage
 
