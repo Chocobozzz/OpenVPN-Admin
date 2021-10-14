@@ -259,6 +259,7 @@ if [ $OS -ne "Debian" ]; then
   iptables -t nat -A POSTROUTING -o $primary_nic -j MASQUERADE
   iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o $primary_nic -j MASQUERADE
   iptables -t nat -A POSTROUTING -s 10.8.0.2/24 -o $primary_nic -j MASQUERADE
+fi
 
 # Make ip forwading and make it persistent
 case $OS in
