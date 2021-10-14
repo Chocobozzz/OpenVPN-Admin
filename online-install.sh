@@ -13,5 +13,8 @@ git clone https://github.com/arvage/OpenVPN-Admin openvpn-admin
 echo -e "${NC}"
 cd openvpn-admin
 chmod +x ./install.sh
+clear
 echo -e "${Yellow}Now run below command:"
+echo
 echo -e "${Green}sudo ./install.sh /var/www www-data www-data${NC}"
+echo
