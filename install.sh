@@ -1,10 +1,16 @@
 #!/bin/bash
 
+# On-Screen Colors
+NC='\033[0m'            # No Color
+Red='\033[1;31m'        # Light Red
+Yellow='\033[0;33m'     # Yellow
+Green='\033[0;32m'      # Green
+
 ### Variables
 OS=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f1 -d " ") # Don't change this unless you know what you're doing
 if [ $OS -ne "Ubuntu" ] || [ $OS -ne "Raspbian"]; then
-echo -e "${Red}Oops! Only Ubuntu and Raspbian OS are supported.${NC}"
-exit
+  echo -e "${Red}Oops! Only Ubuntu and Raspbian OS are supported.${NC}"
+  exit
 fi
 
 timezone="America/Los_Angeles" # this is PHP timezone
@@ -37,12 +43,6 @@ cert_org="Arvage"
 cert_ou="IT"
 cert_email="example@test.net"
 key_cn=$public_ip # will be changed when asking for public IP/Hostname user input
-
-# On-Screen Colors
-NC='\033[0m'            # No Color
-Red='\033[1;31m'        # Light Red
-Yellow='\033[0;33m'     # Yellow
-Green='\033[0;32m'      # Green
 
 # show on-screen help
 print_help () {
