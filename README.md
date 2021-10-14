@@ -3,9 +3,6 @@
 ## Summary
 Administer OpenVPN Server with a web interface (Users Management, Logs, Visualizations)
 
-![Previsualisation configuration](https://lutim.cpy.re/fUq2rxqz)
-![Previsualisation administration](https://lutim.cpy.re/wwYMkHcM)
-
 
 ## Prerequisite
 
@@ -47,7 +44,7 @@ Only tested on Raspberry Pi 3 with Raspbian Buster (No GUI).
     git pull origin master
     ./update.sh /var/www
 
-## Desinstall
+## Uninstall
 It will remove all installed components (OpenVPN keys and configurations, the web application, iptables rules...).
 
     sudo ./uninstall.sh /var/www
