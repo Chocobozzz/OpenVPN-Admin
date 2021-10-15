@@ -365,9 +365,9 @@ fi
 truncate -s -1 /var/www/openvpn-admin/client-conf/windows/filename
 systemctl start openvpn@server
 
-echo "Auto Generated MySQL Root Password: ${Red}$mysql_root_pass" > ~/OpenVPN_Creds
-echo "Auto Generated OpenVPN-Admin MySQL Username: ${Red}$mysql_user" > ~/OpenVPN_Creds
-echo "Auto Generated OpenVPN-Admin MySQL Password: ${Red}$mysql_pass" > ~/OpenVPN_Creds
+echo "Auto Generated MySQL Root Password: $mysql_root_pass" >> ~/OpenVPN_Creds
+echo "Auto Generated OpenVPN-Admin MySQL Username: $mysql_user" >> ~/OpenVPN_Creds
+echo "Auto Generated OpenVPN-Admin MySQL Password: $mysql_pass" >> ~/OpenVPN_Creds
 echo -e "\n\n\n${Yellow}"
 echo -e "################################################################################"
 echo -e "################################### Finished ###################################"
@@ -387,7 +387,10 @@ echo -e "	Publishing TCP port 80 over the web is a high risk and NOT recommended
 echo
 echo -e "             Auto Generated MySQL Root Password: ${Red}$mysql_root_pass ${NC}" 
 echo -e "             Auto Generated OpenVPN-Admin MySQL Username: ${Red}$mysql_user ${NC}"
-echo -e "             Auto Generated OpenVPN-Admin MySQL Password: ${Red}$mysql_pass ${NC}"
+echo -e "             Auto Generated OpenVPN-Admin MySQL Password: ${Red}$mysql_pass ${Yellow}"
+echo
+echo -e "	Credentials are saved in /root/OpenVPN_Creds file for future refrence."
+echo
 echo -e "             Selected download file name: ${Red}$company_name.ovpn ${NC}"
 echo
 echo -e " Please, report any issues here https://github.com/arvage/OpenVPN-Admin (Armin Gorji)"
