@@ -5,10 +5,10 @@ Yellow='\033[0;33m'     # Yellow
 Green='\033[0;32m'      # Green
 clear
 OS=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f1 -d " ") # Don't change this unless you know what you're doing
-if [[ "$OS" != "Ubuntu" ]]; then
-  echo -e "${Red}Oops! Only Ubuntu and Raspbian OS are supported.${NC}"
-  exit
-elif [[ "$OS" != "Raspbian" ]]; then
+if [ "$OS" == "Ubuntu" ] || [ "$OS" == "Raspbian" ]; 
+then
+  :
+else
   echo -e "${Red}Oops! Only Ubuntu and Raspbian OS are supported.${NC}"
   exit
 fi
