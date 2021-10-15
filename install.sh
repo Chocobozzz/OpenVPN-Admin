@@ -73,9 +73,9 @@ sleep 2
 
 # hostname / IP settings 
 echo -e "${Red}$public_ip ${NC}detected as your Public IP and will be used automatically if you don't choose anything else."
-echo -e "Timeout: 60 Seconds"
+echo -e "Timeout: 2 Minutes"
 echo -e "Need to use another public IP or Hostname?"
-read -t 60 -p "Type it here or hit enter to continue with detected IP: " public_hostname </dev/tty
+read -t 120 -p "Type it here or hit enter to continue with detected IP: " public_hostname </dev/tty
 
 if [ -z "$public_hostname" ]
 then
@@ -88,7 +88,7 @@ else
 fi
 echo -e "\n\n\nSelect the VPN connection name for showing up on your client OpenVPN application."
 echo -e "This will help the user identify which VPN he is connecting to if he has multiple connection configuration."
-echo -e "Default file names will be used if you don't choose any. You may use your company Name."
+echo -e "Default file names will be used if you don't choose any. You may use your company or office Name. (e.g. LA Office)"
 echo -e "Timeout: 2 Minutes"
 read -t 120 -p "Type it here or hit enter to use default naming (without .ovpn): " company_name </dev/tty
 
@@ -229,7 +229,7 @@ export EASYRSA_BATCH=1
 ./easyrsa build-server-full server nopass
 
 # Generate shared-secret for TLS Authentication
-openvpn --genkey secret pki/ta.key
+openvpn --genkey --secret pki/ta.key
 
 echo -e "${Green}Setup OpenVPN${NC}"
 
