@@ -6,7 +6,8 @@ Administer OpenVPN Server with a web interface (Users Management, Logs, Visualiz
 
 ## Prerequisite
 
-  * Raspbian or Ubuntu with Bash access or remote SSH
+  * Raspbian or Ubuntu 20 with Bash access or remote SSH
+  * Ubuntu 21.x.x is not supprted yet
 
 ## Installation
 
