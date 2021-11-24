@@ -11,11 +11,11 @@ Administer OpenVPN Server with a web interface (Users Management, Logs, Visualiz
 
 ## Installation
 
-  * Method 1:
+  * Method 1 (Automatic):
   
         wget -O - https://raw.githubusercontent.com/arvage/OpenVPN-Admin/master/online-install.sh | bash
         
-  * Method 2:
+  * Method 2 (Manual):
 
         sudo apt update
         sudo apt install -y git
