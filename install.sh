@@ -39,12 +39,12 @@ mysql_pass=$(openssl rand -base64 12 | sed 's/[^a-zA-Z0-9]//g') # Random ceated 
 
 # Certificates Variables
 key_size="2048" # anything less than 2048 may get rejected by some OSes. bigger sizes will take forever to generate!
-ca_expire="3650" # 10 Years
-cert_expire="3650"
+ca_expire="36500" # 100 Years
+cert_expire="36500"
 cert_country="US"
 cert_province="California"
 cert_city="Mission Viejo"
-cert_org="Arvage"
+cert_org="PACMIT"
 cert_ou="IT"
 cert_email="example@test.net"
 key_cn=$public_ip # will be changed when asking for public IP/Hostname user input
