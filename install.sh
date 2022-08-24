@@ -105,7 +105,7 @@ echo -e "${Yellow}\nNow sit back and wait for the script to finish the install\n
 sleep 2
 
 # Detecting OS Distribution
-echo -e "${NC}Detected OS: ${Red}$OS\n"
+echo -e "${NC}Detected OS: ${Red}$OS $OS_OS_Version_Major.$OS_OS_Version_Minor\n"
 sleep 2
 
 # Installing prerequisites
@@ -113,12 +113,11 @@ echo -e "${Green}Installing Prerequisites ${Red}(This could take long time)${NC}
 
 case $OS in
 	Ubuntu)
-            if  [$OS_OS_Version_Major -gt 19]
+            if  [$OS_OS_Version_Major > 20]
             then
     		  export DEBIAN_FRONTEND=noninteractive
+              apt install -y software-properties-common ca-certificates lsb-release apt-transport-https
               LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php
-              
-              apt install software-properties-common ca-certificates lsb-release apt-transport-https
               apt-get update && sudo apt-get upgrade -y
     		  apt-get install -y openvpn apache2 mysql-server php7.4 php7.4-mysql php7.4-zip unzip git wget sed curl nodejs npm mc net-tools
               a2dismod php8.1
