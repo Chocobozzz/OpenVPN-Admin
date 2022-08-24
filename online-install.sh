@@ -13,7 +13,7 @@ else
   exit
 fi
 echo -e "${Green}Updating and Getting Ready${Yellow}"
-sudo apt update && sudo apt upgrade -y
+DEBIAN_FRONTEND=noninteractive sudo apt update && sudo apt upgrade -y -q
 sudo apt install -y git
 cd ~
 echo -e "${Red}"

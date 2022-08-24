@@ -101,7 +101,7 @@ else
   echo -e "\nSelected file name: ${Red}$company_name.ovpn${NC}"
 fi
 
-echo -e "${Yellow}\nNow sit back and wait for the script to finish the install\n${NC}"
+echo -e "${Yellow}\nThis part will take a while to finish.\n${NC}"
 sleep 2
 
 # Detecting OS Distribution
@@ -115,16 +115,12 @@ case $OS in
 	Ubuntu)
             if [ "$OS_Version_Major" -gt "20" ];
             then
-            echo "here"
     		  export DEBIAN_FRONTEND=noninteractive
-            echo "export"
-
-              apt install -y software-properties-common ca-certificates lsb-release apt-transport-https
-            echo "apt Install"
-              LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php
+              DEBIAN_FRONTEND=noninteractive apt install -y -q software-properties-common ca-certificates lsb-release apt-transport-https
+                      LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php
               echo "repository add"
-              apt-get update && sudo apt-get upgrade -y
-    		  apt-get install -y openvpn apache2 mysql-server php7.4 php7.4-mysql php7.4-zip unzip git wget sed curl nodejs npm mc net-tools
+              DEBIAN_FRONTEND=noninteractive apt-get update && sudo apt-get upgrade -y -q
+    		  DEBIAN_FRONTEND=noninteractive apt-get install -y -q openvpn apache2 mysql-server php7.4 php7.4-mysql php7.4-zip unzip git wget sed curl nodejs npm mc net-tools
               a2dismod php8.1
               a2enmod php7.4
               systemctl restart apache2
