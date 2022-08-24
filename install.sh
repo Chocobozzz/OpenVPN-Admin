@@ -121,6 +121,7 @@ case $OS in
             else
               apt update && sudo apt upgrade -y
               apt install -y openvpn apache2 mysql-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc net-tools
+            fi
 		;;
 	Raspbian)
 		apt install -y openvpn apache2 mariadb-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc
