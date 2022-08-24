@@ -12,7 +12,7 @@ else
   echo -e "${Red}Oops! Only Ubuntu and Raspbian OS are supported.${NC}"
   exit
 fi
-sudo echo "$nrconf{restart} = 'a';" >> /etc/needrestart/needrestart.conf
+sudo sed -i 's/#$nrconf{restart} = '"'"'i'"'"';/$nrconf{restart} = '"'"'a'"'"';/g' /etc/needrestart/needrestart.conf
 
 echo -e "${Green}Updating and Getting Ready${Yellow}"
 DEBIAN_FRONTEND=noninteractive sudo apt-get update && sudo apt-get upgrade -y -q
