@@ -16,7 +16,7 @@ sudo sed -i 's/#$nrconf{restart} = '"'"'i'"'"';/$nrconf{restart} = '"'"'a'"'"';/
 
 echo -e "${Green}Updating and Getting Ready${Yellow}"
 DEBIAN_FRONTEND=noninteractive sudo apt-get update && sudo apt-get upgrade -y -q
-DEBIAN_FRONTEND=noninteractive sudo apt-get install -y git
+DEBIAN_FRONTEND=noninteractive sudo apt-get install -y git mc
 cd ~
 echo -e "${Red}"
 git clone https://github.com/arvage/OpenVPN-Admin openvpn-admin
