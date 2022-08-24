@@ -113,11 +113,16 @@ echo -e "${Green}Installing Prerequisites ${Red}(This could take long time)${NC}
 
 case $OS in
 	Ubuntu)
-            if  [[$OS_Version_Major > 20]]
+            if [[$OS_Version_Major > 20]]
             then
+            echo "here"
     		  export DEBIAN_FRONTEND=noninteractive
+            echo "export"
+
               apt install -y software-properties-common ca-certificates lsb-release apt-transport-https
+            echo "apt Install"
               LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php
+              echo "repository add"
               apt-get update && sudo apt-get upgrade -y
     		  apt-get install -y openvpn apache2 mysql-server php7.4 php7.4-mysql php7.4-zip unzip git wget sed curl nodejs npm mc net-tools
               a2dismod php8.1
