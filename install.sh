@@ -8,6 +8,8 @@ Green='\033[0;32m'      # Green
 
 ### Variables
 OS=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f1 -d " ") # Don't change this unless you know what you're doing
+OS_Version_Major=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f2 -d " " | cut -f1 -d ".")
+OS_Version_Minor=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f2 -d " " | cut -f2 -d ".")
 if [ "$OS" == "Ubuntu" ] || [ "$OS" == "Raspbian" ]; 
 then
   :
@@ -111,8 +113,14 @@ echo -e "${Green}Installing Prerequisites ${Red}(This could take long time)${NC}
 
 case $OS in
 	Ubuntu)
-    		apt update && sudo apt upgrade -y
-    		apt install -y openvpn apache2 mysql-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc net-tools
+            if  [$OS_OS_Version_Major -gt 19]
+            then
+    		  export DEBIAN_FRONTEND=noninteractive
+              apt-get update && sudo apt-get upgrade -y
+    		  apt-get install -y openvpn apache2 mysql-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc net-tools
+            else
+              apt update && sudo apt upgrade -y
+              apt install -y openvpn apache2 mysql-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc net-tools
 		;;
 	Raspbian)
 		apt install -y openvpn apache2 mariadb-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc
@@ -229,7 +237,7 @@ export EASYRSA_BATCH=1
 ./easyrsa build-server-full server nopass
 
 # Generate shared-secret for TLS Authentication
-openvpn --genkey --secret pki/ta.key
+openvpn --genkey secret pki/ta.key
 
 echo -e "${Green}Setup OpenVPN${NC}"
 
