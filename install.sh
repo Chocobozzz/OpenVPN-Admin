@@ -116,8 +116,14 @@ case $OS in
             if  [$OS_OS_Version_Major -gt 19]
             then
     		  export DEBIAN_FRONTEND=noninteractive
+              LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php
+              
+              apt install software-properties-common ca-certificates lsb-release apt-transport-https
               apt-get update && sudo apt-get upgrade -y
-    		  apt-get install -y openvpn apache2 mysql-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc net-tools
+    		  apt-get install -y openvpn apache2 mysql-server php7.4 php7.4-mysql php7.4-zip unzip git wget sed curl nodejs npm mc net-tools
+              a2dismod php8.1
+              a2enmod php7.4
+              systemctl restart apache2
             else
               apt update && sudo apt upgrade -y
               apt install -y openvpn apache2 mysql-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc net-tools
