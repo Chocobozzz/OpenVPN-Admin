@@ -116,7 +116,7 @@ case $OS in
             if [ "$OS_Version_Major" -gt "20" ];
             then
     		  export DEBIAN_FRONTEND=noninteractive
-              DEBIAN_FRONTEND=noninteractive apt install -y -q software-properties-common ca-certificates lsb-release apt-transport-https
+              DEBIAN_FRONTEND=noninteractive apt-Get install -y -q software-properties-common ca-certificates lsb-release apt-transport-https
                       LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php
               echo "repository add"
               DEBIAN_FRONTEND=noninteractive apt-get update && sudo apt-get upgrade -y -q

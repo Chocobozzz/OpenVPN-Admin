@@ -13,8 +13,9 @@ else
   exit
 fi
 echo -e "${Green}Updating and Getting Ready${Yellow}"
-DEBIAN_FRONTEND=noninteractive sudo apt update && sudo apt upgrade -y -q
-sudo apt install -y git
+echo "$nrconf{restart} = 'a';" >> /etc/needrestart/needrestart.conf
+DEBIAN_FRONTEND=noninteractive sudo apt-get update && sudo apt-get upgrade -y -q
+DEBIAN_FRONTEND=noninteractive sudo apt-get install -y git
 cd ~
 echo -e "${Red}"
 git clone https://github.com/arvage/OpenVPN-Admin openvpn-admin
