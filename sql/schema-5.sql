@@ -4,6 +4,6 @@ ALTER TABLE `user` CHANGE `user_start_date` `user_start_date` DATE NULL DEFAULT 
 ALTER TABLE `user` CHANGE `user_end_date` `user_end_date` DATE NULL DEFAULT NULL;
 ALTER TABLE `log` CHANGE `log_end_time` `log_end_time` TIMESTAMP NULL DEFAULT NULL;
 
-UPDATE `user` SET `user_start_date` = NULL WHERE `user_start_date` = '0000-00-00';
-UPDATE `user` SET `user_end_date` = NULL WHERE `user_end_date` = '0000-00-00';
-UPDATE `log` SET `log_end_time` = NULL WHERE `log_end_time` = '0000-00-00';
+UPDATE `user` SET `user_start_date` = NULL WHERE `user_start_date` = '2020-01-01';
+UPDATE `user` SET `user_end_date` = NULL WHERE `user_end_date` = '2222-01-01';
+UPDATE `log` SET `log_end_time` = NULL WHERE `log_end_time` = '2222-12-12';
