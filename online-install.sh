@@ -20,6 +20,9 @@ echo '|   |Alt|A  |                       |A  |Alt|      |<-|| |->|  |0    |. |t
 echo '|   |___|___|_______________________|___|___|      |__|V_|__|  |_____|__|e_|  |'
 echo '|                                                                             |'
 echo '`-----------------------------------------------------------------------------.'
+echo
+echo
+
 
 OS=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f1 -d " ") # Don't change this unless you know what you're doing
 if [ "$OS" == "Ubuntu" ] || [ "$OS" == "Raspbian" ]; 
@@ -30,7 +33,7 @@ else
   exit
 fi
 sudo sed -i 's/#$nrconf{restart} = '"'"'i'"'"';/$nrconf{restart} = '"'"'a'"'"';/g' /etc/needrestart/needrestart.conf
-
+echo
 echo -e "${Green}Updating and Getting Ready${Yellow}"
 DEBIAN_FRONTEND=noninteractive sudo apt-get update && sudo apt-get upgrade -y -q
 DEBIAN_FRONTEND=noninteractive sudo apt-get install -y git mc

@@ -120,10 +120,7 @@ function getHistory($cfg_file, $accordion_id, $open_first_history_tab = false) {
       <!-- configs -->
       <div class="block-grid row" id="config-cards">
          <ul class="nav nav-tabs nav-tabs-justified">
-            <li class="active"><a data-toggle="tab" href="#menu-1-0"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Linux</a></li>
-            <li><a data-toggle="tab" href="#menu-1-1"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span> Windows</a></li>
-            <li><a data-toggle="tab" href="#menu-1-2"><span class="glyphicon glyphicon-apple" aria-hidden="true"></span> OSX</a></li>
-
+            <li><a data-toggle="tab" href="#menu-1-1"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span> Windows, Linux and OSX</a></li>
             <li id="save-config-btn" class="pull-right hidden"><a class="progress-bar-striped" href="javascript:;"><span class="glyphicon glyphicon-save" aria-hidden="true"></span></a></li>
          </ul>
          <div class="tab-content">
