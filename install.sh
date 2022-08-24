@@ -105,7 +105,7 @@ echo -e "${Yellow}\nNow sit back and wait for the script to finish the install\n
 sleep 2
 
 # Detecting OS Distribution
-echo -e "${NC}Detected OS: ${Red}$OS $OS_OS_Version_Major.$OS_OS_Version_Minor\n"
+echo -e "${NC}Detected OS: ${Red}$OS $OS_Version_Major.$OS_Version_Minor\n"
 sleep 2
 
 # Installing prerequisites
@@ -113,7 +113,7 @@ echo -e "${Green}Installing Prerequisites ${Red}(This could take long time)${NC}
 
 case $OS in
 	Ubuntu)
-            if  [$OS_OS_Version_Major > 20]
+            if  [$OS_Version_Major > 20]
             then
     		  export DEBIAN_FRONTEND=noninteractive
               apt install -y software-properties-common ca-certificates lsb-release apt-transport-https
