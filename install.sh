@@ -113,7 +113,7 @@ echo -e "${Green}Installing Prerequisites ${Red}(This could take long time)${NC}
 
 case $OS in
 	Ubuntu)
-            if  [$OS_Version_Major > 20]
+            if  [[$OS_Version_Major > 20]]
             then
     		  export DEBIAN_FRONTEND=noninteractive
               apt install -y software-properties-common ca-certificates lsb-release apt-transport-https
