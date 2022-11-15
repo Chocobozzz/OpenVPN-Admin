@@ -229,9 +229,10 @@ fi
 if [[ ! -z $cert_email ]]; then
   export EASYRSA_REQ_EMAIL=$cert_email
 fi
-if [[ ! -z $key_cn ]]; then
-  export EASYRSA_REQ_CN=$key_cn
-fi 
+
+#if [[ ! -z $key_cn ]]; then
+#  export EASYRSA_REQ_CN=$key_cn
+#fi 
 
 export EASYRSA_BATCH=1
 
