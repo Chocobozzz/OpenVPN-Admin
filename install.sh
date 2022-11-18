@@ -390,14 +390,15 @@ echo -e "################################### Finished ##########################
 echo
 echo -e "${Green}Congratulations, you have successfully setup OpenVPN-Admin!${NC}"
 echo
-echo -e "Finish the install by going to: ${Red}"
-echo -e "             http://$ip_server/index.php?installation${NC}"
-echo -e "After install, Access GUI at: ${Red}"
-echo -e "             http://$ip_server/${NC}"
+echo -e "Finish the install by going to:"
+echo -e " Local URL:  ${Red}http://$ip_server/index.php?installation${NC}"
+echo -e " Public URL: ${Red}http://$public_ip/index.php?installation${NC}"
 echo
-echo -e "Here are more details:"
-echo -e "             Your Public URL: ${Red}http://$public_ip"
+echo -e "After install, Access GUI at: ${NC}"
+echo -e " Local URL:  ${Red}http://$ip_server/${NC}"
+echo -e " Public URL: ${Red}http://$public_ip${NC}"
 echo
+echo -e "Here are more details:${Red}"
 echo -e "	We recommend only forward UDP port 1194 if you are behind a firewall"
 echo -e "	Publishing TCP port 80 over the web is a high risk and NOT recommended${NC}"
 echo
@@ -405,7 +406,7 @@ echo -e "             Auto Generated MySQL Root Password: ${Red}$mysql_root_pass
 echo -e "             Auto Generated OpenVPN-Admin MySQL Username: ${Red}$mysql_user ${NC}"
 echo -e "             Auto Generated OpenVPN-Admin MySQL Password: ${Red}$mysql_pass ${Yellow}"
 echo
-echo -e "	Credentials are saved in /root/OpenVPN_Creds file for future refrence."
+echo -e "	Credentials are saved in /root/OpenVPN_Creds file for future reference."
 echo
 echo -e "             Selected download file name: ${Red}$company_name.ovpn ${NC}"
 echo
