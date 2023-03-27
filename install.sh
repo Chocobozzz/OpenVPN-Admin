@@ -6,6 +6,11 @@ Red='\033[1;31m'        # Light Red
 Yellow='\033[0;33m'     # Yellow
 Green='\033[0;32m'      # Green
 
+### Remove FD0
+rmmod floppy
+echo "blacklist floppy" | sudo tee /etc/modprobe.d/blacklist-floppy.conf
+dpkg-reconfigure initramfs-tools
+
 ### Variables
 OS=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f1 -d " ") # Don't change this unless you know what you're doing
 OS_Version_Major=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f2 -d " " | cut -f1 -d ".")
