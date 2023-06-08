@@ -1,15 +1,66 @@
 #!/bin/bash
 
+# On-Screen Colors
+NC='\033[0m'            # No Color
+Red='\033[1;31m'        # Light Red
+Yellow='\033[0;33m'     # Yellow
+Green='\033[0;32m'      # Green
+
+### Variables
+OS=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f1 -d " ") # Don't change this unless you know what you're doing
+OS_Version_Major=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f2 -d " " | cut -f1 -d ".")
+OS_Version_Minor=$(cat /etc/os-release | grep PRETTY_NAME | sed 's/"//g' | cut -f2 -d= | cut -f2 -d " " | cut -f2 -d ".")
+if [ "$OS" == "Ubuntu" ] || [ "$OS" == "Raspbian" ]; 
+then
+  :
+else
+  echo -e "${Red}Oops! Only Ubuntu and Raspbian OS are supported.${NC}"
+  exit
+fi
+
+timezone="America/Los_Angeles" # this is PHP timezone
+gmt_offset="-8:00" # this is MySQL timezone
+www=$1
+user=$2
+group=$3
+
+# OpenVPN
+openvpn_admin="$www/openvpn-admin"
+base_path=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+ip_server=$(hostname -I | cut -f1 -d\ ) # added cut to remove openvpn tunnel IP from the string
+public_ip=$(host myip.opendns.com resolver1.opendns.com | grep "myip.opendns.com has" | awk '{print $4}') # don't change this
+openvpn_proto="udp" # UDP is a faster protocol than TCP
+server_port="1194"  # OpenVPN default port is 1194
+
+# MySQL Variables 
+mysql_root_pass=$(openssl rand -base64 12 | sed 's/[^a-zA-Z0-9]//g') # Random ceated secure string without special chatacters
+mysql_user=$(openssl rand -base64 12 | sed 's/[^a-zA-Z0-9]//g') # Random ceated secure string without special chatacters
+mysql_pass=$(openssl rand -base64 12 | sed 's/[^a-zA-Z0-9]//g') # Random ceated secure string without special chatacters
+
+# Certificates Variables
+key_size="2048" # anything less than 2048 may get rejected by some OSes. bigger sizes will take forever to generate!
+ca_expire="36500" # 100 Years
+cert_expire="36500"
+cert_country="US"
+cert_province="California"
+cert_city="Mission Viejo"
+cert_org="PACMIT"
+cert_ou="IT"
+cert_email="example@test.net"
+key_cn=$public_ip # will be changed when asking for public IP/Hostname user input
+
+# show on-screen help
 print_help () {
-  echo -e "./install.sh www_basedir user group"
-  echo -e "\tbase_dir: The place where the web application will be put in"
-  echo -e "\tuser:     User of the web application"
-  echo -e "\tgroup:    Group of the web application"
+  echo -e "sudo ./install.sh www_basedir user group"
+  echo -e "\tbase_dir: The place where the web application will be put in (e.g. /var/www)"
+  echo -e "\tuser:     User of the web application (e.g. www-data)"
+  echo -e "\tgroup:    Group of the web application (e.g. www-data)"
 }
 
 # Ensure to be root
 if [ "$EUID" -ne 0 ]; then
-  echo "Please run as root"
+  echo -e "${Red}Please use sudo to run the script. e.g:${NC}"
+  echo -e "${Green}sudo ./install.sh /var/www www-data www-data${NC}"
   exit
 fi
 
@@ -19,20 +70,96 @@ if [ "$#" -ne 3 ]; then
   exit
 fi
 
-# Ensure there are the prerequisites
-for i in openvpn mysql php bower node unzip wget sed; do
+echo -e "${Green}\nAutomated Installation Started\n"
+sleep 2
+
+# hostname / IP settings 
+echo -e "${Red}$public_ip ${NC}detected as your Public IP and will be used automatically if you don't choose anything else."
+echo -e "Timeout: 2 Minutes"
+echo -e "Need to use another public IP or Hostname?"
+read -t 120 -p "Type it here or hit enter to continue with detected IP: " public_hostname </dev/tty
+
+if [ -z "$public_hostname" ]
+then
+  public_ip=$(host myip.opendns.com resolver1.opendns.com | grep "myip.opendns.com has" | awk '{print $4}')
+  echo -e "\n${NC}Selected IP: ${Red}$public_ip ${NC}"
+else
+  public_ip=$public_hostname
+  key_cn=$public_ip
+  echo -e "\n${NC}Selected IP/Hostname: ${Red}$public_ip ${NC}"
+fi
+echo -e "\n\n\nSelect the VPN connection name for showing up on your client OpenVPN application."
+echo -e "This will help the user identify which VPN he is connecting to if he has multiple connection configuration."
+echo -e "Default file names will be used if you don't choose any. You may use your company or office Name. (e.g. LA Office)"
+echo -e "Timeout: 2 Minutes"
+read -t 120 -p "Type it here or hit enter to use default naming (without .ovpn): " company_name </dev/tty
+
+if [ -z "$company_name" ]
+then
+  echo -e "\nDefault file name VPN.ovpn selected."
+else
+  echo -e "\nSelected file name: ${Red}$company_name.ovpn${NC}"
+fi
+
+echo -e "${Yellow}\nThis part will take a while to finish.\n${NC}"
+sleep 2
+
+# Detecting OS Distribution
+echo -e "${NC}Detected OS: ${Red}$OS $OS_Version_Major.$OS_Version_Minor\n"
+sleep 2
+
+# Installing prerequisites
+echo -e "${Green}Installing Prerequisites ${Red}(This could take long time)${NC}"
+
+case $OS in
+	Ubuntu)
+            if [ "$OS_Version_Major" -gt "20" ];
+            then
+    		  export DEBIAN_FRONTEND=noninteractive
+              DEBIAN_FRONTEND=noninteractive apt-get install -y -q software-properties-common ca-certificates lsb-release apt-transport-https
+                      LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php
+              echo "repository add"
+              DEBIAN_FRONTEND=noninteractive apt-get update && sudo apt-get upgrade -y -q
+    		  DEBIAN_FRONTEND=noninteractive apt-get install -y -q openvpn apache2 mysql-server php7.4 php7.4-mysql php7.4-zip unzip git wget sed curl nodejs npm mc net-tools
+              a2dismod php8.1
+              a2enmod php7.4
+              systemctl restart apache2
+            else
+              apt update && sudo apt upgrade -y
+              apt install -y openvpn apache2 mysql-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc net-tools
+            fi
+	    ### Remove FD0
+	    rmmod floppy
+	    echo "blacklist floppy" | sudo tee /etc/modprobe.d/blacklist-floppy.conf
+ 	    dpkg-reconfigure initramfs-tools
+		;;
+	Raspbian)
+		apt install -y openvpn apache2 mariadb-server php php-mysql php-zip unzip git wget sed curl nodejs npm mc
+		;;
+	*)
+		echo -e "${Red}Can't detect OS distribution! you need to install prerequisites manully${NC}"
+    exit
+esac
+npm install -g bower
+
+# Ensure the prerequisites are installed
+for i in openvpn apache2 mysql php unzip git wget sed curl nodejs npm; do
   which $i > /dev/null
   if [ "$?" -ne 0 ]; then
-    echo "Miss $i"
+    echo -e "${Red}$i is missing. Please install $i manually.${NC}"
     exit
   fi
 done
 
-www=$1
-user=$2
-group=$3
-
-openvpn_admin="$www/openvpn-admin"
+# setting up MySQL and secure it
+echo -e "${Green}Setting MySQL Configuration${NC}"
+mysql -u root <<-EOF
+ALTER USER 'root'@'localhost' IDENTIFIED BY '$mysql_root_pass';
+DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+DELETE FROM mysql.user WHERE User='';
+DELETE FROM mysql.db WHERE Db='test' OR Db='test_%';
+FLUSH PRIVILEGES;
+EOF
 
 # Check the validity of the arguments
 if [ ! -d "$www" ] ||  ! grep -q "$user" "/etc/passwd" || ! grep -q "$group" "/etc/group" ; then
@@ -40,31 +167,10 @@ if [ ! -d "$www" ] ||  ! grep -q "$user" "/etc/passwd" || ! grep -q "$group" "/e
   exit
 fi
 
-base_path=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-
-
-printf "\n################## Server informations ##################\n"
-
-read -p "Server Hostname/IP: " ip_server
-
-read -p "OpenVPN protocol (tcp or udp) [tcp]: " openvpn_proto
-
-if [[ -z $openvpn_proto ]]; then
-  openvpn_proto="tcp"
-fi
-
-read -p "Port [443]: " server_port
-
-if [[ -z $server_port ]]; then
-  server_port="443"
-fi
-
 # Get root pass (to create the database and the user)
-mysql_root_pass=""
 status_code=1
 
 while [ $status_code -ne 0 ]; do
-  read -p "MySQL root password: " -s mysql_root_pass; echo
   echo "SHOW DATABASES" | mysql -u root --password="$mysql_root_pass" &> /dev/null
   status_code=$?
 done
@@ -76,51 +182,27 @@ if [ "$sql_result" != "" ]; then
   exit
 fi
 
+echo -e "${Green}Generating OpenVPN-Admin SQL DB user credentials\n"
 
 # Check if the user doesn't already exist
-read -p "MySQL user name for OpenVPN-Admin (will be created): " mysql_user
-
 echo "SHOW GRANTS FOR $mysql_user@localhost" | mysql -u root --password="$mysql_root_pass" &> /dev/null
 if [ $? -eq 0 ]; then
   echo "The MySQL user already exists."
   exit
 fi
 
-read -p "MySQL user password for OpenVPN-Admin: " -s mysql_pass; echo
-
-# TODO MySQL port & host ?
-
-
-printf "\n################## Certificates informations ##################\n"
-
-read -p "Key size (1024, 2048 or 4096) [2048]: " key_size
-
-read -p "Root certificate expiration (in days) [3650]: " ca_expire
-
-read -p "Certificate expiration (in days) [3650]: " cert_expire
-
-read -p "Country Name (2 letter code) [US]: " cert_country
-
-read -p "State or Province Name (full name) [California]: " cert_province
-
-read -p "Locality Name (eg, city) [San Francisco]: " cert_city
-
-read -p "Organization Name (eg, company) [Copyleft Certificate Co]: " cert_org
-
-read -p "Organizational Unit Name (eg, section) [My Organizational Unit]: " cert_ou
-
-read -p "Email Address [me@example.net]: " cert_email
-
-read -p "Common Name (eg, your name or your server's hostname) [ChangeMe]: " key_cn
-
-
-printf "\n################## Creating the certificates ##################\n"
+echo -e "${Green}Creating the Certificates${Yellow}"
 
 # Get the rsa keys
-wget "https://github.com/OpenVPN/easy-rsa/releases/download/v3.0.6/EasyRSA-unix-v3.0.6.tgz"
-tar -xaf "EasyRSA-unix-v3.0.6.tgz"
-mv "EasyRSA-v3.0.6" /etc/openvpn/easy-rsa
-rm "EasyRSA-unix-v3.0.6.tgz"
+EASYRSA_VERSION=$(curl -s https://api.github.com/repos/OpenVPN/easy-rsa/releases/latest | grep "tag_name" | cut -f2 -d "v" | sed 's/[",]//g')
+EASYRSA_LOCATION=$(curl -s https://api.github.com/repos/OpenVPN/easy-rsa/releases/latest \
+| grep "tag_name" \
+| awk '{print "https://github.com/OpenVPN/easy-rsa/releases/download/" substr($2, 2, length($2)-3) "/EasyRSA-" substr($2, 3, length($2)-4) ".tgz"}') \
+; curl -L -o easyrsa.tgz $EASYRSA_LOCATION
+
+tar -xaf "easyrsa.tgz"
+mv "EasyRSA-$EASYRSA_VERSION" /etc/openvpn/easy-rsa
+rm "easyrsa.tgz"
 
 cd /etc/openvpn/easy-rsa
 
@@ -151,9 +233,12 @@ fi
 if [[ ! -z $cert_email ]]; then
   export EASYRSA_REQ_EMAIL=$cert_email
 fi
-if [[ ! -z $key_cn ]]; then
-  export EASYRSA_REQ_CN=$key_cn
-fi
+
+#if [[ ! -z $key_cn ]]; then
+#  export EASYRSA_REQ_CN=$key_cn
+#fi 
+
+export EASYRSA_BATCH=1
 
 # Init PKI dirs and build CA certs
 ./easyrsa init-pki
@@ -164,16 +249,15 @@ fi
 ./easyrsa build-server-full server nopass
 
 # Generate shared-secret for TLS Authentication
-openvpn --genkey --secret pki/ta.key
+openvpn --genkey secret pki/ta.key
 
-
-printf "\n################## Setup OpenVPN ##################\n"
+echo -e "${Green}Setup OpenVPN${NC}"
 
 # Copy certificates and the server configuration in the openvpn directory
 cp /etc/openvpn/easy-rsa/pki/{ca.crt,ta.key,issued/server.crt,private/server.key,dh.pem} "/etc/openvpn/"
 cp "$base_path/installation/server.conf" "/etc/openvpn/"
 mkdir "/etc/openvpn/ccd"
-sed -i "s/port 443/port $server_port/" "/etc/openvpn/server.conf"
+sed -i "s/port 1194/port $server_port/" "/etc/openvpn/server.conf"
 
 if [ $openvpn_proto = "udp" ]; then
   sed -i "s/proto tcp/proto $openvpn_proto/" "/etc/openvpn/server.conf"
@@ -182,11 +266,7 @@ fi
 nobody_group=$(id -ng nobody)
 sed -i "s/group nogroup/group $nobody_group/" "/etc/openvpn/server.conf"
 
-printf "\n################## Setup firewall ##################\n"
-
-# Make ip forwading and make it persistent
-echo 1 > "/proc/sys/net/ipv4/ip_forward"
-echo "net.ipv4.ip_forward = 1" >> "/etc/sysctl.conf"
+echo -e "${Green}Setup Firewall${NC}"
 
 # Get primary NIC device name
 primary_nic=`route | grep '^default' | grep -o '[^ ]*$'`
@@ -195,22 +275,40 @@ primary_nic=`route | grep '^default' | grep -o '[^ ]*$'`
 iptables -I FORWARD -i tun0 -j ACCEPT
 iptables -I FORWARD -o tun0 -j ACCEPT
 iptables -I OUTPUT -o tun0 -j ACCEPT
-
 iptables -A FORWARD -i tun0 -o $primary_nic -j ACCEPT
 iptables -t nat -A POSTROUTING -o $primary_nic -j MASQUERADE
 iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o $primary_nic -j MASQUERADE
 iptables -t nat -A POSTROUTING -s 10.8.0.2/24 -o $primary_nic -j MASQUERADE
 
+# Make ip forwading and make it persistent
+case $OS in
+  Ubuntu)
+    sysctl -w net.ipv4.ip_forward=1
+    sed -i "s/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/" "/etc/sysctl.conf"
+    iptables-save -f ./rules.v4
+    if [[ ! -d "/etc/iptables" ]]
+    then
+      mkdir /etc/iptables
+    fi
+    mv ./rules.v4 /etc/iptables
+    echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
+    echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
+    apt-get install -y iptables-persistent
+    ;;
+  Raspbian)
+    echo 1 > "/proc/sys/net/ipv4/ip_forward"
+    ;;
+esac
 
-printf "\n################## Setup MySQL database ##################\n"
+echo -e "${Green}Setup MySQL Database${NC}"
 
 echo "CREATE DATABASE \`openvpn-admin\`" | mysql -u root --password="$mysql_root_pass"
 echo "CREATE USER $mysql_user@localhost IDENTIFIED BY '$mysql_pass'" | mysql -u root --password="$mysql_root_pass"
 echo "GRANT ALL PRIVILEGES ON \`openvpn-admin\`.*  TO $mysql_user@localhost" | mysql -u root --password="$mysql_root_pass"
 echo "FLUSH PRIVILEGES" | mysql -u root --password="$mysql_root_pass"
-
-
-printf "\n################## Setup web application ##################\n"
+echo "SET GLOBAL time_zone = '$gmt_offset';" | mysql -u root --password="$mysql_root_pass"
+systemctl restart mysql
+echo -e "${Green}Setup Web Application${NC}"
 
 # Copy bash scripts (which will insert row in MySQL)
 cp -r "$base_path/installation/scripts" "/etc/openvpn/"
@@ -233,7 +331,8 @@ sed -i "s/\$pass = '';/\$pass = '$mysql_pass';/" "./include/config.php"
 
 # Replace in the client configurations with the ip of the server and openvpn protocol
 for file in $(find -name client.ovpn); do
-    sed -i "s/remote xxx\.xxx\.xxx\.xxx 443/remote $ip_server $server_port/" $file
+    sed -i "s/remote xxx\.xxx\.xxx\.xxx 1194/remote $public_ip $server_port/" $file
+    sed -i "s/remote xxx\.xxx\.xxx\.xxx 443/remote $public_ip $server_port/" $file
     echo "<ca>" >> $file
     cat "/etc/openvpn/ca.crt" >> $file
     echo "</ca>" >> $file
@@ -255,11 +354,69 @@ done
 bower --allow-root install
 chown -R "$user:$group" "$openvpn_admin"
 
-printf "\033[1m\n#################################### Finish ####################################\n"
+echo -e "${Green}Setting Apache Configuration${NC}"
+# finding PHP version (major and minor only as OS uses x.x format in /etc/php folder)
+php_version=$(php -v | head -n1 | cut -f2 -d\ | cut -f1,2 -d.)
 
-echo -e "# Congratulations, you have successfully setup OpenVPN-Admin! #\r"
-echo -e "Please, finish the installation by configuring your web server (Apache, NGinx...)"
-echo -e "and install the web application by visiting http://your-installation/index.php?installation\r"
-echo -e "Then, you will be able to run OpenVPN with systemctl start openvpn@server\r"
-echo "Please, report any issues here https://github.com/Chocobozzz/OpenVPN-Admin"
-printf "\n################################################################################ \033[0m\n"
+cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/openvpn.conf
+sed -i 's/\/var\/www\/html/\/var\/www\/openvpn-admin/g' /etc/apache2/sites-available/openvpn.conf
+sed -i '/<\/VirtualHost>/i \\n\t<Directory \/var\/www\/openvpn-admin>\n\t\tOptions Indexes FollowSymLinks\n\t\tAllowOverride All\n\t\tRequire all granted\n\t<\/Directory>' /etc/apache2/sites-available/openvpn.conf
+sed -i "/;date.timezone =/a date.timezone = $timezone ; added by openvpn-admin" /etc/php/$php_version/apache2/php.ini
+#touch /var/www/.htpasswd
+#chown www-data:www-data /var/www/.htpasswd
+#echo -e "${Yellow}It's time to secure client configuration folder from anonymous browser and assign a super admin user to be only able to browse it.\n"
+#echo -e "This username / password will only applies to http://your-site/client-config and all sub directories\n${NC}"
+#read -p "Client Configuration Web Access Username: " client_folder_username
+#htpasswd /var/www/.htpasswd $client_folder_username
+a2dissite 000-default
+a2ensite openvpn
+systemctl restart apache2
+
+echo -e "${Green}Finalizing OpenVPN Configuration${NC}"
+#sed -i 's/explicit-exit-notify 1/# explicit-exit-notify 1/g' /etc/openvpn/server.conf
+#sed -i 's/80.67.169.12/8.8.8.8/g' /etc/openvpn/server.conf
+#sed -i 's/80.67.169.40/8.8.4.4/g' /etc/openvpn/server.conf
+if [ -z "$company_name" ]
+then
+  company_name="VPN"
+else
+  sed -i "s/VPN/$company_name/" /var/www/openvpn-admin/client-conf/windows/filename
+fi
+truncate -s -1 /var/www/openvpn-admin/client-conf/windows/filename
+systemctl start openvpn@server
+
+echo "Auto Generated MySQL Root Password: $mysql_root_pass" >> ~/OpenVPN_Creds
+echo "Auto Generated OpenVPN-Admin MySQL Username: $mysql_user" >> ~/OpenVPN_Creds
+echo "Auto Generated OpenVPN-Admin MySQL Password: $mysql_pass" >> ~/OpenVPN_Creds
+echo -e "\n\n\n${Yellow}"
+echo -e "################################################################################"
+echo -e "################################### Finished ###################################"
+echo
+echo -e "${Green}Congratulations, you have successfully setup OpenVPN-Admin!${NC}"
+echo
+echo -e "Finish the install by going to:"
+echo -e " Local URL:  ${Red}http://$ip_server/index.php?installation${NC}"
+echo -e " Public URL: ${Red}http://$public_ip/index.php?installation${NC}"
+echo
+echo -e "After install, Access GUI at: ${NC}"
+echo -e " Local URL:  ${Red}http://$ip_server/${NC}"
+echo -e " Public URL: ${Red}http://$public_ip${NC}"
+echo
+echo -e "Here are more details:${Red}"
+echo -e "	We recommend only forward UDP port 1194 if you are behind a firewall"
+echo -e "	Publishing TCP port 80 over the web is a high risk and NOT recommended${NC}"
+echo
+echo -e "             Auto Generated MySQL Root Password: ${Red}$mysql_root_pass ${NC}" 
+echo -e "             Auto Generated OpenVPN-Admin MySQL Username: ${Red}$mysql_user ${NC}"
+echo -e "             Auto Generated OpenVPN-Admin MySQL Password: ${Red}$mysql_pass ${Yellow}"
+echo
+echo -e "	Credentials are saved in /root/OpenVPN_Creds file for future reference."
+echo
+echo -e "             Selected download file name: ${Red}$company_name.ovpn ${NC}"
+echo
+echo -e " Please, report any issues here https://github.com/arvage/OpenVPN-Admin (Armin Gorji)"
+echo
+echo -e "${Yellow}################################################################################${NC}"
+echo -e "${Yellow}################################################################################${NC}"
+
+systemctl restart openvpn@server

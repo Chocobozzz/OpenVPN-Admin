@@ -77,8 +77,8 @@
 
         do {
           // Better in Kb or Mb
-          $received = ($data['log_received'] > 1000000) ? $data['log_received']/1000000 . " Mo" : $data['log_received']/1000 . " Ko";
-          $sent = ($data['log_send'] > 1000000) ? $data['log_send']/1000000 . " Mo" : $data['log_send']/1000 . " Ko";
+          $received = ($data['log_received'] > 1000000) ? floor($data['log_received']/1000000) . " MB" : floor($data['log_received']/1000) . " KB";
+          $sent = ($data['log_send'] > 1000000) ? floor($data['log_send']/1000000) . " MB" : floor($data['log_send']/1000) . " KB";
 
           // We add to the array the new line of logs
           array_push($list, array(
@@ -136,7 +136,7 @@
     $phone = "";
     $online = 0;
     $enable = 1;
-    $start = null;
+    $start = date("Y-m-d");
     $end = null;
 
     $req = $bdd->prepare('INSERT INTO user (user_id, user_pass, user_mail, user_phone, user_online, user_enable, user_start_date, user_end_date)

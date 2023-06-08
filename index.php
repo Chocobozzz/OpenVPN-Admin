@@ -4,6 +4,12 @@
   require(dirname(__FILE__) . '/include/functions.php');
   require(dirname(__FILE__) . '/include/connect.php');
 
+  // first time install
+  if(($_SERVER[REQUEST_URI] != "/index.php?installation") && (isInstalled($bdd) == false)) {
+    header("Location: index.php?installation");
+    exit(-1);
+  }
+  
   // Disconnecting ?
   if(isset($_GET['logout'])){
     session_destroy();
@@ -11,58 +17,66 @@
     exit(-1);
   }
 
-  // Get the configuration files ?
-  if(isset($_POST['configuration_get'], $_POST['configuration_username'], $_POST['configuration_pass'], $_POST['configuration_os'])
-     && !empty($_POST['configuration_pass'])) {
+  // Read ovpn file contents
+  $ovpn_filename= file_get_contents("./client-conf/windows/filename");
+
+  // Get the Windows instruction file 
+  if(isset($_POST['windows_instruction_get'])) {
+      $download_file_name1 = "Download and install the OpenVPN GUI (Windows).pdf";
+      $file_folder1  = "windows";
+      $file_full_path1  = './client-conf/' . $file_folder1 . '/' . $download_file_name1;
+      header("Content-type: application/pdf");
+      header("Content-disposition: attachment; filename=$download_file_name1");
+      header("Pragma: no-cache");
+      header("Expires: 0");
+      readfile($file_full_path1);
+      exit;
+     }
+
+  // Get the MAC instruction file 
+  if(isset($_POST['mac_instruction_get'])) {
+    
+      $download_file_name2 = "Download and install the OpenVPN GUI (MAC).pdf";
+      $file_folder2  = "osx-viscosity";
+      $file_full_path2  = './client-conf/' . $file_folder2 . '/' . $download_file_name2;
+      header("Content-type: application/pdf");
+      header("Content-disposition: attachment; filename=$download_file_name2");
+      header("Pragma: no-cache");
+      header("Expires: 0");
+      readfile($file_full_path2);
+      exit;
+    }
+
+  // Get configuration file from admin page
+  if(isset($_GET['admin_configuration_get'])  && !empty($_SESSION['admin_id']) ) {
+    $file_name = "client.ovpn";
+    $file_folder  = "windows";
+    $file_full_path  = './client-conf/' . $file_folder . '/' . $file_name;
+    header("Content-type: application/ovpn");
+    header("Content-disposition: attachment; filename=$ovpn_filename.ovpn");
+    header("Pragma: no-cache");
+    header("Expires: 0");
+    readfile($file_full_path);
+    exit;
+  }
+
+  // Get the configuration files from configuration page
+  if(isset($_POST['configuration_get'], $_POST['configuration_username'], $_POST['configuration_pass']) && !empty($_POST['configuration_pass'])) {
     $req = $bdd->prepare('SELECT * FROM user WHERE user_id = ?');
     $req->execute(array($_POST['configuration_username']));
     $data = $req->fetch();
 
     // Error ?
     if($data && passEqual($_POST['configuration_pass'], $data['user_pass'])) {
-      // Thanks http://stackoverflow.com/questions/4914750/how-to-zip-a-whole-folder-using-php
-      if($_POST['configuration_os'] == "gnu_linux") {
-        $conf_dir = 'gnu-linux';
-      } elseif($_POST['configuration_os'] == "osx_viscosity") {
-        $conf_dir = 'osx-viscosity';
-      } else {
-        $conf_dir = 'windows';
-      }
-      $rootPath = realpath("./client-conf/$conf_dir");
-
-      // Initialize archive object ;;;; why doing this every time the user logs in, when the cert is static?
-      $archive_base_name = "openvpn-$conf_dir";
-      $archive_name = "$archive_base_name.zip";
-      $archive_path = "./client-conf/$archive_name";
-      $zip = new ZipArchive();
-      $zip->open($archive_path, ZipArchive::CREATE | ZipArchive::OVERWRITE);
-
-      $files = new RecursiveIteratorIterator(
-        new RecursiveDirectoryIterator($rootPath),
-        RecursiveIteratorIterator::LEAVES_ONLY
-      );
-
-      foreach ($files as $name => $file) {
-        // Skip directories (they would be added automatically)
-        if (!$file->isDir()) {
-          // Get real and relative path for current file
-          $filePath = $file->getRealPath();
-          $relativePath = substr($filePath, strlen($rootPath) + 1);
-
-          // Add current file to archive
-          $zip->addFile($filePath, "$archive_base_name/$relativePath");
-        }
-      }
-
-      // Zip archive will be created only after closing object
-      $zip->close();
-
-      //then send the headers to foce download the zip file
-      header("Content-type: application/zip");
-      header("Content-Disposition: attachment; filename=$archive_name");
+      $file_name = "client.ovpn";
+      $file_folder  = "windows";
+      $file_full_path  = './client-conf/' . $file_folder . '/' . $file_name;
+      header("Content-type: application/ovpn");
+      header("Content-disposition: attachment; filename=$ovpn_filename.ovpn");
       header("Pragma: no-cache");
       header("Expires: 0");
-      readfile($archive_path);
+      readfile($file_full_path);
+      exit;
     }
     else {
       $error = true;
@@ -158,11 +172,10 @@
         header( "refresh:3;url=index.php?admin" );
       }
       // Print the installation form
-      else {
+      else {    
         require(dirname(__FILE__) . '/include/html/menu.php');
         require(dirname(__FILE__) . '/include/html/form/installation.php');
       }
-
       exit(-1);
     }
 
@@ -196,6 +209,7 @@
             <div class="col-md-6">
               <a class="navbar-text navbar-right" href="index.php?logout" title="Logout"><button class="btn btn-danger">Logout <span class="glyphicon glyphicon-off" aria-hidden="true"></span></button></a>
               <a class="navbar-text navbar-right" href="index.php" title="Configuration"><button class="btn btn-default">Configurations</button></a>
+              <a class="navbar-text navbar-right" href="index.php?admin_configuration_get" title="Get Config File"><button class="btn btn-default">Get Config File</button></a>
             </p>
           </div>
         </div>
@@ -204,7 +218,7 @@
   <?php
       require(dirname(__FILE__) . '/include/html/grids.php');
     }
-  ?>
+  ?>  
      <div id="message-stage">
         <!-- used to display application messages (failures / status-notes) to the user -->
      </div>

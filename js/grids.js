@@ -37,6 +37,22 @@ $(function () {
       return '<div class="'+(parseInt(value)===1?'mini-led-green':'mini-led-red')+'"></div>';
    }
 
+   function bytesStyle(value, row, index, field) {
+    if (value.includes("KB")===true){
+      return {
+      classes: 'text-nowrap another-class',
+      css: {"background-color": "rgba(0, 100, 0, 0.3);"}
+      };
+    }
+    else {
+      return {
+        classes: 'text-nowrap another-class',
+        css: {"background-color": "rgba(100, 0, 0, 0.3);"}
+      };
+    }
+   }
+
+
   // ------------------------- USERS definitions -------------------------
   var $userTable = $('#table-users');
   var $modalUserAdd = $('#modal-user-add');
@@ -293,16 +309,16 @@ $(function () {
       return params;
     },
     columns: [
-      { title: "Log ID", field: "log_id" },
-      { title: "User ID", field: "user_id", filterControl : 'select' },
-      { title: "Trusted IP", field: "log_trusted_ip", filterControl : 'select' },
-      { title: "Trusted Port", field: "log_trusted_port", filterControl : 'select' },
-      { title: "Remote IP", field: "log_remote_ip", filterControl : 'select' },
-      { title: "Remote Port", field: "log_remote_port", filterControl : 'select' },
-      { title: "Start Time", field: "log_start_time" },
-      { title: "End Time", field: "log_end_time" },
-      { title: "Receveid", field: "log_received" },
-      { title: "Sent", field: "log_send" }
+      { title: "Log ID", field: "log_id", align: "center" },
+      { title: "User ID", field: "user_id", filterControl : 'select', align: "center" },
+      { title: "Client IP", field: "log_trusted_ip", filterControl : 'select', align: "center" },
+      //{ title: "Trusted Port", field: "log_trusted_port", filterControl : 'select' },
+      { title: "Local IP", field: "log_remote_ip", filterControl : 'select', align: "center" },
+      //{ title: "Remote Port", field: "log_remote_port", filterControl : 'select' },
+      { title: "Start Time", field: "log_start_time", align: "center" },
+      { title: "End Time", field: "log_end_time", align: "center" },
+      { title: "Received", field: "log_received", align: "center", cellStyle: bytesStyle },
+      { title: "Sent", field: "log_send", align: "center", cellStyle: bytesStyle }
     ]
   });
 

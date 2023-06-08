@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-md-4 col-md-offset-4">
+  <div class="col-md-5 col-md-offset-3">
 
     <form id="configuration_form" method="POST" class="panel panel-default">
 
@@ -17,17 +17,10 @@
           <label for="configuration_pass">Password</label>
           <input type="password" id="configuration_pass" name="configuration_pass" class="form-control" />
         </div>
+        <input id="configuration_get" name="configuration_get" type="submit" value="ovpn Configuration File" class="btn btn-default" style="margin:10px;" />
+        <input id="windows_instruction_get" name="windows_instruction_get" type="submit" value="Windows Instructions" class="btn btn-default" style="margin:10px;" />
+        <input id="mac_instruction_get" name="mac_instruction_get" type="submit" value="MAC Instructions" class="btn btn-default" style="margin:10px;" />
 
-        <div class="form-group">
-          <label for="configuration_os">OS</label>
-          <select name="configuration_os" id="configuration_os" class="form-control">
-            <option value="gnu_linux">GNU/Linux</option>
-            <option value="osx_viscosity">OSX/Viscosity</option>
-            <option value="windows">Windows</option>
-          </select>
-        </div>
-
-        <input id="configuration_get" name="configuration_get" type="submit" value="Get configuration files" class="btn btn-default" />
       </div>
 
     </form>

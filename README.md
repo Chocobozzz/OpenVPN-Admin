@@ -1,91 +1,53 @@
-# OpenVPN Admin
+## Raspberry Pi OpenVPN Admin using LAMP
 
 ## Summary
-Administrate its OpenVPN with a web interface (logs visualisations, users managing...) and a SQL database.
-
-![Previsualisation configuration](https://lutim.cpy.re/fUq2rxqz)
-![Previsualisation administration](https://lutim.cpy.re/wwYMkHcM)
+Administer OpenVPN Server with a web interface (Users Management, Logs, Visualizations)
 
 
 ## Prerequisite
 
-  * GNU/Linux with Bash and root access
-  * Fresh install of OpenVPN
-  * Web server (NGinx, Apache...)
-  * MySQL
-  * PHP >= 5.5 with modules:
-    * zip
-    * pdo_mysql
-  * bower
-  * unzip
-  * wget
-  * sed
-  * curl
-
-### Debian 8 Jessie
-
-````
-# apt-get install openvpn apache2 php5-mysql mysql-server php5 nodejs unzip git wget sed npm curl
-# npm install -g bower
-# ln -s /usr/bin/nodejs /usr/bin/node
-````
-
-### Debian 9 Stretch
-
-In order to install `npm`, [stretch-backports need to be added to your sources.list](https://backports.debian.org/Instructions/#index2h2).
-
-````
-# apt-get install -t stretch-backports npm nodejs
-# apt-get install openvpn apache2 php-mysql mysql-server php-zip php unzip git wget sed curl
-# npm install -g bower
-````
-
-### CentOS 7
-
-````
-# yum install epel-release
-# yum install openvpn httpd php-mysql mariadb-server php nodejs unzip git wget sed npm
-# npm install -g bower
-# systemctl enable mariadb
-# systemctl start mariadb
-````
-
-### Other distribution... (PR welcome)
-
-## Tests
-
-Only tested on Debian Jessie. Feel free to open issues.
+  * Raspbian or Ubuntu 20 with Bash access or remote SSH
+  * Ubuntu 21.x.x is not supprted yet
 
 ## Installation
 
-  * Setup OpenVPN and the web application:
+  * Method 1 (Automatic):
+  
+        wget -O - https://raw.githubusercontent.com/arvage/OpenVPN-Admin/master/online-install.sh | bash
+        
+  * Method 2 (Manual):
 
-        $ cd ~/my_coding_workspace
-        $ git clone https://github.com/Chocobozzz/OpenVPN-Admin openvpn-admin
-        $ cd openvpn-admin
-        # ./install.sh /var/www www-data www-data
+        sudo apt update
+        sudo apt install -y git
+        cd ~
+        git clone https://github.com/arvage/OpenVPN-Admin openvpn-admin
+        cd openvpn-admin
+        sudo ./install.sh /var/www www-data www-data
 
-  * Setup the web server (Apache, NGinx...) to serve the web application.
-  * Create the admin of the web application by visiting `http://your-installation/index.php?installation`
+  * Once the installation is finished browse to `http://your_hostname_or_ip/index.php?installation` to create your admin user.
+
+## Tests
+
+* Rasbian: Only tested on Raspberry Pi 3 with Raspbian Buster (No GUI).
+* Ubuntu 20.04 LTS: Tested successfully
 
 ## Usage
 
-  * Start OpenVPN on the server (for example `systemctl start openvpn@server`)
   * Connect to the web application as an admin
-  * Create an user
+  * Create a user
   * User get the configurations files via the web application (and put them in */etc/openvpn*)
   * Users on GNU/Linux systems, run `chmod +x /etc/openvpn/update-resolv.sh` as root
   * User run OpenVPN (for example `systemctl start openvpn@client`)
 
 ## Update
 
-    $ git pull origin master
-    # ./update.sh /var/www
+    git pull origin master
+    ./update.sh /var/www
 
-## Desinstall
+## Uninstall
 It will remove all installed components (OpenVPN keys and configurations, the web application, iptables rules...).
 
-    # ./desinstall.sh /var/www
+    sudo ./uninstall.sh /var/www
 
 ## Use of
 
